@@ -153,6 +153,88 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         onCreate(db);
 
     }
+
+    public int addAssignment(String name,String duedate, String description, int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        //First Insert into the table of assignment.
+        contentValues.put(TABLE3_COLUMN2_NAME,name);
+        contentValues.put(TABLE3_COLUMN3_NAME,duedate);
+        contentValues.put(TABLE3_COLUMN4_NAME,description);
+        long result = sqLiteDatabase.insert(TABLE3_NAME, null, contentValues);
+        if(result== -1) return -1;
+        else {
+            //If the insertion correctly took place ---> Insert into assignmentClassRelation
+            //Get AssignmentID of the record you just entered.
+            Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE3_COLUMN1_NAME + " from " + TABLE3_NAME + " order by " + TABLE3_COLUMN1_NAME + " DESC LIMIT 1", null);
+            contentValues.clear();
+            contentValues.put(TABLE7_COLUMN1_NAME,classID);
+            contentValues.put(TABLE7_COLUMN2_NAME,cursor.getInt(0));
+            result = sqLiteDatabase.insert(TABLE7_NAME, null, contentValues);
+            //if new result value doesn't equal -1  ----> Successful Insertion in both Tables ----> return the AssignmentID.
+            if(result != -1) return cursor.getInt(0);
+            //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+            else return -1;
+        }
+    }
+
+    public int addExam(String name,int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        //First Insert into the table of assignment.
+        contentValues.put(TABLE4_COLUMN2_NAME,name);
+        long result = sqLiteDatabase.insert(TABLE4_NAME, null, contentValues);
+        if(result== -1) return -1;
+        else {
+            //If the insertion correctly took place ---> Insert into assignmentClassRelation
+            //Get AssignmentID of the record you just entered.
+            Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE4_COLUMN1_NAME + " from " + TABLE4_NAME + " order by " + TABLE4_COLUMN1_NAME + " DESC LIMIT 1", null);
+            //Re-use of instance.
+            contentValues.clear();
+            contentValues.put(TABLE6_COLUMN1_NAME,classID);
+            contentValues.put(TABLE6_COLUMN2_NAME,cursor.getInt(0));
+            result = sqLiteDatabase.insert(TABLE6_NAME, null, contentValues);
+            //if new result value doesn't equal -1  ----> Successful Insertion in both Tables ----> return the ExamID.
+            if(result != -1) return cursor.getInt(0);
+            //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+            else return -1;
+
+        }
+    }
+
+    public int addClass(String name,String description){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE2_COLUMN2_NAME,name);
+        contentValues.put(TABLE2_COLUMN3_NAME,description);
+        long result = sqLiteDatabase.insert(TABLE2_NAME, null, contentValues);
+        //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+        if(result == -1) return -1;
+        //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the ClassID.
+        else {
+            //Get ClassID of the record you just entered.
+            Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE2_COLUMN1_NAME + " from " + TABLE2_NAME + " order by " + TABLE2_COLUMN1_NAME + " DESC LIMIT 1", null);
+            return cursor.getInt(0);
+        }
+
+    }
+
+    public int addStudent(String name, String email){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE1_COLUMN2_NAME,name);
+        contentValues.put(TABLE1_COLUMN3_NAME,email);
+        long result = sqLiteDatabase.insert(TABLE1_NAME, null, contentValues);
+        //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+        if(result == -1) return -1;
+        //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the StudentID.
+        else {
+            //Get StudentID of the record you just entered.
+            Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE1_COLUMN1_NAME + " from " + TABLE1_NAME + " order by " + TABLE1_COLUMN1_NAME + " DESC LIMIT 1", null);
+            return cursor.getInt(0);
+        }
+    }
+
 /*
     public Cursor getAllStudentsByName(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
