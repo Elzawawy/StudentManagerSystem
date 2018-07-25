@@ -234,6 +234,124 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
             return cursor.getInt(0);
         }
     }
+    //In this method, we only need to remove a student from class, nothing specific to be returned in case of success
+    public boolean removeStudentFromClass(int studentID, int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        return sqLiteDatabase.delete(TABLE5_NAME,TABLE5_COLUMN1_NAME+" = "+studentID+" and "+TABLE5_COLUMN2_NAME+" = "+classID,null)>0;
+    }
+
+    //In this method, we only need to add a student to class, nothing specific to be returned in case of success.
+    public boolean addStudentToClass(int studentID, int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE5_COLUMN1_NAME,studentID);
+        contentValues.put(TABLE5_COLUMN2_NAME,classID);
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        return sqLiteDatabase.insert(TABLE5_NAME,null, contentValues)>0;
+    }
+
+    //This method returns a student list that is enrolled in a class given by the classID parameter.
+    //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
+    public Cursor getStudentsByClass(int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString = "select "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+
+                " from "+TABLE1_NAME+" join "+TABLE5_NAME+" on "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+classID
+                +" and "+ TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+"="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+
+    }
+
+    //This method returns a assignment list that is assigned to a class given by the classID parameter.
+    //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is DueDate
+    public Cursor getAssignmentsByClass(int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+
+                " from "+TABLE3_NAME+" join "+TABLE7_NAME+" on "+TABLE7_NAME+"."+TABLE7_COLUMN1_NAME+"="+classID+
+                " and "+ TABLE7_NAME+"."+TABLE7_COLUMN2_NAME+"="+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+    }
+
+    //This method returns a exam list that is done by a class given by the classID parameter.
+    //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
+    public Cursor getExamsByClass(int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+
+                " from "+TABLE4_NAME+" join "+TABLE6_NAME+" on "+TABLE6_NAME+"."+TABLE6_COLUMN1_NAME+"="+classID+
+                " and "+ TABLE6_NAME+"."+TABLE6_COLUMN2_NAME+"="+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+    }
+
+    //This method returns 2 columns and only 1 row in Cursor --> First is Name of Course , Second is the description.
+    public Cursor getClassInfo(int classID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString ="select "+TABLE2_COLUMN2_NAME+","+TABLE2_COLUMN3_NAME+
+                " from "+TABLE2_NAME+" where "+TABLE2_COLUMN1_NAME+"="+classID;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+
+    }
+
+    //This method returns a class list that is a student (given by the studentID parameter) is enrolled in.
+    //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
+    public Cursor getClassesByStudent(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString = "select "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+","+TABLE2_COLUMN2_NAME+
+                " from "+TABLE2_NAME+" join "+TABLE5_NAME+" on "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+"="+studentID+
+                " and "+ TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+    }
+
+    //This method returns a assignment list that is assigned to and done by a student given by the studentID parameter.
+    //It return a Cursor Object of 4 columns ---> First Column is ID and Second Column is Name and the third column is DueDate and the fourth is the student rate.
+    public Cursor getAssignmentsByStudent(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE8_COLUMN3_NAME+
+                " from "+TABLE3_NAME+" join "+TABLE8_NAME+" on "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+"="+studentID+
+                " and "+ TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+"="+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+    }
+
+    //This method returns a exam list that is assigned to and done by a student given by the studentID parameter.
+    //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is the student grade.
+    public Cursor getExamsByStudent(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+
+                " from "+TABLE4_NAME+" join "+TABLE9_NAME+" on "+TABLE9_NAME+"."+TABLE9_COLUMN1_NAME+"="+studentID+
+                " and "+ TABLE9_NAME+"."+TABLE9_COLUMN2_NAME+"="+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+    }
+
+    //returns a Cursor of a specific student data's email and name.
+    public Cursor getStudentInfo(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queryString ="select "+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+
+                " from "+TABLE1_NAME+" where "+TABLE1_COLUMN1_NAME+"="+studentID;
+
+        return sqLiteDatabase.rawQuery(queryString,null);
+    }
+
+    //returns a Cursor of all student records and 3 columns ---> ID, Name,Email
+    public Cursor getAllStudents(){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String query_String = "select * from "+TABLE1_NAME;
+
+        return sqLiteDatabase.rawQuery(query_String,null);
+    }
+
+
+
+
+
+
+
+
 
 /*
     public Cursor getAllStudentsByName(){
