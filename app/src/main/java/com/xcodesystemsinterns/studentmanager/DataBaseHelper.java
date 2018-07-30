@@ -11,6 +11,11 @@ import java.util.ArrayList;
 /* Notes
 1-The ".db" extension in the database name tells android that there is a database.
 2-The "execSQL" method executes Whatever SQL Query you pass as argument.
+3-A Cursor Class provides random read-write accesses to Result sets.
+ -To check if the Cursor returned values ---->if(Cursor.getcount() == 0) no results
+ -else create a StringBuffer and append the results found to it by looping on the Cursor ( moveToNext() , getString() )
+
+4-In ContentValues.put method ---> First argument is Column name , Second argument is the value we are passing.
  */
 
 public class DataBaseHelper  extends SQLiteOpenHelper {
@@ -127,33 +132,37 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     }
 
     //Upgrading the version of the database to a new version.
+    //Should not be used method.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String drop_Table1="DROP TABLE "+TABLE1_NAME;
-        String drop_Table2="DROP TABLE "+TABLE1_NAME;
-        String drop_Table3="DROP TABLE "+TABLE1_NAME;
-        String drop_Table4="DROP TABLE "+TABLE1_NAME;
-        String drop_Table5="DROP TABLE "+TABLE1_NAME;
-        String drop_Table6="DROP TABLE "+TABLE1_NAME;
-        String drop_Table7="DROP TABLE "+TABLE1_NAME;
-        String drop_Table8="DROP TABLE "+TABLE1_NAME;
-        String drop_Table9="DROP TABLE "+TABLE1_NAME;
+        //Drop Old version Tables.
+        String drop_query1="DROP TABLE "+TABLE1_NAME;
+        String drop_query2="DROP TABLE "+TABLE2_NAME;
+        String drop_query3="DROP TABLE "+TABLE3_NAME;
+        String drop_query4="DROP TABLE "+TABLE4_NAME;
+        String drop_query5="DROP TABLE "+TABLE5_NAME;
+        String drop_query6="DROP TABLE "+TABLE6_NAME;
+        String drop_query7="DROP TABLE "+TABLE7_NAME;
+        String drop_query8="DROP TABLE "+TABLE8_NAME;
+        String drop_query9="DROP TABLE "+TABLE9_NAME;
 
-        db.execSQL(drop_Table1);
-        db.execSQL(drop_Table2);
-        db.execSQL(drop_Table3);
-        db.execSQL(drop_Table4);
-        db.execSQL(drop_Table5);
-        db.execSQL(drop_Table6);
-        db.execSQL(drop_Table7);
-        db.execSQL(drop_Table8);
-        db.execSQL(drop_Table9);
+        db.execSQL(drop_query1);
+        db.execSQL(drop_query2);
+        db.execSQL(drop_query3);
+        db.execSQL(drop_query4);
+        db.execSQL(drop_query5);
+        db.execSQL(drop_query6);
+        db.execSQL(drop_query7);
+        db.execSQL(drop_query8);
+        db.execSQL(drop_query9);
 
         //Re-create the Tables of the database for the new version.
         onCreate(db);
 
     }
 
+    //To add an assignment to a specific class.
+    //Returns Assignment ID that has been created and -1 if the creation has failed.
     public int addAssignment(String name,String duedate, String description, int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -178,16 +187,18 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         }
     }
 
+    //To add an exam to a specific class.
+    //Returns Exam ID that has been created and -1 if the creation has failed.
     public int addExam(String name,int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        //First Insert into the table of assignment.
+        //First Insert into the table of exams.
         contentValues.put(TABLE4_COLUMN2_NAME,name);
         long result = sqLiteDatabase.insert(TABLE4_NAME, null, contentValues);
         if(result== -1) return -1;
         else {
-            //If the insertion correctly took place ---> Insert into assignmentClassRelation
-            //Get AssignmentID of the record you just entered.
+            //If the insertion correctly took place ---> Insert into ExamClassRelation
+            //Get ExamID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE4_COLUMN1_NAME + " from " + TABLE4_NAME + " order by " + TABLE4_COLUMN1_NAME + " DESC LIMIT 1", null);
             //Re-use of instance.
             contentValues.clear();
@@ -202,6 +213,8 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         }
     }
 
+    //Adding a Class with name and description ONLY.
+    //Returns the class ID created or -1 if the creation failed.
     public int addClass(String name,String description){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -219,6 +232,8 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     }
 
+    //Adding a Class with name and email ONLY.
+    //Returns the student ID created or -1 if the creation failed.
     public int addStudent(String name, String email){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -234,14 +249,17 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
             return cursor.getInt(0);
         }
     }
-    //In this method, we only need to remove a student from class, nothing specific to be returned in case of success
+
+    //In this method, we only need to remove a student from class,
+    // Returns -1 if failed and nothing specific to be returned in case of success ( not -1 )
     public boolean removeStudentFromClass(int studentID, int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         //If result is bigger than 0 ( i.e not -1 ) ----> return success.
         return sqLiteDatabase.delete(TABLE5_NAME,TABLE5_COLUMN1_NAME+" = "+studentID+" and "+TABLE5_COLUMN2_NAME+" = "+classID,null)>0;
     }
 
-    //In this method, we only need to add a student to class, nothing specific to be returned in case of success.
+    //In this method, we only need to add a student to class,
+    // Returns -1 if failed and nothing specific to be returned in case of success ( not -1 )
     public boolean addStudentToClass(int studentID, int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -344,57 +362,5 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
         return sqLiteDatabase.rawQuery(query_String,null);
     }
-
-
-
-
-
-
-
-
-
-/*
-    public Cursor getAllStudentsByName(){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select distinct Name from "+TABLE_NAME,null);
-    }
-
-    public Cursor getClassList(String studentName){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Class from "+TABLE_NAME+" where Name= '"+studentName+"'",null);
-    }
-
-    //Inserting Data into the table takes place here.
-    //According to the Columns values, the parameters changes.
-    public boolean onInsert(String Name,String Email,String Class){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        //First argument is Column name , Second argument is the value we are passing.
-
-        long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        if(result== -1) return false;
-        else return true;
-    }
-
-    //A Cursor Class provides random read-write accesses to Result sets.
-    //To check if the Cursor returned values ---->
-    // if(Cursor.getcount() == 0) no results
-    // else create a StringBuffer and append the results found to it by looping on the Cursor ( moveToNext() , getString() )
-    //A method to return all data from a certain table.
-    //A similar method can be applied to return certain data from certain table by changing the query statement.
-    public Cursor getAllData(){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select * from "+TABLE_NAME,null);
-
-    }
-
-    public ArrayList<String> toArrayList(Cursor cursor){
-        ArrayList<String> arrayList = new ArrayList<>();
-        while(cursor.moveToNext()){
-            arrayList.add(cursor.getString(0));
-        }
-
-        return arrayList;
-    }*/
 
 }
