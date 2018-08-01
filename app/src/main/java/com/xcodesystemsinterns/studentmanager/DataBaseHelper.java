@@ -397,6 +397,17 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"' " +
                 " and "+TABLE7_COLUMN2_NAME+" ='"+AssignmentID+"'  ", null);
     }
+     // use this function to get all info on a specific exam with the students who took it and their grade
+    public Cursor getExamInfo(int ClassID,int ExamID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery(" select "+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+"" +
+                " from "+TABLE1_NAME+" join "+TABLE4_NAME+" join "+TABLE2_NAME+" join "+TABLE6_NAME+" JOIN "+TABLE9_NAME+"" +
+                " where "+TABLE4_COLUMN1_NAME+" = "+TABLE6_COLUMN2_NAME+" = "+TABLE9_COLUMN2_NAME+"" +
+                " and "+TABLE6_COLUMN1_NAME+" ="+TABLE2_COLUMN1_NAME+"" +
+                " and "+TABLE1_COLUMN1_NAME+"= "+TABLE9_COLUMN1_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"'" +
+                " and "+TABLE9_COLUMN2_NAME+"= '"+ExamID+"' ", null);
+    }
 
 
 
