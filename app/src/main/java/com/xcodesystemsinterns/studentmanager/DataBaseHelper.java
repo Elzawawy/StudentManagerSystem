@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-
 /* Notes
 1-The ".db" extension in the database name tells android that there is a database.
 2-The "execSQL" method executes Whatever SQL Query you pass as argument.
@@ -408,6 +406,17 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"'" +
                 " and "+TABLE9_COLUMN2_NAME+"= '"+ExamID+"' ", null);
     }
+   //DropStudentFromSystem function , student will no longer appear in anything
+    public boolean DropStudentFromSystem(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        sqLiteDatabase.delete(TABLE8_NAME, TABLE8_COLUMN1_NAME + " = " + studentID + " ", null);
+        sqLiteDatabase.delete(TABLE9_NAME, TABLE9_COLUMN1_NAME + " = " + studentID + " ", null);
+        sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN1_NAME + " = " + studentID + " ", null);
+        return sqLiteDatabase.delete(TABLE1_NAME, TABLE1_COLUMN1_NAME + " = " + studentID + " ", null)>0;
+
+    }
+
 
 
 
