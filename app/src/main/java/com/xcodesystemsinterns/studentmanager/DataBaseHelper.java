@@ -227,7 +227,8 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         else {
             //Get ClassID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE2_COLUMN1_NAME + " from " + TABLE2_NAME + " order by " + TABLE2_COLUMN1_NAME + " DESC LIMIT 1", null);
-            return cursor.getInt(0);
+            cursor.moveToFirst();
+            return cursor.getInt(cursor.getColumnIndexOrThrow(TABLE2_COLUMN1_NAME));
         }
 
     }
@@ -246,7 +247,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         else {
             //Get StudentID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE1_COLUMN1_NAME + " from " + TABLE1_NAME + " order by " + TABLE1_COLUMN1_NAME + " DESC LIMIT 1", null);
-            return cursor.getInt(0);
+            return cursor.getInt(cursor.getColumnIndexOrThrow(TABLE1_COLUMN1_NAME));
         }
     }
 
@@ -273,7 +274,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
     public Cursor getStudentsByClass(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+
+        String queryString = "select "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" as _id ,"+TABLE1_COLUMN2_NAME+
                 " from "+TABLE1_NAME+" join "+TABLE5_NAME+" on "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+classID
                 +" and "+ TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+"="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME;
 
@@ -285,7 +286,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is DueDate
     public Cursor getAssignmentsByClass(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+
+        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" as _id ,"+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+
                 " from "+TABLE3_NAME+" join "+TABLE7_NAME+" on "+TABLE7_NAME+"."+TABLE7_COLUMN1_NAME+"="+classID+
                 " and "+ TABLE7_NAME+"."+TABLE7_COLUMN2_NAME+"="+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME;
 
@@ -296,7 +297,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
     public Cursor getExamsByClass(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+
+        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" as _id ,"+TABLE4_COLUMN2_NAME+
                 " from "+TABLE4_NAME+" join "+TABLE6_NAME+" on "+TABLE6_NAME+"."+TABLE6_COLUMN1_NAME+"="+classID+
                 " and "+ TABLE6_NAME+"."+TABLE6_COLUMN2_NAME+"="+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME;
 
@@ -306,7 +307,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //This method returns 2 columns and only 1 row in Cursor --> First is Name of Course , Second is the description.
     public Cursor getClassInfo(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString ="select "+TABLE2_COLUMN2_NAME+","+TABLE2_COLUMN3_NAME+
+        String queryString ="select rowid as _id ,"+TABLE2_COLUMN2_NAME+","+TABLE2_COLUMN3_NAME+
                 " from "+TABLE2_NAME+" where "+TABLE2_COLUMN1_NAME+"="+classID;
 
         return sqLiteDatabase.rawQuery(queryString,null);
@@ -317,7 +318,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
     public Cursor getClassesByStudent(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+","+TABLE2_COLUMN2_NAME+
+        String queryString = "select "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+" as _id ,"+TABLE2_COLUMN2_NAME+
                 " from "+TABLE2_NAME+" join "+TABLE5_NAME+" on "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+"="+studentID+
                 " and "+ TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME;
 
@@ -328,7 +329,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 4 columns ---> First Column is ID and Second Column is Name and the third column is DueDate and the fourth is the student rate.
     public Cursor getAssignmentsByStudent(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE8_COLUMN3_NAME+
+        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" as _id ,"+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE8_COLUMN3_NAME+
                 " from "+TABLE3_NAME+" join "+TABLE8_NAME+" on "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+"="+studentID+
                 " and "+ TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+"="+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME;
 
@@ -339,7 +340,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is the student grade.
     public Cursor getExamsByStudent(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+
+        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" as _id ,"+TABLE4_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+
                 " from "+TABLE4_NAME+" join "+TABLE9_NAME+" on "+TABLE9_NAME+"."+TABLE9_COLUMN1_NAME+"="+studentID+
                 " and "+ TABLE9_NAME+"."+TABLE9_COLUMN2_NAME+"="+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME;
 
@@ -349,7 +350,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //returns a Cursor of a specific student data's email and name.
     public Cursor getStudentInfo(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString ="select "+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+
+        String queryString ="select rowid as _id"+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+
                 " from "+TABLE1_NAME+" where "+TABLE1_COLUMN1_NAME+"="+studentID;
 
         return sqLiteDatabase.rawQuery(queryString,null);
@@ -358,7 +359,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //returns a Cursor of all student records and 3 columns ---> ID, Name,Email
     public Cursor getAllStudents(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String query_String = "select * from "+TABLE1_NAME;
+        String query_String = "select "+TABLE1_COLUMN1_NAME+" as _id,"+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+" from "+TABLE1_NAME;
 
         return sqLiteDatabase.rawQuery(query_String,null);
     }
