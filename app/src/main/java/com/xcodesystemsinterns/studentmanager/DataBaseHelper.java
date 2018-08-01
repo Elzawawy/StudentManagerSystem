@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-
 /* Notes
 1-The ".db" extension in the database name tells android that there is a database.
 2-The "execSQL" method executes Whatever SQL Query you pass as argument.
@@ -362,6 +360,79 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         String query_String = "select "+TABLE1_COLUMN1_NAME+" as _id,"+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+" from "+TABLE1_NAME;
 
         return sqLiteDatabase.rawQuery(query_String,null);
+
     }
+
+    public Cursor getUndoneAssignmentList(int ClassID,int AssignmentID ){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE3_NAME+"" +
+                " where "+TABLE5_COLUMN2_NAME+"= '"+ClassID+"' and "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE5_COLUMN2_NAME+"="+TABLE7_COLUMN1_NAME +" and "+TABLE7_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"" +
+                " except select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+"" +
+                " where "+TABLE5_COLUMN2_NAME+"= '"+ClassID+"'and "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE5_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"",null);
+    }
+    public Cursor getDoneAssignmentList(int ClassID,int AssignmentID ){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+"" +
+                " where "+TABLE5_COLUMN2_NAME+"= '"+ClassID+"'and "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE5_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"",null);
+    }
+    public Cursor getClassList(){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+" from "+TABLE2_NAME+"" , null);
+    }
+
+    public Cursor getStudentClassList(int StudentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+" from "+TABLE2_NAME+" join "+TABLE1_NAME+" join "+TABLE5_NAME+"" +
+                " where "+TABLE5_COLUMN1_NAME+"= "+TABLE1_COLUMN1_NAME+" and "+TABLE2_COLUMN1_NAME+" = "+TABLE5_COLUMN2_NAME+" and "+TABLE1_COLUMN1_NAME+"= '"+StudentID+"'", null);
+    }
+    //use this function when you want to retrive info about an addigment for a specific class
+    // note that you should also use get DoneAssigment and UndoneAssigment function to get all required info on each assigment
+    public Cursor getAssigmentInfo(int ClassID,int AssignmentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select "+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE3_COLUMN4_NAME+"" +
+                " from "+TABLE3_NAME+" join "+TABLE2_NAME+" join "+TABLE7_NAME+"" +
+                " where "+TABLE3_COLUMN1_NAME+" = "+TABLE7_COLUMN2_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = "+TABLE7_COLUMN1_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"' " +
+                " and "+TABLE7_COLUMN2_NAME+" ='"+AssignmentID+"'  ", null);
+    }
+     // use this function to get all info on a specific exam with the students who took it and their grade
+    public Cursor getExamInfo(int ClassID,int ExamID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery(" select "+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+"" +
+                " from "+TABLE1_NAME+" join "+TABLE4_NAME+" join "+TABLE2_NAME+" join "+TABLE6_NAME+" JOIN "+TABLE9_NAME+"" +
+                " where "+TABLE4_COLUMN1_NAME+" = "+TABLE6_COLUMN2_NAME+" = "+TABLE9_COLUMN2_NAME+"" +
+                " and "+TABLE6_COLUMN1_NAME+" ="+TABLE2_COLUMN1_NAME+"" +
+                " and "+TABLE1_COLUMN1_NAME+"= "+TABLE9_COLUMN1_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"'" +
+                " and "+TABLE9_COLUMN2_NAME+"= '"+ExamID+"' ", null);
+    }
+   //DropStudentFromSystem function , student will no longer appear in anything
+    public boolean DropStudentFromSystem(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        sqLiteDatabase.delete(TABLE8_NAME, TABLE8_COLUMN1_NAME + " = " + studentID + " ", null);
+        sqLiteDatabase.delete(TABLE9_NAME, TABLE9_COLUMN1_NAME + " = " + studentID + " ", null);
+        sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN1_NAME + " = " + studentID + " ", null);
+        return sqLiteDatabase.delete(TABLE1_NAME, TABLE1_COLUMN1_NAME + " = " + studentID + " ", null)>0;
+
+    }
+
+    public boolean RemoveClass(int ClassID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+         sqLiteDatabase.rawQuery(" delete from "+TABLE4_NAME+" where "+TABLE4_COLUMN1_NAME+" = ' select "+TABLE6_COLUMN2_NAME+" FROM "+TABLE6_NAME+" where "+TABLE6_COLUMN1_NAME+" ='"+ClassID+"' ", null);
+         sqLiteDatabase.rawQuery(" delete from "+TABLE3_NAME+" where "+TABLE3_COLUMN1_NAME+" = ' select "+TABLE7_COLUMN2_NAME+" FROM "+TABLE7_NAME+" where "+TABLE7_COLUMN1_NAME+" ='"+ClassID+"' ", null);
+         sqLiteDatabase.delete(TABLE6_NAME, TABLE6_COLUMN1_NAME + " = " + ClassID + " ", null);
+         sqLiteDatabase.delete(TABLE7_NAME, TABLE7_COLUMN1_NAME + " = " + ClassID + " ", null);
+         sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null);
+         return sqLiteDatabase.delete(TABLE2_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null)>0;
+
+    }
+
+
+
+
+
 
 }
