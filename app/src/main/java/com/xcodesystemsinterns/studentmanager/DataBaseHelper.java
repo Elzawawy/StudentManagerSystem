@@ -417,6 +417,18 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     }
 
+    public boolean RemoveClass(int ClassID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+         sqLiteDatabase.rawQuery(" delete from "+TABLE4_NAME+" where "+TABLE4_COLUMN1_NAME+" = ' select "+TABLE6_COLUMN2_NAME+" FROM "+TABLE6_NAME+" where "+TABLE6_COLUMN1_NAME+" ='"+ClassID+"' ", null);
+         sqLiteDatabase.rawQuery(" delete from "+TABLE3_NAME+" where "+TABLE3_COLUMN1_NAME+" = ' select "+TABLE7_COLUMN2_NAME+" FROM "+TABLE7_NAME+" where "+TABLE7_COLUMN1_NAME+" ='"+ClassID+"' ", null);
+         sqLiteDatabase.delete(TABLE6_NAME, TABLE6_COLUMN1_NAME + " = " + ClassID + " ", null);
+         sqLiteDatabase.delete(TABLE7_NAME, TABLE7_COLUMN1_NAME + " = " + ClassID + " ", null);
+         sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null);
+         return sqLiteDatabase.delete(TABLE2_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null)>0;
+
+    }
+
 
 
 
