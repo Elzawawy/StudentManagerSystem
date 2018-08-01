@@ -386,6 +386,19 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+" from "+TABLE2_NAME+" join "+TABLE1_NAME+" join "+TABLE5_NAME+"" +
                 " where "+TABLE5_COLUMN1_NAME+"= "+TABLE1_COLUMN1_NAME+" and "+TABLE2_COLUMN1_NAME+" = "+TABLE5_COLUMN2_NAME+" and "+TABLE1_COLUMN1_NAME+"= '"+StudentID+"'", null);
     }
+    //use this function when you want to retrive info about an addigment for a specific class
+    // note that you should also use get DoneAssigment and UndoneAssigment function to get all required info on each assigment
+    public Cursor getAssigmentInfo(int ClassID,int AssignmentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select "+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE3_COLUMN4_NAME+"" +
+                " from "+TABLE3_NAME+" join "+TABLE2_NAME+" join "+TABLE7_NAME+"" +
+                " where "+TABLE3_COLUMN1_NAME+" = "+TABLE7_COLUMN2_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = "+TABLE7_COLUMN1_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"' " +
+                " and "+TABLE7_COLUMN2_NAME+" ='"+AssignmentID+"'  ", null);
+    }
+
+
 
 
 
