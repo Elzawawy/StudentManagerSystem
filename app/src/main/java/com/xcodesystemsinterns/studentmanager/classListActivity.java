@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,7 +51,7 @@ class myAdapter extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            view = (View) inflater.inflate(R.layout.class_list,null);
+            view = (View) inflater.inflate(R.layout.class_list_view,null);
         }
         TextView name = view.findViewById(R.id.name);
         TextView description = view.findViewById(R.id.description);
@@ -73,7 +72,7 @@ class classes {
 }
 
 
-public class MainActivity extends AppCompatActivity {
+public class classListActivity extends AppCompatActivity {
 
     ArrayList<classes> Classes;
     ListView listView;
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         data = new DataBaseHelper(this);
         setTitle("Classes");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.list_class);
         listView = findViewById(R.id.listView);
         createClassObject(data.getClassList());
         listView.setAdapter(new myAdapter(this,Classes));
@@ -113,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // put you activty's name instead of NewActivity
-                Intent intent = new Intent(getBaseContext(),NewActivity.class);
-                intent.putExtra("ClassID",Classes.get(i).id);
-                startActivity(intent);
+//                Intent intent = new Intent(getBaseContext(),NewActivity.class);
+//                intent.putExtra("ClassID",Classes.get(i).id);
+//                startActivity(intent);
                 // to get the id in your activity use:
                 // getIntent().getLongExtra("ClassID",Long.valueOf(0))
                 // it will return long
@@ -134,11 +133,11 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_class:
                 Log.i("class","Done");
-                Context context=MainActivity.this;
+                Context context=classListActivity.this;
                 final Dialog dialog=new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-                dialog.setContentView(R.layout.add_class);
+                dialog.setContentView(R.layout.add_class_menu);
 
                 Button restart=dialog.findViewById(R.id.addClassButton);
                 dialog.setTitle("Add Class");
