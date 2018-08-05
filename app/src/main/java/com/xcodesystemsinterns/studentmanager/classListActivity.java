@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -111,10 +112,10 @@ public class classListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // put you activty's name instead of NewActivity
-//                Intent intent = new Intent(getBaseContext(),NewActivity.class);
-//                intent.putExtra("ClassID",Classes.get(i).id);
-//                startActivity(intent);
+                // put you activity's name instead of NewActivity
+                Intent intent = new Intent(getBaseContext(),NewActivity.class);
+                intent.putExtra("ClassID",Classes.get(i).id);
+                startActivity(intent);
                 // to get the id in your activity use:
                 // getIntent().getLongExtra("ClassID",Long.valueOf(0))
                 // it will return long
