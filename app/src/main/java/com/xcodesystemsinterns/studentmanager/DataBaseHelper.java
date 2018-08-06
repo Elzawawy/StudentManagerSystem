@@ -389,7 +389,17 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         contentValues.put(TABLE8_COLUMN2_NAME,assignmentID);
         contentValues.put(TABLE8_COLUMN3_NAME,studentRate);
         //if result is not -1 ( > 0 ) , returns true in case of successful insertion.
-        return sqLiteDatabase.insert(TABLE8_NAME,null,contentValues) >0 ;
+        return sqLiteDatabase.insert(TABLE8_NAME,null,contentValues) > 0 ;
+    }
+
+    public boolean editStudent(int studentID,String name,String email,String phoneNumber, String address){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE1_COLUMN2_NAME,name);
+        contentValues.put(TABLE1_COLUMN3_NAME,email);
+        contentValues.put(TABLE1_COLUMN4_NAME,phoneNumber);
+        contentValues.put(TABLE1_COLUMN5_NAME,address);
+        return sqLiteDatabase.update(TABLE1_NAME, contentValues, TABLE1_COLUMN1_NAME + " = " + studentID, null) > 0;
     }
 
     public Cursor getUndoneAssignmentList(int ClassID,int AssignmentID ){
