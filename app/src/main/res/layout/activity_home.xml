@@ -34,10 +34,13 @@
             android:id="@+id/cv_student_list"
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="@dimen/cardview_default_elevation"
-            card_view:cardUseCompatPadding="true">
+            card_view:cardElevation="@dimen/card_view_elevation"
+            card_view:cardUseCompatPadding="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="showStudentlist">
 
             <ImageView
                 android:layout_width="110dp"
@@ -61,10 +64,13 @@
             android:id="@+id/cv_class_list"
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="@dimen/cardview_default_elevation"
-            card_view:cardUseCompatPadding="true">
+            card_view:cardElevation="@dimen/card_view_elevation"
+            card_view:cardUseCompatPadding="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="showClassList">
 
             <ImageView
                 android:layout_width="110dp"
@@ -88,11 +94,14 @@
             android:id="@+id/cv_assignment_list"
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="@dimen/cardview_default_elevation"
+            card_view:cardElevation="@dimen/card_view_elevation"
             card_view:cardPreventCornerOverlap="true"
-            card_view:cardUseCompatPadding="true">
+            card_view:cardUseCompatPadding="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="showAssignmentList">
 
             <ImageView
                 android:layout_width="110dp"
@@ -116,11 +125,14 @@
             android:id="@+id/cv_exam_list"
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="@dimen/cardview_default_elevation"
+            card_view:cardElevation="@dimen/card_view_elevation"
             card_view:cardPreventCornerOverlap="true"
-            card_view:cardUseCompatPadding="true">
+            card_view:cardUseCompatPadding="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="showExamList">
 
             <ImageView
                 android:layout_width="110dp"
