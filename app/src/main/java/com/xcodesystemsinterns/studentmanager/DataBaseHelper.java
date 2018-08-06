@@ -70,6 +70,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //For sake of Simplicity of calling the Constructor, parameters are reduced by local variables usage.
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     //Creating the table takes place here.
