@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">StudentManager</string>
+    <string name="card_student_list">Show all Students in System.</string>
+    <string name="card_class_list">Show all Classes in System.</string>
+    <string name="card_assignment_list">Show all Assignments in System.</string>
+    <string name="card_exam_list">Show all Exams in System.</string>
 </resources>
