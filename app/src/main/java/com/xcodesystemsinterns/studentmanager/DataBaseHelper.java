@@ -369,7 +369,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //Rowid column is not important for App use but there must be a column named _id in cursor returned in order for CursorAdpater to work correctly.
     public Cursor getStudentInfo(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString ="select rowid as _id"+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+","+TABLE1_COLUMN4_NAME+","+TABLE1_COLUMN5_NAME+
+        String queryString ="select rowid as _id,"+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+","+TABLE1_COLUMN4_NAME+","+TABLE1_COLUMN5_NAME+
                 " from "+TABLE1_NAME+" where "+TABLE1_COLUMN1_NAME+"="+studentID;
 
         return sqLiteDatabase.rawQuery(queryString,null);
