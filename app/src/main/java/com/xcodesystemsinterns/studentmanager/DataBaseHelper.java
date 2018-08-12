@@ -162,6 +162,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         db.execSQL(drop_query9);
 
         //Re-create the Tables of the database for the new version.
+        DATABASE_VERSION=newVersion;
         onCreate(db);
 
     }
@@ -454,6 +455,26 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+" from "+TABLE2_NAME+" join "+TABLE1_NAME+" join "+TABLE5_NAME+"" +
                 " where "+TABLE5_COLUMN1_NAME+"= "+TABLE1_COLUMN1_NAME+" and "+TABLE2_COLUMN1_NAME+" = "+TABLE5_COLUMN2_NAME+" and "+TABLE1_COLUMN1_NAME+"= '"+StudentID+"'", null);
+    }
+    //This function gets the assignment ID as input and returns a Cursor with 4 columns.
+    //First Column --> Name , Second ---> DueDate , Third ---> Description , Fourth ---> Class Name
+    public Cursor getAssignmentInfo(int AssignmentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE3_NAME+"."+TABLE3_COLUMN4_NAME+","+
+                TABLE2_NAME+"."+TABLE2_COLUMN2_NAME+" from "+TABLE3_NAME+" join "+TABLE7_NAME+" join "+TABLE2_NAME+
+                " where "+TABLE7_NAME+"."+TABLE7_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+
+                " and "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+" = "+ TABLE7_NAME+"."+TABLE7_COLUMN1_NAME+
+                " and "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" = "+AssignmentID,null);
+    }
+    //This function gets the exam ID as input and returns a Cursor with 3 columns.
+    //First Column --> Name , Second ---> Date , Third ---> Class Name
+    public Cursor getExamInfo(int examID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select "+TABLE4_NAME+"."+TABLE4_COLUMN2_NAME+","+TABLE4_COLUMN3_NAME+","+
+                TABLE2_NAME+"."+TABLE2_COLUMN2_NAME+" from "+TABLE4_NAME+" join "+TABLE6_NAME+" join "+TABLE2_NAME+
+                " where "+TABLE6_NAME+"."+TABLE6_COLUMN2_NAME+" = "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+
+                " and "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+" = "+ TABLE6_NAME+"."+TABLE6_COLUMN1_NAME+
+                " and "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" = "+examID,null);
     }
     //use this function when you want to return info about an assignment for a specific classImage
     //note that you should also use get DoneAssignment and UndoneAssignment function to get all required info on each assignment
