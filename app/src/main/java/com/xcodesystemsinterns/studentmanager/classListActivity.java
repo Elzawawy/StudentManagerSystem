@@ -20,6 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 
@@ -61,11 +62,13 @@ class myAdapter extends BaseAdapter{
         return view;
     }
 }
+
+
 class classes {
     String name;
     String description;
-    long id;
-    classes(long id, String name, String description){
+    int id;
+    classes(int id, String name, String description){
         this.name = name;
         this.description = description;
         this.id = id;
@@ -89,7 +92,7 @@ public class classListActivity extends AppCompatActivity {
                 int idIndex = cursor.getColumnIndexOrThrow("ClassID");
                 int nameIndex = cursor.getColumnIndexOrThrow("Name");
                 int descriptionIndex = cursor.getColumnIndexOrThrow("Description");
-                long id = cursor.getLong(idIndex);
+                int id = cursor.getInt(idIndex);
                 String name = cursor.getString(nameIndex);
                 String description = cursor.getString(descriptionIndex);
                 Classes.add(new classes(id,name,description));
@@ -113,7 +116,7 @@ public class classListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // put you activity's name instead of NewActivity
-                Intent intent = new Intent(getBaseContext(),NewActivity.class);
+                Intent intent = new Intent(getBaseContext(),gridMainActivity.class);
                 intent.putExtra("ClassID",Classes.get(i).id);
                 startActivity(intent);
                 // to get the id in your activity use:
@@ -151,7 +154,7 @@ public class classListActivity extends AppCompatActivity {
                         String description = ((TextView)dialog.findViewById(R.id.description)).getText().toString();
                         if(name.length() != 0 &&description.length() != 0){
 
-                            long id = data.addClass(name,description);
+                            int id = data.addClass(name,description);
                             Classes.add(new classes(id,name,description));
                             listView.setAdapter(new myAdapter(getBaseContext(),Classes));
                             dialog.dismiss();
