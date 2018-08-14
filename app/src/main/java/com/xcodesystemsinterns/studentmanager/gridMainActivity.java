@@ -4,22 +4,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 
-import java.sql.ResultSet;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class gridMainActivity extends AppCompatActivity {
 
@@ -57,8 +51,8 @@ public class gridMainActivity extends AppCompatActivity {
             R.drawable.adduser,
             R.drawable.studentlist,
             R.drawable.addassignment,
-            R.drawable.assignment,
-            R.drawable.exam,
+            R.drawable.assignment_inside,
+            R.drawable.exam_inside,
             R.drawable.test
 
     };
