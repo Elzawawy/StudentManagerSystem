@@ -191,7 +191,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
             result = sqLiteDatabase.insert(TABLE7_NAME, null, contentValues);
             //if new result value doesn't equal -1  ----> Successful Insertion in both Tables ----> return the AssignmentID.
             if(result != -1) return assignmentID;
-            //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+                //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
             else return -1;
         }
     }
@@ -220,7 +220,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
             result = sqLiteDatabase.insert(TABLE6_NAME, null, contentValues);
             //if new result value doesn't equal -1  ----> Successful Insertion in both Tables ----> return the ExamID.
             if(result != -1) return examID;
-            //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+                //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
             else return -1;
 
         }
@@ -236,7 +236,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         long result = sqLiteDatabase.insert(TABLE2_NAME, null, contentValues);
         //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
         if(result == -1) return -1;
-        //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the ClassID.
+            //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the ClassID.
         else {
             //Get ClassID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE2_COLUMN1_NAME + " from " + TABLE2_NAME + " order by " + TABLE2_COLUMN1_NAME + " DESC LIMIT 1", null);
@@ -259,7 +259,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         long result = sqLiteDatabase.insert(TABLE1_NAME, null, contentValues);
         //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
         if(result == -1) return -1;
-        //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the StudentID.
+            //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the StudentID.
         else {
             //Get StudentID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE1_COLUMN1_NAME + " from " + TABLE1_NAME + " order by " + TABLE1_COLUMN1_NAME + " DESC LIMIT 1", null);
@@ -519,7 +519,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"' " +
                 " and "+TABLE7_COLUMN2_NAME+" ='"+AssignmentID+"'  ", null);
     }
-     // use this function to get all info on a specific exam with the students who took it and their grade
+    // use this function to get all info on a specific exam with the students who took it and their grade
     public Cursor getExamInfo(int ClassID,int ExamID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         return sqLiteDatabase.rawQuery(" select "+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+"" +
@@ -530,7 +530,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"'" +
                 " and "+TABLE9_COLUMN2_NAME+"= '"+ExamID+"' ", null);
     }
-   //DropStudentFromSystem function , student will no longer appear in anything
+    //DropStudentFromSystem function , student will no longer appear in anything
     public boolean DropStudentFromSystem(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         //If result is bigger than 0 ( i.e not -1 ) ----> return success.
@@ -544,12 +544,12 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     public boolean removeClass(int ClassID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         //If result is bigger than 0 ( i.e not -1 ) ----> return success.
-         sqLiteDatabase.rawQuery(" delete from "+TABLE4_NAME+" where "+TABLE4_COLUMN1_NAME+" = 'select "+TABLE6_COLUMN2_NAME+" FROM "+TABLE6_NAME+" where "+TABLE6_COLUMN1_NAME+" ="+ClassID+"'", null);
-         sqLiteDatabase.rawQuery(" delete from "+TABLE3_NAME+" where "+TABLE3_COLUMN1_NAME+" = 'select "+TABLE7_COLUMN2_NAME+" FROM "+TABLE7_NAME+" where "+TABLE7_COLUMN1_NAME+" ="+ClassID+"'", null);
-         sqLiteDatabase.delete(TABLE6_NAME, TABLE6_COLUMN1_NAME + " = " + ClassID + " ", null);
-         sqLiteDatabase.delete(TABLE7_NAME, TABLE7_COLUMN1_NAME + " = " + ClassID + " ", null);
-         sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null);
-         return sqLiteDatabase.delete(TABLE2_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null)>0;
+        sqLiteDatabase.rawQuery(" delete from "+TABLE4_NAME+" where "+TABLE4_COLUMN1_NAME+" = 'select "+TABLE6_COLUMN2_NAME+" FROM "+TABLE6_NAME+" where "+TABLE6_COLUMN1_NAME+" ="+ClassID+"'", null);
+        sqLiteDatabase.rawQuery(" delete from "+TABLE3_NAME+" where "+TABLE3_COLUMN1_NAME+" = 'select "+TABLE7_COLUMN2_NAME+" FROM "+TABLE7_NAME+" where "+TABLE7_COLUMN1_NAME+" ="+ClassID+"'", null);
+        sqLiteDatabase.delete(TABLE6_NAME, TABLE6_COLUMN1_NAME + " = " + ClassID + " ", null);
+        sqLiteDatabase.delete(TABLE7_NAME, TABLE7_COLUMN1_NAME + " = " + ClassID + " ", null);
+        sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null);
+        return sqLiteDatabase.delete(TABLE2_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null)>0;
 
     }
 
