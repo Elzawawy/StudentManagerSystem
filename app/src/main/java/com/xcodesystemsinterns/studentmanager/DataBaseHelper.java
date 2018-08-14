@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-
 /* Notes
 1-The ".db" extension in the database name tells android that there is a database.
 2-The "execSQL" method executes Whatever SQL Query you pass as argument.
+3-A Cursor Class provides random read-write accesses to Result sets.
+ -To check if the Cursor returned values ---->if(Cursor.getcount() == 0) no results
+ -else create a StringBuffer and append the results found to it by looping on the Cursor ( moveToNext() , getString() )
+4-In ContentValues.put method ---> First argument is Column name , Second argument is the value we are passing.
  */
 
 public class DataBaseHelper  extends SQLiteOpenHelper {
@@ -124,36 +126,42 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         db.execSQL(query_Table7);
         db.execSQL(query_Table8);
         db.execSQL(query_Table9);
+
+
     }
 
     //Upgrading the version of the database to a new version.
+    //Should not be used method.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String drop_Table1="DROP TABLE "+TABLE1_NAME;
-        String drop_Table2="DROP TABLE "+TABLE1_NAME;
-        String drop_Table3="DROP TABLE "+TABLE1_NAME;
-        String drop_Table4="DROP TABLE "+TABLE1_NAME;
-        String drop_Table5="DROP TABLE "+TABLE1_NAME;
-        String drop_Table6="DROP TABLE "+TABLE1_NAME;
-        String drop_Table7="DROP TABLE "+TABLE1_NAME;
-        String drop_Table8="DROP TABLE "+TABLE1_NAME;
-        String drop_Table9="DROP TABLE "+TABLE1_NAME;
+        //Drop Old version Tables.
+        String drop_query1="DROP TABLE "+TABLE1_NAME;
+        String drop_query2="DROP TABLE "+TABLE2_NAME;
+        String drop_query3="DROP TABLE "+TABLE3_NAME;
+        String drop_query4="DROP TABLE "+TABLE4_NAME;
+        String drop_query5="DROP TABLE "+TABLE5_NAME;
+        String drop_query6="DROP TABLE "+TABLE6_NAME;
+        String drop_query7="DROP TABLE "+TABLE7_NAME;
+        String drop_query8="DROP TABLE "+TABLE8_NAME;
+        String drop_query9="DROP TABLE "+TABLE9_NAME;
 
-        db.execSQL(drop_Table1);
-        db.execSQL(drop_Table2);
-        db.execSQL(drop_Table3);
-        db.execSQL(drop_Table4);
-        db.execSQL(drop_Table5);
-        db.execSQL(drop_Table6);
-        db.execSQL(drop_Table7);
-        db.execSQL(drop_Table8);
-        db.execSQL(drop_Table9);
+        db.execSQL(drop_query1);
+        db.execSQL(drop_query2);
+        db.execSQL(drop_query3);
+        db.execSQL(drop_query4);
+        db.execSQL(drop_query5);
+        db.execSQL(drop_query6);
+        db.execSQL(drop_query7);
+        db.execSQL(drop_query8);
+        db.execSQL(drop_query9);
 
         //Re-create the Tables of the database for the new version.
         onCreate(db);
 
     }
 
+    //To add an assignment to a specific class.
+    //Returns Assignment ID that has been created and -1 if the creation has failed.
     public int addAssignment(String name,String duedate, String description, int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -167,41 +175,51 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
             //If the insertion correctly took place ---> Insert into assignmentClassRelation
             //Get AssignmentID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE3_COLUMN1_NAME + " from " + TABLE3_NAME + " order by " + TABLE3_COLUMN1_NAME + " DESC LIMIT 1", null);
+            cursor.moveToFirst();
+            int assignmentID = cursor.getInt(cursor.getColumnIndexOrThrow(TABLE3_COLUMN1_NAME));
+            //Insert into AssignmentClassRelation with assignmentID just found and classID input parameter.
             contentValues.clear();
             contentValues.put(TABLE7_COLUMN1_NAME,classID);
-            contentValues.put(TABLE7_COLUMN2_NAME,cursor.getInt(0));
+            contentValues.put(TABLE7_COLUMN2_NAME,assignmentID);
             result = sqLiteDatabase.insert(TABLE7_NAME, null, contentValues);
             //if new result value doesn't equal -1  ----> Successful Insertion in both Tables ----> return the AssignmentID.
-            if(result != -1) return cursor.getInt(0);
-            //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+            if(result != -1) return assignmentID;
+                //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
             else return -1;
         }
     }
 
+    //To add an exam to a specific class.
+    //Returns Exam ID that has been created and -1 if the creation has failed.
     public int addExam(String name,int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        //First Insert into the table of assignment.
+        //First Insert into the table of exams.
         contentValues.put(TABLE4_COLUMN2_NAME,name);
         long result = sqLiteDatabase.insert(TABLE4_NAME, null, contentValues);
         if(result== -1) return -1;
         else {
-            //If the insertion correctly took place ---> Insert into assignmentClassRelation
-            //Get AssignmentID of the record you just entered.
+            //If the insertion correctly took place ---> Insert into ExamClassRelation
+            //Get ExamID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE4_COLUMN1_NAME + " from " + TABLE4_NAME + " order by " + TABLE4_COLUMN1_NAME + " DESC LIMIT 1", null);
+            cursor.moveToFirst();
+            int examID = cursor.getInt(cursor.getColumnIndexOrThrow(TABLE4_COLUMN1_NAME));
             //Re-use of instance.
             contentValues.clear();
+            //Insert into ExamClassRelation with examID just found and classID input parameter.
             contentValues.put(TABLE6_COLUMN1_NAME,classID);
-            contentValues.put(TABLE6_COLUMN2_NAME,cursor.getInt(0));
+            contentValues.put(TABLE6_COLUMN2_NAME,examID);
             result = sqLiteDatabase.insert(TABLE6_NAME, null, contentValues);
             //if new result value doesn't equal -1  ----> Successful Insertion in both Tables ----> return the ExamID.
-            if(result != -1) return cursor.getInt(0);
-            //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
+            if(result != -1) return examID;
+                //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
             else return -1;
 
         }
     }
 
+    //Adding a Class with name and description ONLY.
+    //Returns the class ID created or -1 if the creation failed.
     public int addClass(String name,String description){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -210,15 +228,19 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         long result = sqLiteDatabase.insert(TABLE2_NAME, null, contentValues);
         //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
         if(result == -1) return -1;
-        //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the ClassID.
+            //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the ClassID.
         else {
             //Get ClassID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE2_COLUMN1_NAME + " from " + TABLE2_NAME + " order by " + TABLE2_COLUMN1_NAME + " DESC LIMIT 1", null);
-            return cursor.getInt(0);
+            //adjust cursor to first position.
+            cursor.moveToFirst();
+            return cursor.getInt(cursor.getColumnIndexOrThrow(TABLE2_COLUMN1_NAME));
         }
 
     }
 
+    //Adding a Class with name and email ONLY.
+    //Returns the student ID created or -1 if the creation failed.
     public int addStudent(String name, String email){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -227,21 +249,26 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         long result = sqLiteDatabase.insert(TABLE1_NAME, null, contentValues);
         //if result value equals -1  ----> Failed Insertion in Table ----> return -1 to indicated failure
         if(result == -1) return -1;
-        //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the StudentID.
+            //if result value doesn't equal -1  ----> Successful Insertion in Table ----> return the StudentID.
         else {
             //Get StudentID of the record you just entered.
             Cursor cursor = sqLiteDatabase.rawQuery("select " + TABLE1_COLUMN1_NAME + " from " + TABLE1_NAME + " order by " + TABLE1_COLUMN1_NAME + " DESC LIMIT 1", null);
-            return cursor.getInt(0);
+            //adjust cursor to first position.
+            cursor.moveToFirst();
+            return cursor.getInt(cursor.getColumnIndexOrThrow(TABLE1_COLUMN1_NAME));
         }
     }
-    //In this method, we only need to remove a student from class, nothing specific to be returned in case of success
+
+    //In this method, we only need to remove a student from class,
+    // Returns -1 if failed and nothing specific to be returned in case of success ( not -1 )
     public boolean removeStudentFromClass(int studentID, int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         //If result is bigger than 0 ( i.e not -1 ) ----> return success.
         return sqLiteDatabase.delete(TABLE5_NAME,TABLE5_COLUMN1_NAME+" = "+studentID+" and "+TABLE5_COLUMN2_NAME+" = "+classID,null)>0;
     }
 
-    //In this method, we only need to add a student to class, nothing specific to be returned in case of success.
+    //In this method, we only need to add a student to class,
+    // Returns -1 if failed and nothing specific to be returned in case of success ( not -1 )
     public boolean addStudentToClass(int studentID, int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -255,7 +282,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
     public Cursor getStudentsByClass(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+
+        String queryString = "select "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" as _id ,"+TABLE1_COLUMN2_NAME+
                 " from "+TABLE1_NAME+" join "+TABLE5_NAME+" on "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+classID
                 +" and "+ TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+"="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME;
 
@@ -267,7 +294,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is DueDate
     public Cursor getAssignmentsByClass(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+
+        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" as _id ,"+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+
                 " from "+TABLE3_NAME+" join "+TABLE7_NAME+" on "+TABLE7_NAME+"."+TABLE7_COLUMN1_NAME+"="+classID+
                 " and "+ TABLE7_NAME+"."+TABLE7_COLUMN2_NAME+"="+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME;
 
@@ -278,17 +305,18 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
     public Cursor getExamsByClass(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+
+        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" as _id ,"+TABLE4_COLUMN2_NAME+
                 " from "+TABLE4_NAME+" join "+TABLE6_NAME+" on "+TABLE6_NAME+"."+TABLE6_COLUMN1_NAME+"="+classID+
                 " and "+ TABLE6_NAME+"."+TABLE6_COLUMN2_NAME+"="+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME;
 
         return sqLiteDatabase.rawQuery(queryString,null);
     }
 
-    //This method returns 2 columns and only 1 row in Cursor --> First is Name of Course , Second is the description.
+    //This method returns 3 columns and only 1 row in Cursor --> First is RowID of course, Second is Name of Course , Third is the description.
+    //Rowid column is not important for App use but there must be a column named _id in cursor returned in order for CursorAdpater to work correctly.
     public Cursor getClassInfo(int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString ="select "+TABLE2_COLUMN2_NAME+","+TABLE2_COLUMN3_NAME+
+        String queryString ="select rowid as _id ,"+TABLE2_COLUMN2_NAME+","+TABLE2_COLUMN3_NAME+
                 " from "+TABLE2_NAME+" where "+TABLE2_COLUMN1_NAME+"="+classID;
 
         return sqLiteDatabase.rawQuery(queryString,null);
@@ -299,7 +327,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 2 columns ---> First Column is ID and Second Column is Name
     public Cursor getClassesByStudent(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+","+TABLE2_COLUMN2_NAME+
+        String queryString = "select "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+" as _id ,"+TABLE2_COLUMN2_NAME+
                 " from "+TABLE2_NAME+" join "+TABLE5_NAME+" on "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+"="+studentID+
                 " and "+ TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME;
 
@@ -310,7 +338,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 4 columns ---> First Column is ID and Second Column is Name and the third column is DueDate and the fourth is the student rate.
     public Cursor getAssignmentsByStudent(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE8_COLUMN3_NAME+
+        String queryString = "select "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" as _id ,"+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE8_COLUMN3_NAME+
                 " from "+TABLE3_NAME+" join "+TABLE8_NAME+" on "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+"="+studentID+
                 " and "+ TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+"="+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME;
 
@@ -321,17 +349,18 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is the student grade.
     public Cursor getExamsByStudent(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+
+        String queryString = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" as _id ,"+TABLE4_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+
                 " from "+TABLE4_NAME+" join "+TABLE9_NAME+" on "+TABLE9_NAME+"."+TABLE9_COLUMN1_NAME+"="+studentID+
                 " and "+ TABLE9_NAME+"."+TABLE9_COLUMN2_NAME+"="+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME;
 
         return sqLiteDatabase.rawQuery(queryString,null);
     }
 
-    //returns a Cursor of a specific student data's email and name.
+    //returns a Cursor of a specific student data's email and name, 3 columns : rowid , name , email
+    //Rowid column is not important for App use but there must be a column named _id in cursor returned in order for CursorAdpater to work correctly.
     public Cursor getStudentInfo(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queryString ="select "+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+
+        String queryString ="select rowid as _id"+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+
                 " from "+TABLE1_NAME+" where "+TABLE1_COLUMN1_NAME+"="+studentID;
 
         return sqLiteDatabase.rawQuery(queryString,null);
@@ -340,61 +369,86 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //returns a Cursor of all student records and 3 columns ---> ID, Name,Email
     public Cursor getAllStudents(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String query_String = "select * from "+TABLE1_NAME;
+        String query_String = "select "+TABLE1_COLUMN1_NAME+" as _id,"+TABLE1_COLUMN2_NAME+","+TABLE1_COLUMN3_NAME+" from "+TABLE1_NAME;
 
         return sqLiteDatabase.rawQuery(query_String,null);
+
     }
 
-
-
-
-
-
-
-
-
-/*
-    public Cursor getAllStudentsByName(){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select distinct Name from "+TABLE_NAME,null);
-    }
-
-    public Cursor getClassList(String studentName){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Class from "+TABLE_NAME+" where Name= '"+studentName+"'",null);
-    }
-
-    //Inserting Data into the table takes place here.
-    //According to the Columns values, the parameters changes.
-    public boolean onInsert(String Name,String Email,String Class){
+    public boolean checkAssignmentOff(int studentID,int assignmentID, int studentRate){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        //First argument is Column name , Second argument is the value we are passing.
-
-        long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        if(result== -1) return false;
-        else return true;
+        contentValues.put(TABLE8_COLUMN1_NAME,studentID);
+        contentValues.put(TABLE8_COLUMN2_NAME,assignmentID);
+        contentValues.put(TABLE8_COLUMN3_NAME,studentRate);
+        //if result is not -1 ( > 0 ) , returns true in case of successful insertion.
+        return sqLiteDatabase.insert(TABLE8_NAME,null,contentValues) >0 ;
     }
 
-    //A Cursor Class provides random read-write accesses to Result sets.
-    //To check if the Cursor returned values ---->
-    // if(Cursor.getcount() == 0) no results
-    // else create a StringBuffer and append the results found to it by looping on the Cursor ( moveToNext() , getString() )
-    //A method to return all data from a certain table.
-    //A similar method can be applied to return certain data from certain table by changing the query statement.
-    public Cursor getAllData(){
+    public Cursor getUndoneAssignmentList(int ClassID,int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select * from "+TABLE_NAME,null);
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE3_NAME+"" +
+                " where "+TABLE5_COLUMN2_NAME+"= '"+ClassID+"' and "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE5_COLUMN2_NAME+"="+TABLE7_COLUMN1_NAME +" and "+TABLE7_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"" +
+                " except select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+"" +
+                " where "+TABLE5_COLUMN2_NAME+"= '"+ClassID+"'and "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE5_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"",null);
+    }
+    public Cursor getDoneAssignmentList(int ClassID,int AssignmentID ){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+"" +
+                " where "+TABLE5_COLUMN2_NAME+"= '"+ClassID+"'and "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE5_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"",null);
+    }
+    public Cursor getClassList(){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+ " , "+ TABLE2_COLUMN3_NAME+" from "+TABLE2_NAME+"" , null);
+    }
+
+    public Cursor getStudentClassList(int StudentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+" from "+TABLE2_NAME+" join "+TABLE1_NAME+" join "+TABLE5_NAME+"" +
+                " where "+TABLE5_COLUMN1_NAME+"= "+TABLE1_COLUMN1_NAME+" and "+TABLE2_COLUMN1_NAME+" = "+TABLE5_COLUMN2_NAME+" and "+TABLE1_COLUMN1_NAME+"= '"+StudentID+"'", null);
+    }
+    //use this function when you want to return info about an assignment for a specific class
+    //note that you should also use get DoneAssignment and UndoneAssignment function to get all required info on each assignment
+    public Cursor getAssigmentInfo(int ClassID,int AssignmentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select "+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE3_COLUMN4_NAME+"" +
+                " from "+TABLE3_NAME+" join "+TABLE2_NAME+" join "+TABLE7_NAME+"" +
+                " where "+TABLE3_COLUMN1_NAME+" = "+TABLE7_COLUMN2_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = "+TABLE7_COLUMN1_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"' " +
+                " and "+TABLE7_COLUMN2_NAME+" ='"+AssignmentID+"'  ", null);
+    }
+    // use this function to get all info on a specific exam with the students who took it and their grade
+    public Cursor getExamInfo(int ClassID,int ExamID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery(" select "+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+"" +
+                " from "+TABLE1_NAME+" join "+TABLE4_NAME+" join "+TABLE2_NAME+" join "+TABLE6_NAME+" JOIN "+TABLE9_NAME+"" +
+                " where "+TABLE4_COLUMN1_NAME+" = "+TABLE6_COLUMN2_NAME+" = "+TABLE9_COLUMN2_NAME+"" +
+                " and "+TABLE6_COLUMN1_NAME+" ="+TABLE2_COLUMN1_NAME+"" +
+                " and "+TABLE1_COLUMN1_NAME+"= "+TABLE9_COLUMN1_NAME+"" +
+                " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"'" +
+                " and "+TABLE9_COLUMN2_NAME+"= '"+ExamID+"' ", null);
+    }
+    //DropStudentFromSystem function , student will no longer appear in anything
+    public boolean DropStudentFromSystem(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        sqLiteDatabase.delete(TABLE8_NAME, TABLE8_COLUMN1_NAME + " = " + studentID + " ", null);
+        sqLiteDatabase.delete(TABLE9_NAME, TABLE9_COLUMN1_NAME + " = " + studentID + " ", null);
+        sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN1_NAME + " = " + studentID + " ", null);
+        return sqLiteDatabase.delete(TABLE1_NAME, TABLE1_COLUMN1_NAME + " = " + studentID + " ", null)>0;
 
     }
 
-    public ArrayList<String> toArrayList(Cursor cursor){
-        ArrayList<String> arrayList = new ArrayList<>();
-        while(cursor.moveToNext()){
-            arrayList.add(cursor.getString(0));
-        }
+    public boolean RemoveClass(int ClassID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        sqLiteDatabase.rawQuery(" delete from "+TABLE4_NAME+" where "+TABLE4_COLUMN1_NAME+" = ' select "+TABLE6_COLUMN2_NAME+" FROM "+TABLE6_NAME+" where "+TABLE6_COLUMN1_NAME+" ='"+ClassID+"' ", null);
+        sqLiteDatabase.rawQuery(" delete from "+TABLE3_NAME+" where "+TABLE3_COLUMN1_NAME+" = ' select "+TABLE7_COLUMN2_NAME+" FROM "+TABLE7_NAME+" where "+TABLE7_COLUMN1_NAME+" ='"+ClassID+"' ", null);
+        sqLiteDatabase.delete(TABLE6_NAME, TABLE6_COLUMN1_NAME + " = " + ClassID + " ", null);
+        sqLiteDatabase.delete(TABLE7_NAME, TABLE7_COLUMN1_NAME + " = " + ClassID + " ", null);
+        sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null);
+        return sqLiteDatabase.delete(TABLE2_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null)>0;
 
-        return arrayList;
-    }*/
-
+    }
 }
