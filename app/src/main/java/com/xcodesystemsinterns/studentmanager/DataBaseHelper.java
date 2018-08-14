@@ -443,6 +443,21 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         return sqLiteDatabase.update(TABLE1_NAME, contentValues, TABLE1_COLUMN1_NAME + " = " + studentID, null) > 0;
     }
 
+    public Cursor getUndoneAssignmentsByStudent(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+","+TABLE3_NAME+"."+TABLE3_COLUMN3_NAME+" from "+TABLE3_NAME+
+                " join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE1_NAME+
+                " where "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" ="+studentID+
+                " and "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+TABLE7_NAME+"."+TABLE7_COLUMN1_NAME +
+                " and "+TABLE7_NAME+"."+TABLE7_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+
+                " and "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" = "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+
+                " except select Distinct "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+","+TABLE3_NAME+"."+TABLE3_COLUMN3_NAME+" from "+TABLE3_NAME+
+                " join " +TABLE8_NAME+" join "+TABLE1_NAME+
+                " where "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" ="+studentID+
+                " and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+
+                " and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
+    }
+
 
 
     public Cursor getUndoneAssignmentList(int AssignmentID ){
