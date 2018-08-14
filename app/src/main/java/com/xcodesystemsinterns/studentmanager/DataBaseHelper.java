@@ -433,26 +433,28 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         return sqLiteDatabase.insert(TABLE9_NAME,null,contentValues) > 0 ;
     }
 
-    public boolean editStudent(int studentID,String name,String email,String phoneNumber, String address){
+    public boolean editStudent(int studentID,String name,String email,String phoneNumber, String address) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TABLE1_COLUMN2_NAME,name);
-        contentValues.put(TABLE1_COLUMN3_NAME,email);
-        contentValues.put(TABLE1_COLUMN4_NAME,phoneNumber);
-        contentValues.put(TABLE1_COLUMN5_NAME,address);
+        contentValues.put(TABLE1_COLUMN2_NAME, name);
+        contentValues.put(TABLE1_COLUMN3_NAME, email);
+        contentValues.put(TABLE1_COLUMN4_NAME, phoneNumber);
+        contentValues.put(TABLE1_COLUMN5_NAME, address);
         return sqLiteDatabase.update(TABLE1_NAME, contentValues, TABLE1_COLUMN1_NAME + " = " + studentID, null) > 0;
     }
 
     public Cursor getUndoneAssignmentList(int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE3_NAME+
-                " where "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE5_COLUMN2_NAME+"="+TABLE7_COLUMN1_NAME +" and "+TABLE7_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"" +
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+
+                " join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE3_NAME+
+                " where "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE5_COLUMN2_NAME+"="+TABLE7_COLUMN1_NAME +
+                " and "+TABLE7_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"" +
                 " except select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join " +TABLE8_NAME+" join "+TABLE3_NAME+"" +
                 " where "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE1_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+"",null);
     }
     public Cursor getDoneAssignmentList(int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+"" +
+        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+"" +
                 " where  "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE1_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" ",null);
     }
     public Cursor getClassList(){

@@ -4,4 +4,9 @@
     <string name="card_class_list">Show all Classes in System.</string>
     <string name="card_assignment_list">Show all Assignments in System.</string>
     <string name="card_exam_list">Show all Exams in System.</string>
+    <string name="checkoff_dialog_tv_1">Please Choose an Assignment.</string>
+    <string name="checkoff_dialog_tv_2">Please Choose a Student to check off.</string>
+    <string name="checkoff_dialog_tv_3">Please Enter the Student Rate.</string>
+    <string name="checkoff_dialog_bt_1">Submit</string>
+    <string name="checkoff_dialog_bt_2">Cancel</string>
 </resources>
