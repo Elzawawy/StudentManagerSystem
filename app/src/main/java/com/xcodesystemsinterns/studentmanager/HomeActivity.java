@@ -1,6 +1,8 @@
 package com.xcodesystemsinterns.studentmanager;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showStudentlist(View view) {
 
+
     }
 
     public void showExamList(View view) {
@@ -29,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showAssignmentList(View view) {
+        startActivity(new Intent(this, AssignmentsList.class));
     }
 
     public void showClassList(View view) {
