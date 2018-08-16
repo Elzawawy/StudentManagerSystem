@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +22,10 @@ public class gridMainActivity extends AppCompatActivity {
     final Context c = this;
     DataBaseHelper data ;
 
-    String studentName, studentEmail, assignmentName, examName, assignmentDate, assignmentDescription;
+    String studentName, studentEmail, studentPhone, studentAddress,
+            assignmentName, assignmentDate, assignmentDescription,
+             examName,examDate;
+
     View mView;
     int classID,idS,idE,idA;
     LayoutInflater layoutInflaterAndroid;
@@ -70,12 +74,8 @@ public class gridMainActivity extends AppCompatActivity {
 
     class assignments {
         String assignName;
-        //String assignDescription;
-        //String dueDate;
-        assignments(String assignName /*, String assignDescription, String dueDate*/) {
+        assignments(String assignName) {
             this.assignName = assignName;
-            //this.assignDescription = assignDescription;
-            //this.dueDate = dueDate;
         }
     }
 
@@ -94,7 +94,6 @@ public class gridMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_grid);
         data = new DataBaseHelper(c);
         layoutInflaterAndroid = LayoutInflater.from(c);
-
 
         //To know which class
         classID= getIntent().getIntExtra("ClassID",0);
@@ -128,6 +127,8 @@ public class gridMainActivity extends AppCompatActivity {
                                         studentEmail = ((EditText) mView.findViewById(R.id.userEmailDialog)).getText().toString();
                                         studentName = ((EditText) mView.findViewById(R.id.userInputDialog)).getText().toString();
                                         studentName = studentName +" "+((EditText) mView.findViewById(R.id.userInputLastDialog)).getText().toString();
+                                        studentPhone = ((EditText) mView.findViewById(R.id.userPhoneDialog)).getText().toString();
+                                        studentAddress = ((EditText) mView.findViewById(R.id.userAddressDialog)).getText().toString();
                                         if (studentName.length() == 0 || studentEmail.length() == 0) {
                                             android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(c);
                                             errorDialog.setTitle("Error");
@@ -144,7 +145,7 @@ public class gridMainActivity extends AppCompatActivity {
                                         }
                                         else
                                             {
-                                                idS = data.addStudent(studentName, studentEmail);
+                                                idS = data.addStudent(studentName, studentEmail, studentPhone ,studentAddress);
                                                 Boolean a = data.addStudentToClass(idS, classID);
                                                 if(!a)
                                                 {
@@ -190,7 +191,7 @@ public class gridMainActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialogBox, int id) {
                                         assignmentName = ((EditText) mView.findViewById(R.id.assignNameDialog)).getText().toString();
                                         assignmentDescription = ((EditText) mView.findViewById(R.id.descriptionDialog)).getText().toString();
-                                        assignmentDate = ((EditText) mView.findViewById(R.id.dueDateDialog)).getText().toString();
+                                        assignmentDate = ((EditText) mView.findViewById(R.id.assignDueDateDialog)).getText().toString();
                                         if (assignmentDate.length() == 0 || assignmentDescription.length() == 0 || assignmentName.length() == 0) {
                                             android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(c);
                                             errorDialog.setTitle("Error");
@@ -236,10 +237,11 @@ public class gridMainActivity extends AppCompatActivity {
                                 .setPositiveButton("submit", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialogBox, int id) {
                                         examName = ((EditText) mView.findViewById(R.id.examNameDialog)).getText().toString();
-                                        if (examName.length() == 0) {
+                                        examDate = ((EditText) mView.findViewById(R.id.examDateDialog)).getText().toString();
+                                        if (examName.length() == 0 ||examDate.length()==0) {
                                             android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(c);
                                             errorDialog.setTitle("Error");
-                                            errorDialog.setMessage("Exam Name required");
+                                            errorDialog.setMessage("All field are required");
                                             errorDialog.setNeutralButton("OK",
                                                     new DialogInterface.OnClickListener() {
                                                         @Override
@@ -252,7 +254,7 @@ public class gridMainActivity extends AppCompatActivity {
                                         }
                                         else
                                             {
-                                                idE = data.addExam(examName,classID);
+                                                idE = data.addExam(examName,examDate,classID);
                                                 Exams.add(new exams(examName));
                                             }
                                     }
@@ -357,8 +359,8 @@ public class gridMainActivity extends AppCompatActivity {
 
     //First we need to create class objects:
     public void createObjects(Cursor cursorS, Cursor cursorA, Cursor cursorE) {
-        int idIndex, nameIndex, emailIndex, dateIndex, descriptionIndex;
-        String name, email, description, due, assignName;
+        int idIndex, nameIndex, emailIndex;
+        String name, email, assignName;
 
         //get Student Info
         try {
@@ -401,7 +403,6 @@ public class gridMainActivity extends AppCompatActivity {
         try {
             cursorA.moveToFirst();
             for (int k = 0; k < cursorA.getCount(); k++) {
-                idIndex = cursorA.getColumnIndex("_id");
                 nameIndex = cursorA.getColumnIndex("Name");
                 assignName= cursorA.getString(nameIndex);
                 Assignments.add(new assignments(assignName));

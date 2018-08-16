@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBaseHelper  extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "StudentManager.db";
-    private static int DATABASE_VERSION = 1;
+    private static int DATABASE_VERSION = 3;
     //================== Table 1 ======================
     private static final String TABLE1_NAME = "Students";
     private static final String TABLE1_COLUMN1_NAME = "StudentID";
@@ -82,8 +82,8 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 TABLE1_COLUMN1_NAME+" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
                 TABLE1_COLUMN2_NAME+" TEXT NOT NULL, "+
                 TABLE1_COLUMN3_NAME+" TEXT NOT NULL, "+
-                TABLE1_COLUMN4_NAME+"TEXT NOT NULL, " +
-                TABLE1_COLUMN5_NAME+"TEXT NOT NULL);";
+                TABLE1_COLUMN4_NAME+" TEXT NOT NULL, " +
+                TABLE1_COLUMN5_NAME+" TEXT NOT NULL);";
         String query_Table2 = "CREATE TABLE "+ TABLE2_NAME + " ( "+
                 TABLE2_COLUMN1_NAME+" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
                 TABLE2_COLUMN2_NAME+" TEXT NOT NULL, "+
@@ -96,7 +96,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         String query_Table4 = "CREATE TABLE "+ TABLE4_NAME + " ( "+
                 TABLE4_COLUMN1_NAME+" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
                 TABLE4_COLUMN2_NAME+" TEXT NOT NULL, "+
-                TABLE4_COLUMN3_NAME+"TEXT NOT NULL );";
+                TABLE4_COLUMN3_NAME+" TEXT NOT NULL );";
         String query_Table5 = "CREATE TABLE "+ TABLE5_NAME + " ( "+
                 TABLE5_COLUMN1_NAME+" INTEGER NOT NULL, "+
                 TABLE5_COLUMN2_NAME+" INTEGER NOT NULL, "+
@@ -478,9 +478,10 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+
                 " where  "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+" and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
     }
+
     public Cursor getClassList(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+" from "+TABLE2_NAME+"" , null);
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+ " , "+ TABLE2_COLUMN3_NAME+" from "+TABLE2_NAME+"" , null);
     }
 
     public Cursor getStudentClassList(int StudentID){

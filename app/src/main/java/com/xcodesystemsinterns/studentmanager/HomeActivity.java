@@ -1,5 +1,6 @@
 package com.xcodesystemsinterns.studentmanager;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,5 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showClassList(View view) {
+        Intent i = new Intent(this,classListActivity.class);
+        startActivity(i);
     }
 }
