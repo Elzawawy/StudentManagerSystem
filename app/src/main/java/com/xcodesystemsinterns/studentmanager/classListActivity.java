@@ -6,12 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,7 +18,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 
@@ -62,8 +59,6 @@ class myAdapter extends BaseAdapter{
         return view;
     }
 }
-
-
 class classes {
     String name;
     String description;
@@ -109,34 +104,10 @@ public class classListActivity extends AppCompatActivity {
         data = new DataBaseHelper(this);
         setTitle("Classes");
         setContentView(R.layout.list_class);
-        listView = findViewById(R.id.listView);
-        createClassObject(data.getClassList());
-        listView.setAdapter(new myAdapter(this,Classes));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // put you activity's name instead of NewActivity
-                Intent intent = new Intent(getBaseContext(),gridMainActivity.class);
-                intent.putExtra("ClassID",Classes.get(i).id);
-                startActivity(intent);
-                // to get the id in your activity use:
-                // getIntent().getLongExtra("ClassID",Long.valueOf(0))
-                // it will return long
-            }
-        });
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_class:
-                Log.i("class","Done");
+            public void onClick(View view) {
                 Context context=classListActivity.this;
                 final Dialog dialog=new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -165,13 +136,20 @@ public class classListActivity extends AppCompatActivity {
                         }
                     }
                 });
-                return true;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
+            }
+        });
+        listView = findViewById(R.id.listView);
+        createClassObject(data.getClassList());
+        listView.setAdapter(new myAdapter(this,Classes));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // put you activity's name instead of NewActivity
+                Intent intent = new Intent(getBaseContext(),gridMainActivity.class);
+                intent.putExtra("ClassID",Classes.get(i).id);
+                startActivity(intent);
+            }
+        });
     }
 
     protected Dialog onCreateDialog(int id) {
@@ -198,6 +176,5 @@ public class classListActivity extends AppCompatActivity {
         }
         return dialog;
     }
-
 
 }

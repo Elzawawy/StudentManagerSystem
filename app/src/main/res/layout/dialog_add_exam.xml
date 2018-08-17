@@ -21,19 +21,36 @@
         android:hint="Enter Name"
         android:inputType="text" />
 
-   <!-- <TextView
-        android:id="@+id/examIDTitle"
+    <TextView
+        android:id="@+id/examDateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exam ID"
+        android:text="Exam Date"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/examIDDialog"
+        android:id="@+id/examDateDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter ID"
-        android:inputType="number" />-->
+        android:hint="Enter date"
+        android:inputType="date" />
+
+
+
+
+    <!-- <TextView
+         android:id="@+id/examIDTitle"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Exam ID"
+         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+     <EditText
+         android:id="@+id/examIDDialog"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:hint="Enter ID"
+         android:inputType="number" />-->
 
 
 </LinearLayout>
