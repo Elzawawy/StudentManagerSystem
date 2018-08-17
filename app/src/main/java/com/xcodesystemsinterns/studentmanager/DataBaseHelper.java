@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBaseHelper  extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "StudentManager.db";
-    private static int DATABASE_VERSION = 1;
+    private static int DATABASE_VERSION = 4;
     //================== Table 1 ======================
     private static final String TABLE1_NAME = "Students";
     private static final String TABLE1_COLUMN1_NAME = "StudentID";
@@ -96,7 +96,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         String query_Table4 = "CREATE TABLE "+ TABLE4_NAME + " ( "+
                 TABLE4_COLUMN1_NAME+" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
                 TABLE4_COLUMN2_NAME+" TEXT NOT NULL, "+
-                TABLE4_COLUMN3_NAME+"TEXT NOT NULL );";
+                TABLE4_COLUMN3_NAME+" TEXT NOT NULL );";
         String query_Table5 = "CREATE TABLE "+ TABLE5_NAME + " ( "+
                 TABLE5_COLUMN1_NAME+" INTEGER NOT NULL, "+
                 TABLE5_COLUMN2_NAME+" INTEGER NOT NULL, "+
@@ -162,7 +162,6 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         db.execSQL(drop_query9);
 
         //Re-create the Tables of the database for the new version.
-        DATABASE_VERSION=newVersion;
         onCreate(db);
 
     }
@@ -406,7 +405,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     public Cursor getAllExams(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         String query_String = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" as _id,"+
-                TABLE4_NAME+"."+TABLE4_COLUMN2_NAME+","+TABLE4_COLUMN3_NAME+","+TABLE2_NAME+"."+TABLE2_COLUMN2_NAME+
+                TABLE4_NAME+"."+TABLE4_COLUMN2_NAME+","+TABLE4_COLUMN3_NAME+","+TABLE2_NAME+"."+TABLE2_COLUMN2_NAME+" as className"+
                 " from "+TABLE4_NAME+" join "+TABLE6_NAME+" join "+TABLE2_NAME+" where "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+
                 " = "+TABLE6_NAME+"."+TABLE6_COLUMN2_NAME+" and "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+" = "+
                 TABLE6_NAME+"."+TABLE6_COLUMN1_NAME;

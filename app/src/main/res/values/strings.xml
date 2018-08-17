@@ -9,4 +9,7 @@
     <string name="checkoff_dialog_tv_3">Please Enter the Student Rate.</string>
     <string name="checkoff_dialog_bt_1">Submit</string>
     <string name="checkoff_dialog_bt_2">Cancel</string>
+    <string name="item_exam_tv_1">Exam Name :</string>
+    <string name="item_exam_tv_2">Exam Date:</string>
+    <string name="item_exam_tv_3">Class Name:</string>
 </resources>
