@@ -47,6 +47,11 @@
         android:numStars="5"
         android:stepSize="0.1"
         android:isIndicator="true" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="178dp"
+        android:layout_height="54dp"
+        android:text="TextView" />
 
 
 

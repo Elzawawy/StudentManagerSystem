@@ -16,10 +16,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         dataBaseHelper = new DataBaseHelper(this);
-        //boolean result = dataBaseHelper.removeClass(3);
-        //Cursor cursor =dataBaseHelper.getClassList();
-        //Log.d("myTAG",String.valueOf(cursor.getCount()));
-        //Log.d("myTAG",String.valueOf(result));
     }
 
     public void showStudentlist(View view) {

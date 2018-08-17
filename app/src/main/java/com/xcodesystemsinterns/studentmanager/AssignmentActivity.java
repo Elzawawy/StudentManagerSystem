@@ -28,7 +28,6 @@ public class AssignmentActivity extends AppCompatActivity {
         doneStudents=new ArrayList<>();
         undoneStudents=new ArrayList<>();
         Cursor cursor =dt.getAssignmentInfo(selectedAssignmentID);
-
         cursor.moveToFirst();
         String name=cursor.getString(0);
         TextView title=(TextView) findViewById(R.id.title);
