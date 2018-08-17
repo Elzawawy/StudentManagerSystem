@@ -11,6 +11,7 @@
         android:text="@string/checkoff_dialog_tv_1"
         android:textSize="18sp"
         android:layout_margin="5dp"/>
+
     <Spinner
         android:id="@+id/sp_assignments"
         android:layout_width="match_parent"
