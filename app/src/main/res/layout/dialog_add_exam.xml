@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/default_parent_view_padding">
 
     <TextView
         android:id="@+id/examNameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exam Name"
+        android:text="@string/text_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -18,39 +18,20 @@
         android:id="@+id/examNameDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Name"
+        android:hint="@string/hint_exam_name"
         android:inputType="text" />
 
     <TextView
         android:id="@+id/examDateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exam Date"
+        android:text="@string/text_date"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
         android:id="@+id/examDateDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter date"
+        android:hint="@string/hint_exam_date"
         android:inputType="date" />
-
-
-
-
-    <!-- <TextView
-         android:id="@+id/examIDTitle"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Exam ID"
-         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-     <EditText
-         android:id="@+id/examIDDialog"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:hint="Enter ID"
-         android:inputType="number" />-->
-
-
 </LinearLayout>

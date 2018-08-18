@@ -1,22 +1,42 @@
 <resources>
     <string name="app_name">StudentManager</string>
-    <string name="card_student_list">Show all Students in System.</string>
-    <string name="card_class_list">Show all Classes in System.</string>
-    <string name="card_assignment_list">Show all Assignments in System.</string>
-    <string name="card_exam_list">Show all Exams in System.</string>
-    <string name="checkoff_dialog_tv_1">Please Choose an Assignment.</string>
-    <string name="checkoff_dialog_tv_2">Please Choose a Student to check off.</string>
+    <string name="card_student_list">Show all Students in System</string>
+    <string name="card_class_list">Show all Classes in System</string>
+    <string name="card_assignment_list">Show all Assignments in System</string>
+    <string name="card_exam_list">Show all Exams in System</string>
+    <string name="checkoff_dialog_tv_1">Please Choose an Assignment</string>
+    <string name="checkoff_dialog_tv_2">Please Choose a Student</string>
     <string name="checkoff_dialog_tv_3">Please Enter the Student Rate.</string>
     <string name="checkoff_dialog_bt_1">Submit</string>
     <string name="checkoff_dialog_bt_2">Cancel</string>
-    <string name="item_exam_tv_1">Exam Name :</string>
-    <string name="item_exam_tv_2">Exam Date:</string>
-    <string name="item_exam_tv_3">Class Name:</string>
-    <string name="item_assignment_tv_1">Assignment Name :</string>
-    <string name="item_assignment_tv_2">Assignment DueDate:</string>
-    <string name="item_assignment_tv_3">Class Name:</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="assignment_name">Assignment Name</string>
-    <string name="assignment_description_subtitle">Description : </string>
-    <string name="assignment_duedate_subtitle">DueDate : </string>
+    <string name="text_assignment_name">Assignment Name : </string>
+    <string name="text_class_name">Class Name :</string>
+    <string name="text_description">Description : </string>
+    <string name="text_due_date">DueDate : </string>
+    <string name="text_name">Name : </string>
+    <string name="text_first_name">First Name : </string>
+    <string name="text_last_name">Last Name : </string>
+    <string name="text_email">Email Address : </string>
+    <string name="text_phone">Phone Number : </string>
+    <string name="text_address">Home Address : </string>
+    <string name="text_date">Date : </string>
+    <string name="hint_class_name">Enter Class\'s Name</string>
+    <string name="hint_class_description">Enter Class\'s Description</string>
+    <string name="hint_assignment_name">Enter Assignment\'s Name</string>
+    <string name="hint_assignment_description">Enter Assignment\'s Description</string>
+    <string name="hint_assignment_due_date">Enter Assignment\'s DueDate</string>
+    <string name="hint_exam_name">Enter Exam\'s Name</string>
+    <string name="hint_exam_date">Enter Exam\'s Date</string>
+    <string name="hint_student_name">Enter Student\'s Name</string>
+    <string name="hint_student_family_name">Enter Student\'s Family Name</string>
+    <string name="hint_student_email">Enter Student\'s Email</string>
+    <string name="hint_student_phone">Enter Student\'s Phone Number</string>
+    <string name="hint_student_address">Enter Student\'s Address</string>
+
+
+
+
+    <string name="bt_add_class_text">Add Class</string>
+
 </resources>

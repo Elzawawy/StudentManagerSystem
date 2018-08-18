@@ -4,27 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/default_parent_view_padding">
 
     <TextView
         android:id="@+id/assignNameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Assignment Name"
+        android:text="@string/text_assignment_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
         android:id="@+id/assignNameDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Name"
+        android:hint="@string/hint_assignment_name"
         />
 
     <TextView
         android:id="@+id/assignDescriptionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="@string/text_description"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -32,7 +32,7 @@
         android:id="@+id/descriptionDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter description"
+        android:hint="@string/hint_assignment_description"
         android:inputType="textMultiLine" />
 
 
@@ -40,14 +40,14 @@
         android:id="@+id/assignDueDateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Due Date"
+        android:text="@string/text_due_date"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
         android:id="@+id/assignDueDateDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Date"
+        android:hint="@string/hint_assignment_due_date"
         android:inputType="date" />
 
 </LinearLayout>

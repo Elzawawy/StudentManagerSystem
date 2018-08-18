@@ -50,10 +50,10 @@ class myAdapter extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            view = (View) inflater.inflate(R.layout.class_list_view,null);
+            view = (View) inflater.inflate(R.layout.item_class,null);
         }
-        TextView name = view.findViewById(R.id.name);
-        TextView description = view.findViewById(R.id.description);
+        TextView name = view.findViewById(R.id.tv_item_class_name);
+        TextView description = view.findViewById(R.id.tv_item_class_description);
         name.setText(Classes.get(i).name);
         description.setText(Classes.get(i).description);
         return view;
@@ -121,8 +121,8 @@ public class classListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        String name = ((TextView)dialog.findViewById(R.id.name)).getText().toString();
-                        String description = ((TextView)dialog.findViewById(R.id.description)).getText().toString();
+                        String name = ((TextView)dialog.findViewById(R.id.tv_item_class_name)).getText().toString();
+                        String description = ((TextView)dialog.findViewById(R.id.tv_item_class_description)).getText().toString();
                         if(name.length() != 0 &&description.length() != 0){
 
                             int id = data.addClass(name,description);

@@ -3,39 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="30dp">
+    android:padding="@dimen/default_parent_view_padding">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:text="@string/text_name"
+        android:textSize="@dimen/default_subtitle_text_size"/>
 
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter Class's Name"
+        android:hint="@string/hint_class_name"
         android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Description" />
+        android:text="@string/text_description"
+        android:textSize="@dimen/default_subtitle_text_size"/>
 
     <EditText
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter Class's Description"
+        android:hint="@string/hint_class_description"
         android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/addClassButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="add class" />
+        android:text="@string/bt_add_class_text" />
 </LinearLayout>

@@ -24,10 +24,22 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
+
     <ListView
         android:id="@+id/lv_exams"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
     </ListView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_exams"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        style="@style/Widget.Design.FloatingActionButton"
+        app:fabSize="normal"
+        android:src="@drawable/checked"
+        android:onClick="checkExam"
+        />
 
 </LinearLayout>

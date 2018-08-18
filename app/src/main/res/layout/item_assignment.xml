@@ -13,18 +13,19 @@
     android:focusable="true">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_view_padding">
 
         <TextView
             android:id="@+id/info_tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_text_view_margin"
-            android:text="@string/item_assignment_tv_1"
+            android:text="@string/text_name"
             android:textSize="@dimen/card_text_size" />
 
-        <TextView
+       <TextView
             android:id="@+id/tv1_item_assignment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,14 +33,14 @@
             android:layout_toEndOf="@+id/info_tv1"
             android:layout_toRightOf="@+id/info_tv1"
             android:textSize="@dimen/card_text_size" />
-        <TextView
+      <TextView
             android:id="@+id/info_tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_text_view_margin"
             android:textSize="@dimen/card_text_size"
-            android:text="@string/item_assignment_tv_2"
-            android:layout_below="@id/info_tv1"/>
+            android:text="@string/text_due_date"
+            android:layout_below="@+id/info_tv1"/>
 
         <TextView
             android:id="@+id/tv2_item_assignment"
@@ -56,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_text_view_margin"
             android:textSize="@dimen/card_text_size"
-            android:text="@string/item_assignment_tv_3"
+            android:text="@string/text_class_name"
             android:layout_below="@+id/info_tv2"/>
 
         <TextView
@@ -68,7 +69,6 @@
             android:layout_toEndOf="@+id/info_tv3"
             android:layout_toRightOf="@+id/info_tv3"
             android:textSize="@dimen/card_text_size" />
-
     </RelativeLayout>
 
 

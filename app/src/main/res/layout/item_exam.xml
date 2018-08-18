@@ -14,14 +14,15 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_view_padding">
 
         <TextView
             android:id="@+id/info_tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_text_view_margin"
-            android:text="@string/item_exam_tv_1"
+            android:text="@string/text_name"
             android:textSize="@dimen/card_text_size" />
 
         <TextView
@@ -39,8 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_text_view_margin"
             android:textSize="@dimen/card_text_size"
-            android:text="@string/item_exam_tv_2"
-            android:layout_below="@id/info_tv1"/>
+            android:text="@string/text_date"
+            android:layout_below="@+id/info_tv1"/>
         <TextView
             android:id="@+id/tv2_item_exam"
             android:layout_width="wrap_content"
@@ -57,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_text_view_margin"
             android:textSize="@dimen/card_text_size"
-            android:text="@string/item_exam_tv_3"
+            android:text="@string/text_class_name"
             android:layout_below="@+id/info_tv2"/>
         <TextView
             android:id="@+id/tv3_item_exam"
