@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class AssignmentsList extends AppCompatActivity {
     DataBaseHelper dt;
     ListView list;
-    ArrayList<Assignment> listItems;
     final Context c=this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,28 +36,11 @@ public class AssignmentsList extends AppCompatActivity {
         dt.addAssignment("Assignment 1","5/8/2018","hoiiii",123);
         dt.addAssignment("Assignment 1","5/8/2018","hoiiii",123);
          */
-        listItems=new ArrayList<>();
-        Cursor cursor= dt.getAllAssignments();
-        try {
-            cursor.moveToFirst();
-            for(int i=0;i<cursor.getCount();i++)
-            {
-                int ID=cursor.getInt(0);
-                String name = cursor.getString(1);
-                String dueDate=cursor.getString(2);
-                String className = cursor.getString(3);
-                listItems.add(new Assignment(ID,name,className,dueDate));
-                cursor.moveToNext();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
         Button checkOffButton=(Button) findViewById(R.id.CheckOffButton);
         checkOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckOffAssignment newFragment = CheckOffAssignment.newInstance(listItems,c);
+                CheckOffAssignment newFragment = CheckOffAssignment.newInstance(dt.getAllAssignments(),c);
                 newFragment.show(getSupportFragmentManager(),null);
             }
         });
@@ -74,7 +56,7 @@ public class AssignmentsList extends AppCompatActivity {
         arr.add(new Assignment(1,"Assignment 4","History","3/9/2018"));
          */
 
-        final MyAdapter adapter = new MyAdapter(this,listItems);
+        final MyAdapter adapter = new MyAdapter(this,dt.getAllAssignments());
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -82,7 +64,7 @@ public class AssignmentsList extends AppCompatActivity {
                 int selectedAssignmentID = adapter.getSelectedAssignmentID(position);
                 Intent intent = new Intent(AssignmentsList.this,AssignmentActivity.class);
                 intent.putExtra("ID",selectedAssignmentID);
-               startActivity(intent);
+                startActivity(intent);
             }
         });
     }

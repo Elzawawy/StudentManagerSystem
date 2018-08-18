@@ -1,6 +1,7 @@
 package com.xcodesystemsinterns.studentmanager;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +13,25 @@ import java.util.List;
 public class ExpandAdapter extends BaseExpandableListAdapter {
 
     Context mcontext;
-    List<StudentDescription> done;
-    List<StudentDescription> undone;
+    Cursor doneCursor;
+    Cursor undoneCursor;
 
-    public ExpandAdapter(Context mcontext, List<StudentDescription> done, List<StudentDescription> undone) {
+    public ExpandAdapter(Context mcontext, Cursor doneCursor, Cursor undoneCursor) {
         this.mcontext = mcontext;
-        this.done = done;
-        this.undone = undone;
+        this.doneCursor = doneCursor;
+        this.undoneCursor = undoneCursor;
     }
+    //List<StudentDescription> done;
+    // List<StudentDescription> undone;
 
+
+    /*
+        public ExpandAdapter(Context mcontext, List<StudentDescription> done, List<StudentDescription> undone) {
+            this.mcontext = mcontext;
+            this.done = done;
+            this.undone = undone;
+        }
+    */
     @Override
     public int getGroupCount() {
         return 2;
@@ -28,7 +39,7 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int i) {
-        return i==0 ? done.size(): undone.size();
+        return i==0 ? doneCursor.getCount(): undoneCursor.getCount();
     }
 
     @Override
@@ -38,7 +49,12 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int i, int i1) {
-        return i==0?  done.get(i1): undone.get(i1);
+        if(i==0){
+            doneCursor.moveToPosition(i1);
+            return doneCursor;
+        }
+        undoneCursor.moveToPosition(i1);
+        return  undoneCursor;
     }
 
     @Override
@@ -58,7 +74,7 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-       String title=(String) getGroup(i);
+        String title=(String) getGroup(i);
         if(view==null){
             LayoutInflater li=(LayoutInflater) this.mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view=li.inflate(R.layout.list_group,null);
@@ -71,20 +87,18 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int i, int i1, boolean b, View v, ViewGroup viewGroup) {
-        StudentDescription text=(StudentDescription) getChild(i,i1);
-       // v.setTransitionName();
+        Cursor c=(Cursor) getChild(i,i1);
+        // v.setTransitionName();
         if(v==null){
             LayoutInflater li=(LayoutInflater) this.mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v=li.inflate(R.layout.single_student_details,null);
         }
         TextView name = (TextView) v.findViewById(R.id.StudentName);
         TextView id = (TextView) v.findViewById(R.id.StudentID);
-
         TextView grade = (TextView) v.findViewById(R.id.StudentGrade);
-        name.setText(text.getName());
-        id.setText(""+text.getId());
-        if(text.getGrade()!=0)
-        grade.setText(text.getGrade()+"/5");
+
+        name.setText(c.getString(0));
+        id.setText(""+c.getInt(1));
         return v;
     }
 

@@ -1,49 +1,54 @@
 package com.xcodesystemsinterns.studentmanager;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class MyAdapter extends BaseAdapter {
-    Context mcontext;
-    List<Assignment> myList;
+public class MyAdapter extends CursorAdapter {
 
-    public MyAdapter(Context mcontext, List<Assignment> myList) {
-        this.mcontext = mcontext;
-        this.myList = myList;
+    public MyAdapter(Context context, Cursor c)
+    {
+        super(context, c,0);
     }
     public int getSelectedAssignmentID(int position){
-        return myList.get(position).getID();
-    }
-    @Override
-    public int getCount() {
-        return myList.size();
+        getCursor().moveToPosition(position);
+        return getCursor().getInt(0);
     }
 
     @Override
-    public Object getItem(int i) {
-        return myList.get(i);
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+         // first layout:    return LayoutInflater.from(context).inflate(R.layout.activity_list, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_assignment, parent, false);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
-    }
+    public void bindView(View v, Context context, Cursor cursor) {
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        View v= View.inflate(mcontext,R.layout.activity_list,null);
+        int ID=cursor.getInt(0);
+        String name = cursor.getString(1);
+        String dueDate=cursor.getString(2);
+        String className = cursor.getString(3);
+        /* The first layout
         TextView AssignmentName = (TextView) v.findViewById(R.id.AssignmentName);
         TextView ClassName = (TextView) v.findViewById(R.id.ClassName);
         TextView DueDate = (TextView) v.findViewById(R.id.DueDate);
-        AssignmentName.setText(myList.get(i).getName());
-        ClassName.setText(myList.get(i).getClassName());
-        DueDate.setText(myList.get(i).getDate());
-      //  v.setTag(myList.get(i).get());
-        return v;
+        */
+        TextView AssignmentName = (TextView) v.findViewById(R.id.tv1_item_assignment);
+        TextView ClassName = (TextView) v.findViewById(R.id.tv3_item_assignment);
+        TextView DueDate = (TextView) v.findViewById(R.id.tv2_item_assignment);
+
+        AssignmentName.setText(name);
+        ClassName.setText(className);
+        DueDate.setText(dueDate);
+
     }
+
 }
+

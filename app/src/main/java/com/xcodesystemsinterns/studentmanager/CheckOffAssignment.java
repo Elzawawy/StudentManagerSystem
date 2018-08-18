@@ -35,12 +35,16 @@ public class CheckOffAssignment extends DialogFragment {
         studentsIDList=new ArrayList<>();
     }
 
-    public static CheckOffAssignment newInstance(List<Assignment> assignmentsList,Context context) {
+    public static CheckOffAssignment newInstance(Cursor c,Context context) {
         CheckOffAssignment fragment = new CheckOffAssignment();
-        for(Assignment a:assignmentsList){
-            assignmentsNamesList.add(a.getName());
-            assignmentsIDList.add(a.getID());
-        }
+            c.moveToFirst();
+            for(int i=0;i<c.getCount();i++)
+            {
+                assignmentsIDList.add(c.getInt(0));
+                assignmentsNamesList.add(c.getString(1));
+                c.moveToNext();
+            }
+
         dt=new DataBaseHelper(context);
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -100,7 +104,6 @@ public class CheckOffAssignment extends DialogFragment {
         assignmentsSpinner.setAdapter(dataAdapter);
     }
     private void addStudentsOnSpinner(int assignmentID){
-        Log.i("Info",assignmentID+"");
         Cursor cursor=dt.getUndoneAssignmentList(assignmentID);
         try {
             cursor.moveToFirst();

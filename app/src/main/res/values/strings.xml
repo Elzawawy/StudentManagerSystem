@@ -12,6 +12,9 @@
     <string name="item_exam_tv_1">Exam Name :</string>
     <string name="item_exam_tv_2">Exam Date:</string>
     <string name="item_exam_tv_3">Class Name:</string>
+    <string name="item_assignment_tv_1">Assignment Name :</string>
+    <string name="item_assignment_tv_2">Assignment DueDate:</string>
+    <string name="item_assignment_tv_3">Class Name:</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="assignment_name">Assignment Name</string>
     <string name="assignment_description_subtitle">Description : </string>
