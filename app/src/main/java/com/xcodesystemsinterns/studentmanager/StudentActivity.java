@@ -29,7 +29,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity {
+public class StudentActivity extends AppCompatActivity {
 
 
 
@@ -482,7 +482,7 @@ button_removeStudent.setOnClickListener(new View.OnClickListener() {
          //   @Override
           //  public void onClick(View view)
         //    {
-          //      Intent i = new Intent(MainActivity.this,Classes_ExpandableList.class);
+          //      Intent i = new Intent(StudentActivity.this,Classes_ExpandableList.class);
             //    startActivity(i);
 
        //     }

@@ -92,7 +92,7 @@ public class StudentListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 entry= (DataModel) parent.getAdapter().getItem(position);
-                Intent intent = new Intent(StudentListActivity.this, MainActivity.class);
+                Intent intent = new Intent(StudentListActivity.this, StudentActivity.class);
                 intent.putExtra("id", entry.getVersion_number());
                 startActivity(intent);
             }
