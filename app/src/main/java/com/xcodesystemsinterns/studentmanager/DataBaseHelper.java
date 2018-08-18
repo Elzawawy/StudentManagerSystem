@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+fpackage com.xcodesystemsinterns.studentmanager;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBaseHelper  extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "StudentManager.db";
-    private static int DATABASE_VERSION = 1;
+    private static int DATABASE_VERSION = 4;
     //================== Table 1 ======================
     private static final String TABLE1_NAME = "Students";
     private static final String TABLE1_COLUMN1_NAME = "StudentID";
@@ -70,7 +70,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     //Creating the database takes place here.
     //For sake of Simplicity of calling the Constructor, parameters are reduced by local variables usage.
     public DataBaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }
 
@@ -82,7 +82,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 TABLE1_COLUMN1_NAME+" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
                 TABLE1_COLUMN2_NAME+" TEXT NOT NULL, "+
                 TABLE1_COLUMN3_NAME+" TEXT NOT NULL, "+
-                TABLE1_COLUMN4_NAME+" TEXT NOT NULL, "+
+                TABLE1_COLUMN4_NAME+" TEXT NOT NULL, " +
                 TABLE1_COLUMN5_NAME+" TEXT NOT NULL);";
         String query_Table2 = "CREATE TABLE "+ TABLE2_NAME + " ( "+
                 TABLE2_COLUMN1_NAME+" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
@@ -162,14 +162,13 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         db.execSQL(drop_query9);
 
         //Re-create the Tables of the database for the new version.
-        DATABASE_VERSION=newVersion;
         onCreate(db);
 
     }
 
     //To add an assignment to a specific classImage.
     //Returns Assignment ID that has been created and -1 if the creation has failed.
-    public int addAssignment(String name, String duedate, String description, int classID){
+    public int addAssignment(String name,String duedate, String description, int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         //First Insert into the table of assignment.
@@ -198,7 +197,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     //To add an exam to a specific classImage.
     //Returns Exam ID that has been created and -1 if the creation has failed.
-    public int addExam(String name, String date, int classID){
+    public int addExam(String name,String date,int classID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         //First Insert into the table of exams.
@@ -228,7 +227,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     //Adding a Class with name and description ONLY.
     //Returns the classImage ID created or -1 if the creation failed.
-    public int addClass(String name, String description){
+    public int addClass(String name,String description){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TABLE2_COLUMN2_NAME,name);
@@ -249,7 +248,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     //Adding a Class with name and email ONLY.
     //Returns the student ID created or -1 if the creation failed.
-    public int addStudent(String name, String email, String phoneNumber , String address){
+    public int addStudent(String name, String email,String phoneNumber , String address){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TABLE1_COLUMN2_NAME,name);
@@ -406,7 +405,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     public Cursor getAllExams(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         String query_String = "select "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" as _id,"+
-                TABLE4_NAME+"."+TABLE4_COLUMN2_NAME+","+TABLE4_COLUMN3_NAME+","+TABLE2_NAME+"."+TABLE2_COLUMN2_NAME+
+                TABLE4_NAME+"."+TABLE4_COLUMN2_NAME+","+TABLE4_COLUMN3_NAME+","+TABLE2_NAME+"."+TABLE2_COLUMN2_NAME+" as className"+
                 " from "+TABLE4_NAME+" join "+TABLE6_NAME+" join "+TABLE2_NAME+" where "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+
                 " = "+TABLE6_NAME+"."+TABLE6_COLUMN2_NAME+" and "+TABLE2_NAME+"."+TABLE2_COLUMN1_NAME+" = "+
                 TABLE6_NAME+"."+TABLE6_COLUMN1_NAME;
@@ -433,31 +432,55 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         return sqLiteDatabase.insert(TABLE9_NAME,null,contentValues) > 0 ;
     }
 
-    public boolean editStudent(int studentID, String name, String email, String phoneNumber, String address){
+    public boolean editStudent(int studentID,String name,String email,String phoneNumber, String address) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TABLE1_COLUMN2_NAME,name);
-        contentValues.put(TABLE1_COLUMN3_NAME,email);
-        contentValues.put(TABLE1_COLUMN4_NAME,phoneNumber);
-        contentValues.put(TABLE1_COLUMN5_NAME,address);
+        contentValues.put(TABLE1_COLUMN2_NAME, name);
+        contentValues.put(TABLE1_COLUMN3_NAME, email);
+        contentValues.put(TABLE1_COLUMN4_NAME, phoneNumber);
+        contentValues.put(TABLE1_COLUMN5_NAME, address);
         return sqLiteDatabase.update(TABLE1_NAME, contentValues, TABLE1_COLUMN1_NAME + " = " + studentID, null) > 0;
     }
 
+    public Cursor getUndoneAssignmentsByStudent(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+","+TABLE3_NAME+"."+TABLE3_COLUMN3_NAME+" from "+TABLE3_NAME+
+                " join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE1_NAME+
+                " where "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" ="+studentID+
+                " and "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+TABLE7_NAME+"."+TABLE7_COLUMN1_NAME +
+                " and "+TABLE7_NAME+"."+TABLE7_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+
+                " and "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" = "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+
+                " except select Distinct "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+","+TABLE3_NAME+"."+TABLE3_COLUMN3_NAME+" from "+TABLE3_NAME+
+                " join " +TABLE8_NAME+" join "+TABLE1_NAME+
+                " where "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" ="+studentID+
+                " and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+
+                " and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
+    }
+
+
+
     public Cursor getUndoneAssignmentList(int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE3_NAME+
-                " where "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE5_COLUMN2_NAME+"="+TABLE7_COLUMN1_NAME +" and "+TABLE7_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" and "+TABLE1_COLUMN1_NAME+" = "+TABLE5_COLUMN1_NAME+"" +
-                " except select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join " +TABLE8_NAME+" join "+TABLE3_NAME+"" +
-                " where "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE1_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+"",null);
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+
+                " join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE3_NAME+
+                " where "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+
+                " and "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+TABLE7_NAME+"."+TABLE7_COLUMN1_NAME +
+                " and "+TABLE7_NAME+"."+TABLE7_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+
+                " and "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" = "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+
+                " except select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+
+                " join " +TABLE8_NAME+" join "+TABLE3_NAME+
+                " where "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+" and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+
+                " and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
     }
     public Cursor getDoneAssignmentList(int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+"" +
-                " where  "+TABLE3_COLUMN1_NAME+" ='"+AssignmentID+"' and "+TABLE8_COLUMN1_NAME+" ="+TABLE1_COLUMN1_NAME+" and "+TABLE8_COLUMN2_NAME+" = "+TABLE3_COLUMN1_NAME+" ",null);
+        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+
+                " where  "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+" and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
     }
+
     public Cursor getClassList(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+" from "+TABLE2_NAME+"" , null);
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+ " , "+ TABLE2_COLUMN3_NAME+" from "+TABLE2_NAME+"" , null);
     }
 
     public Cursor getStudentClassList(int StudentID){
@@ -487,7 +510,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     }
     //use this function when you want to return info about an assignment for a specific classImage
     //note that you should also use get DoneAssignment and UndoneAssignment function to get all required info on each assignment
-    public Cursor getAssigmentInfo(int ClassID, int AssignmentID){
+    public Cursor getAssigmentInfo(int ClassID,int AssignmentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         return sqLiteDatabase.rawQuery("select "+TABLE3_COLUMN1_NAME+","+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE3_COLUMN4_NAME+"" +
                 " from "+TABLE3_NAME+" join "+TABLE2_NAME+" join "+TABLE7_NAME+"" +
@@ -497,7 +520,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE7_COLUMN2_NAME+" ='"+AssignmentID+"'  ", null);
     }
     // use this function to get all info on a specific exam with the students who took it and their grade
-    public Cursor getExamInfo(int ClassID, int ExamID){
+    public Cursor getExamInfo(int ClassID,int ExamID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         return sqLiteDatabase.rawQuery(" select "+TABLE4_COLUMN1_NAME+","+TABLE4_COLUMN2_NAME+","+TABLE1_COLUMN1_NAME+","+TABLE1_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+"" +
                 " from "+TABLE1_NAME+" join "+TABLE4_NAME+" join "+TABLE2_NAME+" join "+TABLE6_NAME+" JOIN "+TABLE9_NAME+"" +
