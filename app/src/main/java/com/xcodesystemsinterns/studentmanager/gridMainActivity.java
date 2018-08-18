@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -97,7 +98,6 @@ public class gridMainActivity extends AppCompatActivity {
 
         //To know which class
         classID= getIntent().getIntExtra("ClassID",0);
-
         //ArrayList of objects
         Students = new ArrayList<>();
         Assignments = new ArrayList<>();

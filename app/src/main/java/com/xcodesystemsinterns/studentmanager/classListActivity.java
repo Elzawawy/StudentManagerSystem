@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 
@@ -56,6 +59,8 @@ class myAdapter extends BaseAdapter{
         TextView description = view.findViewById(R.id.tv_item_class_description);
         name.setText(Classes.get(i).name);
         description.setText(Classes.get(i).description);
+
+
         return view;
     }
 }
@@ -76,7 +81,30 @@ public class classListActivity extends AppCompatActivity {
     ArrayList<classes> Classes;
     ListView listView;
     DataBaseHelper data;
+    public void classRemove(final View view){
+        AlertDialog alertDialog = new AlertDialog.Builder(classListActivity.this).create();
+        alertDialog.setTitle("Delete Class");
+        alertDialog.setMessage("You are about to remove a class. Are you sure ?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                int i = listView.getPositionForView(view);
+                System.out.println(i);
+                int classId = Classes.get(i).id;
+                Classes.remove(i);
+                data.removeClass(classId);
+                listView.setAdapter(new myAdapter(classListActivity.this,Classes));
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
 
+
+    }
     public void createClassObject(Cursor cursor){
         Classes = new ArrayList<>();
         try {
@@ -121,13 +149,13 @@ public class classListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        String name = ((TextView)dialog.findViewById(R.id.tv_item_class_name)).getText().toString();
-                        String description = ((TextView)dialog.findViewById(R.id.tv_item_class_description)).getText().toString();
+                        String name = ((TextView)dialog.findViewById(R.id.name)).getText().toString();
+                        String description = ((TextView)dialog.findViewById(R.id.description)).getText().toString();
                         if(name.length() != 0 &&description.length() != 0){
 
                             int id = data.addClass(name,description);
                             Classes.add(new classes(id,name,description));
-                            listView.setAdapter(new myAdapter(getBaseContext(),Classes));
+                            listView.setAdapter(new myAdapter(classListActivity.this,Classes));
                             dialog.dismiss();
                         }
                         else {
