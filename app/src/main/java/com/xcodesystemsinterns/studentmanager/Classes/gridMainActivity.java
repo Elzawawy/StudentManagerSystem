@@ -145,7 +145,8 @@ public class gridMainActivity extends AppCompatActivity {
                                         studentName = studentName +" "+((EditText) mView.findViewById(R.id.userInputLastDialog)).getText().toString();
                                         studentPhone = ((EditText) mView.findViewById(R.id.userPhoneDialog)).getText().toString();
                                         studentAddress = ((EditText) mView.findViewById(R.id.userAddressDialog)).getText().toString();
-                                        if (studentName.length() == 0 || studentEmail.length() == 0) {
+                                        if (studentName.length() == 0 || studentEmail.length() == 0
+                                                || studentPhone.length() ==0 || studentAddress.length()==0) {
                                             android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(c);
                                             errorDialog.setTitle("Error");
                                             errorDialog.setMessage("All field are required");
