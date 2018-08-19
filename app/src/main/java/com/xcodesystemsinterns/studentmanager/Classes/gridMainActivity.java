@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +20,11 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.xcodesystemsinterns.studentmanager.Adapters.ClassCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.Adapters.gridAdapter;
 import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentActivity;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.Exams.ExamListActivity;
-import com.xcodesystemsinterns.studentmanager.HomeActivity;
 import com.xcodesystemsinterns.studentmanager.R;
 import com.xcodesystemsinterns.studentmanager.Students.StudentActivity;
 
@@ -88,9 +87,11 @@ public class gridMainActivity extends AppCompatActivity {
     class assignments {
         String assignName;
         int IdA;
-        assignments(String assignName, int IdA) {
+        String dueDateA;
+        assignments(String assignName, int IdA, String dueDateA) {
             this.assignName = assignName;
             this.IdA= IdA;
+            this.dueDateA=dueDateA;
         }
     }
 
@@ -226,7 +227,7 @@ public class gridMainActivity extends AppCompatActivity {
                                         else
                                         {
                                         idA = data.addAssignment(assignmentName, assignmentDate, assignmentDescription, classID);
-                                        Assignments.add(new assignments(assignmentName,idA));
+                                        Assignments.add(new assignments(assignmentName,idA,assignmentDate));
                                         }
                                     }
                                 })
@@ -296,7 +297,7 @@ public class gridMainActivity extends AppCompatActivity {
     }
 
     //Student Management
-    class gridStudentAdapter extends ArrayAdapter<students>
+    /*class gridStudentAdapter extends ArrayAdapter<students>
     {
         public gridStudentAdapter(Activity context, ArrayList<students> Students)
         { super(context,0, Students); }
@@ -307,20 +308,20 @@ public class gridMainActivity extends AppCompatActivity {
             //students currentStudent = getItem(position);
             View listItemView= convertView;
             if(listItemView == null)
-                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_student,parent,false);
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_class_element,parent,false);
             TextView name= (TextView) listItemView.findViewById(R.id.tv_item_student_name);
             name.setText(Students.get(position).firstName);
             return listItemView;
         }
-    }
+    }*/
     public void ShowStudents(final String title) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = (View) inflater.inflate(R.layout.student_list, null);
+        View convertView = (View) inflater.inflate(R.layout.inside_class_list_view_elements, null);
         alertDialog.setView(convertView);
         alertDialog.setTitle(title);
         lv = convertView.findViewById(R.id.listview_student);
-        gridStudentAdapter adapter = new gridStudentAdapter(this,Students);
+        ClassCursorAdapter adapter = new ClassCursorAdapter(this,data.getStudentsByClass(classID),"student");
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -351,7 +352,7 @@ public class gridMainActivity extends AppCompatActivity {
                 int classId = Students.get(i).ID;
                 Students.remove(i);
                 data.removeStudentFromClass(classId,classID);
-                lv.setAdapter(new gridStudentAdapter(gridMainActivity.this,Students));
+                lv.setAdapter(new ClassCursorAdapter(gridMainActivity.this,data.getStudentsByClass(classID),"student"));
                 dialog.dismiss();
             }
         });
@@ -365,7 +366,7 @@ public class gridMainActivity extends AppCompatActivity {
 
 
     //To manage exam, adapter, showing and removing
-    class gridExamAdapter extends ArrayAdapter<exams>
+    /*class gridExamAdapter extends ArrayAdapter<exams>
     {
         public gridExamAdapter(Activity context, ArrayList<exams> Exams)
         { super(context,0, Exams); }
@@ -376,21 +377,21 @@ public class gridMainActivity extends AppCompatActivity {
             //exams currentExam = getItem(position);
             View listItemView= convertView;
             if(listItemView == null)
-                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.exam_item,parent,false);
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_class_element,parent,false);
             TextView name= (TextView) listItemView.findViewById(R.id.tv_item_exam_name);
             name.setText(Exams.get(position).examName);
             return listItemView;
 
         }
-    }
+    }*/
     public void ShowExams(final String title) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.exam_list, null);
+        View convertView = inflater.inflate(R.layout.inside_class_list_view_elements, null);
         alertDialog.setView(convertView);
         alertDialog.setTitle(title);
         lv = convertView.findViewById(R.id.listview_exam);
-        gridExamAdapter adapter = new gridExamAdapter(this,Exams);
+        ClassCursorAdapter adapter = new ClassCursorAdapter(this,data.getExamsByClass(classID),"exam");
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -418,7 +419,7 @@ public class gridMainActivity extends AppCompatActivity {
                 int examId = Exams.get(i).IdE;
                 Exams.remove(i);
                 data.removeExam(examId);
-                lv.setAdapter(new gridExamAdapter(gridMainActivity.this,Exams));
+                lv.setAdapter(new ClassCursorAdapter(gridMainActivity.this,data.getExamsByClass(classID),"exam"));
                 dialog.dismiss();
             }
         });
@@ -432,7 +433,7 @@ public class gridMainActivity extends AppCompatActivity {
 
 
     //Assign Management
-    class gridAssignAdapter extends ArrayAdapter<assignments>
+    /*class gridAssignAdapter extends ArrayAdapter<assignments>
     {
         public gridAssignAdapter(Activity context, ArrayList<assignments> Assignments)
         { super(context,0, Assignments); }
@@ -443,20 +444,22 @@ public class gridMainActivity extends AppCompatActivity {
             //assignments currentAssign = getItem(position);
             View listItemView= convertView;
             if(listItemView == null)
-                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.assign_item,parent,false);
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_class_element,parent,false);
             TextView name= listItemView.findViewById(R.id.tv_item_assign_name);
+            TextView dueDate = listItemView.findViewById(R.id.tv_item_assign_due);
             name.setText(Assignments.get(position).assignName);
+            dueDate.setText(Assignments.get(position).dueDateA);
             return listItemView;
         }
-    }
+    }*/
     public void ShowAssign(final String title) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.assign_list, null);
+        View convertView = inflater.inflate(R.layout.inside_class_list_view_elements, null);
         alertDialog.setView(convertView);
         alertDialog.setTitle(title);
         lv = convertView.findViewById(R.id.listview_assign);
-        gridAssignAdapter adapter = new gridAssignAdapter(this,Assignments);
+        ClassCursorAdapter adapter = new ClassCursorAdapter(this,data.getAssignmentsByClass(classID),"assignment");
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -485,7 +488,7 @@ public class gridMainActivity extends AppCompatActivity {
                 int assigId = Assignments.get(i).IdA;
                 Assignments.remove(i);
                 data.removeAssignment(assigId);
-                lv.setAdapter(new gridAssignAdapter(gridMainActivity.this,Assignments));
+                lv.setAdapter(new ClassCursorAdapter(getBaseContext(), data.getAssignmentsByClass(classID),"assignment"));
                 dialog.dismiss();
             }
         });
@@ -500,7 +503,7 @@ public class gridMainActivity extends AppCompatActivity {
 
     //First we need to create class objects:
     public void createObjects(Cursor cursorS, Cursor cursorA, Cursor cursorE) {
-        int idIndex, nameIndex, emailIndex;
+        int idIndex, nameIndex, emailIndex, dateIndex;
         String name, email, assignName;
 
         //get Student Info
@@ -547,8 +550,10 @@ public class gridMainActivity extends AppCompatActivity {
             for (int k = 0; k < cursorA.getCount(); k++) {
                 idIndex= cursorA.getColumnIndex("_id");
                 nameIndex = cursorA.getColumnIndex("Name");
+                dateIndex= cursorA.getColumnIndex("DueDate");
+
                 assignName= cursorA.getString(nameIndex);
-                Assignments.add(new assignments(assignName,cursorA.getInt(idIndex)));
+                Assignments.add(new assignments(assignName,cursorA.getInt(idIndex),cursorA.getString(dateIndex)));
                 cursorA.moveToNext();
             }
         } catch (Exception e) {e.printStackTrace(); }
