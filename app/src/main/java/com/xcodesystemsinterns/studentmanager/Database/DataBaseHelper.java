@@ -478,9 +478,12 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " where  "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+" and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
     }
 
+
+    //This returns a cursor with 3 Columns : ID , Name , Description.
+    //The ID is returned as _id for Cursor Adapter Usage only and hav eno special meaning.
     public Cursor getClassList(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+", "+TABLE2_COLUMN2_NAME+ " , "+ TABLE2_COLUMN3_NAME+" from "+TABLE2_NAME+"" , null);
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE2_COLUMN1_NAME+" as _id , "+TABLE2_COLUMN2_NAME+ " , "+ TABLE2_COLUMN3_NAME+" from "+TABLE2_NAME+"" , null);
     }
 
     public Cursor getStudentClassList(int StudentID){
