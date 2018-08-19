@@ -457,7 +457,21 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
     }
 
+    public Cursor getStudentListByExam(int examID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+
+                " from "+TABLE1_NAME+" join "+TABLE4_NAME+ " join "+TABLE6_NAME+" join "+TABLE5_NAME+
+                " where "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" = "+examID+
+                " and "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+" = "+TABLE6_NAME+"."+TABLE6_COLUMN1_NAME+
+                " and "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+" = "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+
+                " and "+TABLE6_NAME+"."+TABLE6_COLUMN2_NAME+" = "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+
+                " except select distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+
+                " from "+TABLE1_NAME+" join "+TABLE4_NAME+ " join "+TABLE9_NAME+
+                " where "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" = "+examID+
+                " and "+TABLE9_NAME+"."+TABLE9_COLUMN1_NAME+" = "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+
+                " and "+TABLE9_NAME+"."+TABLE9_COLUMN2_NAME+" = "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME,null);
 
+    }
 
     public Cursor getUndoneAssignmentList(int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -469,7 +483,8 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" = "+TABLE5_NAME+"."+TABLE5_COLUMN1_NAME+
                 " except select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+
                 " join " +TABLE8_NAME+" join "+TABLE3_NAME+
-                " where "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+" and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+
+                " where "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+
+                " and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+
                 " and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
     }
     public Cursor getDoneAssignmentList(int AssignmentID ){
