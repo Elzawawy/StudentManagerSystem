@@ -548,6 +548,28 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " and "+TABLE2_COLUMN1_NAME+" = '"+ClassID+"'" +
                 " and "+TABLE9_COLUMN2_NAME+"= '"+ExamID+"' ", null);
     }
+
+    //Method to remove an assignment from the system.
+    //Remove goes through 3 Tables --> AssignmentStudentRelation , AssignmentClassRelation , Assignments
+    public boolean removeAssignment(int assignmentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE8_NAME, TABLE8_COLUMN2_NAME + " = " + assignmentID + " ", null);
+        sqLiteDatabase.delete(TABLE7_NAME, TABLE8_COLUMN2_NAME + " = " + assignmentID + " ", null);
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        return sqLiteDatabase.delete(TABLE3_NAME, TABLE3_COLUMN1_NAME + " = " + assignmentID + " ", null)>0;
+    }
+
+    //Method to remove an exam from the system.
+    //Remove goes through 3 Tables --> ExamStudentRelation , ExamClassRelation , Exams
+    public boolean removeExam(int examID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE6_NAME, TABLE6_COLUMN2_NAME + " = " + examID + " ", null);
+        sqLiteDatabase.delete(TABLE9_NAME, TABLE9_COLUMN2_NAME + " = " + examID + " ", null);
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        return sqLiteDatabase.delete(TABLE4_NAME, TABLE4_COLUMN1_NAME + " = " + examID + " ", null)>0;
+    }
+
+
     //DropStudentFromSystem function , student will no longer appear in anything
     public boolean DropStudentFromSystem(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
