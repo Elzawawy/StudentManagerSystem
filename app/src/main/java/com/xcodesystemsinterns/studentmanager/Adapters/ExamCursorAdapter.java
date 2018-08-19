@@ -22,7 +22,10 @@ public class ExamCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.item_exam, parent, false);
     }
-
+    public int getSelectedExamID(int position){
+        getCursor().moveToPosition(position);
+        return getCursor().getInt(0);
+    }
     // The bindView method is used to bind all data to a given view
     // such as setting the text on a TextView.
     @Override

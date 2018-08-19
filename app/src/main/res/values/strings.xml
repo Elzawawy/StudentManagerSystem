@@ -7,6 +7,10 @@
     <string name="checkoff_dialog_tv_1">Please Choose an Assignment</string>
     <string name="checkoff_dialog_tv_2">Please Choose a Student</string>
     <string name="checkoff_dialog_tv_3">Please Enter the Student Rate.</string>
+    <string name="checkoff_dialog_tv_0_exam">Please Choose a class.</string>
+    <string name="checkoff_dialog_tv_1_exam">Please Choose an Exam</string>
+    <string name="checkoff_dialog_tv_2_exam">Please Choose a Student</string>
+    <string name="checkoff_dialog_tv_3_exam">Please Enter the Student Rate.</string>
     <string name="checkoff_dialog_bt_1">Submit</string>
     <string name="checkoff_dialog_bt_2">Cancel</string>
     <string name="assignment_list_title">Assignment List</string>

@@ -39,6 +39,7 @@ public class ExamListActivity extends AppCompatActivity {
 
 
     public void checkExam(View view) {
-
+        CheckOffExam newFragment = CheckOffExam.newInstance(dataBaseHelper.getClassList(),this);
+        newFragment.show(getSupportFragmentManager(),null);
     }
 }
