@@ -113,7 +113,7 @@ public class classListActivity extends AppCompatActivity {
 
             for(int i=0;i<cursor.getCount();i++)
             {
-                int idIndex = cursor.getColumnIndexOrThrow("ClassID");
+                int idIndex = cursor.getColumnIndexOrThrow("_id");
                 int nameIndex = cursor.getColumnIndexOrThrow("Name");
                 int descriptionIndex = cursor.getColumnIndexOrThrow("Description");
                 int id = cursor.getInt(idIndex);

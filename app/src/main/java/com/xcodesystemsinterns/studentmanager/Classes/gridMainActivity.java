@@ -1,21 +1,33 @@
 package com.xcodesystemsinterns.studentmanager.Classes;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
-import com.xcodesystemsinterns.studentmanager.R;
 import com.xcodesystemsinterns.studentmanager.Adapters.gridAdapter;
+import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentActivity;
+import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.Exams.ExamListActivity;
+import com.xcodesystemsinterns.studentmanager.HomeActivity;
+import com.xcodesystemsinterns.studentmanager.R;
+import com.xcodesystemsinterns.studentmanager.Students.StudentActivity;
 
 import java.util.ArrayList;
 
@@ -32,16 +44,12 @@ public class gridMainActivity extends AppCompatActivity {
     View mView;
     int classID,idS,idE,idA;
     LayoutInflater layoutInflaterAndroid;
+    ListView lv;
 
     //To create Objects
     ArrayList<students> Students;
     ArrayList<assignments> Assignments;
     ArrayList<exams> Exams;
-
-    //To display
-    ArrayList<String> student_array_list;
-    ArrayList<String> assignment_array_list;
-    ArrayList<String> exams_array_list;
 
 
     //To get the display we want
@@ -69,23 +77,29 @@ public class gridMainActivity extends AppCompatActivity {
     class students {
         String firstName;
         String email;
-        students(String firstName, String email) {
+        int ID;
+        students(String firstName, String email,int ID) {
             this.firstName = firstName;
             this.email = email;
+            this.ID=ID;
         }
     }
 
     class assignments {
         String assignName;
-        assignments(String assignName) {
+        int IdA;
+        assignments(String assignName, int IdA) {
             this.assignName = assignName;
+            this.IdA= IdA;
         }
     }
 
     class exams {
         String examName;
-        exams(String examName) {
+        int IdE;
+        exams(String examName, int IdE) {
             this.examName = examName;
+            this.IdE = IdE;
         }
     }
 
@@ -109,7 +123,7 @@ public class gridMainActivity extends AppCompatActivity {
 
         //Set the display as gridView
         griView = findViewById(R.id.grid);
-        gridAdapter gri = new gridAdapter(this, iconName, photos);
+        gridAdapter gri = new gridAdapter(gridMainActivity.this, iconName, photos);
         griView.setAdapter(gri);
         griView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -164,7 +178,7 @@ public class gridMainActivity extends AppCompatActivity {
                                                     android.app.AlertDialog errorAlert = errorDialog.create();
                                                     errorAlert.show();
                                                 }
-                                                Students.add(new students(studentName, studentEmail));
+                                                Students.add(new students(studentName, studentEmail,idS));
                                             }
                                     }
                                 })
@@ -180,7 +194,7 @@ public class gridMainActivity extends AppCompatActivity {
 
                     //students list
                     case 1:
-                        transferStudents(Students);
+                        ShowStudents("Students");
                         break;
 
                     //to add assignment
@@ -211,7 +225,7 @@ public class gridMainActivity extends AppCompatActivity {
                                         else
                                         {
                                         idA = data.addAssignment(assignmentName, assignmentDate, assignmentDescription, classID);
-                                        Assignments.add(new assignments(assignmentName /*, assignmentDescription, assignmentDate*/));
+                                        Assignments.add(new assignments(assignmentName,idA));
                                         }
                                     }
                                 })
@@ -227,7 +241,7 @@ public class gridMainActivity extends AppCompatActivity {
 
                     //for assign list
                     case 3:
-                        transferAssignment(Assignments);
+                        ShowAssign("Assignments");
                         break;
 
                     //To add Exam
@@ -257,7 +271,7 @@ public class gridMainActivity extends AppCompatActivity {
                                         else
                                             {
                                                 idE = data.addExam(examName,examDate,classID);
-                                                Exams.add(new exams(examName));
+                                                Exams.add(new exams(examName,idE));
                                             }
                                     }
                                 })
@@ -272,7 +286,7 @@ public class gridMainActivity extends AppCompatActivity {
                         break;
 
                     case 5:
-                        transferExams(Exams);
+                        ShowExams("Exams");
                         break;
                 }
             }
@@ -280,82 +294,206 @@ public class gridMainActivity extends AppCompatActivity {
 
     }
 
-    public void transferStudents (ArrayList<students> std)
+    //Student Management
+    class gridStudentAdapter extends ArrayAdapter<students>
     {
-        int i;
-        student_array_list= new ArrayList<String>();
-        for(i=0; i<std.size(); i++)
-        {
-            student_array_list.add(std.get(i).firstName);
+        public gridStudentAdapter(Activity context, ArrayList<students> Students)
+        { super(context,0, Students); }
+
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+            //students currentStudent = getItem(position);
+            View listItemView= convertView;
+            if(listItemView == null)
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_student,parent,false);
+            TextView name= (TextView) listItemView.findViewById(R.id.tv_item_student_name);
+            name.setText(Students.get(position).firstName);
+            return listItemView;
         }
-        ShowAlertDialogWithListview("Students", student_array_list);
     }
-
-    public void transferAssignment (ArrayList<assignments> asg)
-    {
-        int i;
-        assignment_array_list= new ArrayList<String>();
-        for(i=0; i<asg.size(); i++)
-        {
-            assignment_array_list.add(asg.get(i).assignName);
-        }
-        ShowAlertDialogWithListview("Assignment", assignment_array_list);
-    }
-
-    public void transferExams (ArrayList<exams> exm)
-    {
-        int i;
-        exams_array_list= new ArrayList<String>();
-        for(i=0; i<exm.size(); i++)
-        {
-            exams_array_list.add(exm.get(i).examName);
-        }
-        ShowAlertDialogWithListview("Exams", exams_array_list);
-    }
-
-    //This method help showing the listView in a dialog
-    public void ShowAlertDialogWithListview(final String title, ArrayList<String> theList) {
-
-        final CharSequence[] displayList = theList.toArray(new String[theList.size()]);
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("" + title);
-        dialogBuilder.setItems(displayList, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-
-                //To shift to another activity
-                Intent i;
-
-                /*if(title.equalsIgnoreCase("Students"))
-                {
-                    i = new Intent(this,activity_name_ofStudent);
-                    startActivity(i);
-                }
-
-                else if (title.equalsIgnoreCase("Assignments"))
-                {
-                    i= new Intent(this, activity_name_ofAssignment);
-                    startActivity(i);
-                }
-
-                else
-                {
-                    i= new Intent(this, activity_name_ofExams);
-                    startActivity(i);
-                }
-                */
-
+    public void ShowStudents(final String title) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = (View) inflater.inflate(R.layout.student_list, null);
+        alertDialog.setView(convertView);
+        alertDialog.setTitle(title);
+        lv = convertView.findViewById(R.id.listview_student);
+        gridStudentAdapter adapter = new gridStudentAdapter(this,Students);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getBaseContext(),StudentActivity.class);
+                intent.putExtra("id",Students.get(i).ID);
+                startActivity(intent);
             }
         });
-
-        //The action that happen when the user click on cancel
-        dialogBuilder.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
                         dialogBox.cancel();
                     }
                 });
-        AlertDialog alertDialogObject = dialogBuilder.create();
-        alertDialogObject.show();
+        alertDialog.show();
+
+    }
+
+    public void studentRemove(final View view)
+    {
+        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(gridMainActivity.this).create();
+        alertDialog.setTitle("Delete Student");
+        alertDialog.setMessage("You are about to remove a student. Are you sure ?");
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                int i = lv.getPositionForView(view);
+                int classId = Students.get(i).ID;
+                Students.remove(i);
+                data.removeStudentFromClass(classId,classID);
+                lv.setAdapter(new gridStudentAdapter(gridMainActivity.this,Students));
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+
+    //To manage exam, adapter, showing and removing
+    class gridExamAdapter extends ArrayAdapter<exams>
+    {
+        public gridExamAdapter(Activity context, ArrayList<exams> Exams)
+        { super(context,0, Exams); }
+
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+            //exams currentExam = getItem(position);
+            View listItemView= convertView;
+            if(listItemView == null)
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.exam_item,parent,false);
+            TextView name= (TextView) listItemView.findViewById(R.id.tv_item_exam_name);
+            name.setText(Exams.get(position).examName);
+            return listItemView;
+
+        }
+    }
+    public void ShowExams(final String title) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.exam_list, null);
+        alertDialog.setView(convertView);
+        alertDialog.setTitle(title);
+        lv = convertView.findViewById(R.id.listview_exam);
+        gridExamAdapter adapter = new gridExamAdapter(this,Exams);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getBaseContext(),ExamListActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        dialogBox.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+    public void examRemove(final View view)
+    {
+        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(gridMainActivity.this).create();
+        alertDialog.setTitle("Delete Exam");
+        alertDialog.setMessage("You are about to remove an Exam. Are you sure ?");
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                int i = lv.getPositionForView(view);
+                int examId = Exams.get(i).IdE;
+                Exams.remove(i);
+                data.removeExam(examId);
+                lv.setAdapter(new gridExamAdapter(gridMainActivity.this,Exams));
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+
+    //Assign Management
+    class gridAssignAdapter extends ArrayAdapter<assignments>
+    {
+        public gridAssignAdapter(Activity context, ArrayList<assignments> Assignments)
+        { super(context,0, Assignments); }
+
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+            //assignments currentAssign = getItem(position);
+            View listItemView= convertView;
+            if(listItemView == null)
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.assign_item,parent,false);
+            TextView name= listItemView.findViewById(R.id.tv_item_assign_name);
+            name.setText(Assignments.get(position).assignName);
+            return listItemView;
+        }
+    }
+    public void ShowAssign(final String title) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.assign_list, null);
+        alertDialog.setView(convertView);
+        alertDialog.setTitle(title);
+        lv = convertView.findViewById(R.id.listview_assign);
+        gridAssignAdapter adapter = new gridAssignAdapter(this,Assignments);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getBaseContext(),AssignmentActivity.class);
+                intent.putExtra("ID",Assignments.get(i).IdA);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        dialogBox.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+    public void assignRemove(final View view)
+    {
+        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(gridMainActivity.this).create();
+        alertDialog.setTitle("Delete Assignment");
+        alertDialog.setMessage("You are about to remove an assignment. Are you sure ?");
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                int i = lv.getPositionForView(view);
+                int assigId = Assignments.get(i).IdA;
+                Assignments.remove(i);
+                data.removeAssignment(assigId);
+                lv.setAdapter(new gridAssignAdapter(gridMainActivity.this,Assignments));
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
 
@@ -378,7 +516,7 @@ public class gridMainActivity extends AppCompatActivity {
                      {
                          emailIndex= cs.getColumnIndex("Email");
                          email=cs.getString(emailIndex);
-                         Students.add(new students(name,email));
+                         Students.add(new students(name,email,cursorS.getInt(idIndex)));
                          cs.moveToNext();
                      }
                  } catch (Exception e)
@@ -393,9 +531,10 @@ public class gridMainActivity extends AppCompatActivity {
         try {
             cursorE.moveToFirst();
             for (int j = 0; j < cursorE.getCount(); j++) {
+                idIndex = cursorE.getColumnIndex("_id");
                 nameIndex = cursorE.getColumnIndex("Name");
                 examName = cursorE.getString(nameIndex);
-                Exams.add(new exams(examName));
+                Exams.add(new exams(examName,cursorE.getInt(idIndex)));
                 cursorE.moveToNext();
             }
         } catch (Exception e) {e.printStackTrace(); }
@@ -405,11 +544,14 @@ public class gridMainActivity extends AppCompatActivity {
         try {
             cursorA.moveToFirst();
             for (int k = 0; k < cursorA.getCount(); k++) {
+                idIndex= cursorA.getColumnIndex("_id");
                 nameIndex = cursorA.getColumnIndex("Name");
                 assignName= cursorA.getString(nameIndex);
-                Assignments.add(new assignments(assignName));
+                Assignments.add(new assignments(assignName,cursorA.getInt(idIndex)));
                 cursorA.moveToNext();
             }
         } catch (Exception e) {e.printStackTrace(); }
 
-    }}
+    }
+
+}

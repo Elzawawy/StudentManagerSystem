@@ -64,7 +64,7 @@ public class StudentActivity extends AppCompatActivity {
 
         //Receiving Student ID from the Prev. Activity.
         Bundle b = getIntent().getExtras();
-        studentID = Integer.valueOf(b.getString("id"));
+        studentID = b.getInt("id");
 
         //Istance of the DBHelper
        dbHelper=new DataBaseHelper(getApplicationContext());

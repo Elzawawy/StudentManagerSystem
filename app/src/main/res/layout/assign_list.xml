@@ -7,7 +7,7 @@
     android:background="@drawable/lightblue">
 
     <ListView
-        android:id="@+id/listview_student"
+        android:id="@+id/listview_assign"
         android:layout_width="match_parent"
         android:layout_height="549dp"
         android:layout_alignParentBottom="true"
