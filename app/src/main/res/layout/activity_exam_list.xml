@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Exams.ExamListActivity">
+    tools:context=".Exams.ExamListActivity"
+    android:background="@drawable/light_blue_background">
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/exams_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/circular_toolbar"
@@ -20,26 +21,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Exam List"
-            android:textColor="#FFFFFF"
+            android:text="@string/exam_list_title"
+            android:textColor="@color/colorWhite"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
     <ListView
         android:id="@+id/lv_exams"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:cacheColorHint="@color/cardview_light_background"
+        android:layout_below="@+id/exams_toolbar">
     </ListView>
+
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_exams"
+        android:id="@+id/fab_exam_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        style="@style/Widget.Design.FloatingActionButton"
-        app:fabSize="normal"
-        android:src="@drawable/checked"
-        android:onClick="checkExam"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/default_view_margin"
+        android:src="@drawable/ic_check"
+        app:fabSize="normal"/>
 
-</LinearLayout>
+</RelativeLayout>

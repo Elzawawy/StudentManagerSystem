@@ -9,6 +9,11 @@
     <string name="checkoff_dialog_tv_3">Please Enter the Student Rate.</string>
     <string name="checkoff_dialog_bt_1">Submit</string>
     <string name="checkoff_dialog_bt_2">Cancel</string>
+    <string name="assignment_list_title">Assignment List</string>
+    <string name="assignment_list_button">Check an assignment off</string>
+    <string name="exam_list_title">Exam List</string>
+    <string name="student_list_title">Student List</string>
+    <string name="class_list_title">Class List</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_assignment_name">Assignment Name : </string>
     <string name="text_class_name">Class Name :</string>
