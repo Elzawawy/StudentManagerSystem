@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Students;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -26,6 +26,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xcodesystemsinterns.studentmanager.Adapters.CustomAdapter;
+import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.DataModel;
+import com.xcodesystemsinterns.studentmanager.R;
+
 import java.util.ArrayList;
 
 
@@ -35,7 +40,7 @@ public class StudentActivity extends AppCompatActivity {
 
     private ImageButton imageButton;
     private Button button;
-    private  DataBaseHelper dbHelper;
+    private DataBaseHelper dbHelper;
     private ArrayList<DataModel> dataModels;
     private ListView listView;
     private int index;

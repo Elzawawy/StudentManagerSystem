@@ -1,13 +1,13 @@
 package com.xcodesystemsinterns.studentmanager;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+
+import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentsList;
+import com.xcodesystemsinterns.studentmanager.Classes.classListActivity;
+import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 
 public class HomeActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;

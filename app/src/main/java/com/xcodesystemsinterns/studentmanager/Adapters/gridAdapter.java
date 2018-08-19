@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

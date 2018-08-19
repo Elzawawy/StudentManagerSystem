@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AssignmentActivity">
+    tools:context=".Assignments.AssignmentActivity">
 
     <TextView
         android:id="@+id/tv_assignment_title"

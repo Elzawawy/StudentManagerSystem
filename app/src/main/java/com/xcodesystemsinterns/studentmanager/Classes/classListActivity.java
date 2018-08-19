@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Classes;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.R;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ class myAdapter extends BaseAdapter{
     Context context;
     ArrayList<classes> Classes;
 
-    public myAdapter(Context context, ArrayList<com.xcodesystemsinterns.studentmanager.classes> classes) {
+    public myAdapter(Context context, ArrayList<classes> classes) {
         this.context = context;
         this.Classes = classes;
     }

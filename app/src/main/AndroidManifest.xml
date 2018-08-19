@@ -16,15 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ExamListActivity">
+        <activity android:name=".Exams.ExamListActivity">
         </activity>
-        <activity android:name=".classListActivity"/>
-        <activity android:name=".gridMainActivity"/>
+        <activity android:name=".Classes.classListActivity"/>
+        <activity android:name=".Classes.gridMainActivity"/>
 
-        <activity android:name=".AssignmentsList" />
+        <activity android:name=".Assignments.AssignmentsList" />
         <activity
             android:theme="@style/Theme.AppCompat.Dialog"
-            android:name=".AssignmentActivity" />
+            android:name=".Assignments.AssignmentActivity" />
     </application>
 
 </manifest>

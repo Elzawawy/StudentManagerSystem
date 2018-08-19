@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import com.xcodesystemsinterns.studentmanager.R;
 
 import java.util.List;
 

@@ -1,14 +1,15 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Assignments;
 
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.Adapters.ExpandAdapter;
+import com.xcodesystemsinterns.studentmanager.R;
 
 public class AssignmentActivity extends AppCompatActivity {
     DataBaseHelper dt;

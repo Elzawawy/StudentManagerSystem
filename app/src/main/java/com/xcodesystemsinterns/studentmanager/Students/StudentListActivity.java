@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Students;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.xcodesystemsinterns.studentmanager.Adapters.CustomAdapter;
+import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.DataModel;
+import com.xcodesystemsinterns.studentmanager.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Adapters;
 
 
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.xcodesystemsinterns.studentmanager.DataModel;
+import com.xcodesystemsinterns.studentmanager.R;
 
 import java.util.ArrayList;
 

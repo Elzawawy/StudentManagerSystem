@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Assignments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,13 +7,15 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.R;
 
 import java.util.ArrayList;
 import java.util.List;

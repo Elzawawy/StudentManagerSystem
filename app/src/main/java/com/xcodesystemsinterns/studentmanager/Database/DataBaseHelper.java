@@ -1,4 +1,4 @@
-package com.xcodesystemsinterns.studentmanager;
+package com.xcodesystemsinterns.studentmanager.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
