@@ -25,6 +25,11 @@
         <activity
             android:theme="@style/Theme.AppCompat.Dialog"
             android:name=".Assignments.AssignmentActivity" />
+
+        <activity android:name=".Students.StudentActivity" />
+        <activity
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:name=".Students.StudentListActivity" />
     </application>
 
 </manifest>
