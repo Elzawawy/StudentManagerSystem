@@ -489,7 +489,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     }
     public Cursor getDoneAssignmentList(int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+
+        return sqLiteDatabase.rawQuery(" select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+","+TABLE8_COLUMN3_NAME+" from "+TABLE1_NAME+" join "+TABLE8_NAME+" join "+TABLE3_NAME+
                 " where  "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME+" ="+AssignmentID+" and "+TABLE8_NAME+"."+TABLE8_COLUMN1_NAME+" ="+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" and "+TABLE8_NAME+"."+TABLE8_COLUMN2_NAME+" = "+TABLE3_NAME+"."+TABLE3_COLUMN1_NAME,null);
     }
 
