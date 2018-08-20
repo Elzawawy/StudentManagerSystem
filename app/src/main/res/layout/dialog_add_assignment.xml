@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/assignNameDialog"
+        android:id="@+id/et1_add_assignment_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_assignment_name"
@@ -28,11 +28,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:scrollHorizontally="false"
-        android:id="@+id/descriptionDialog"
+        android:id="@+id/et2_add_assignment_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_assignment_description"
+        android:scrollHorizontally="false"
         android:inputType="textMultiLine" />
 
 
@@ -44,7 +44,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/assignDueDateDialog"
+        android:id="@+id/et3_add_assignment_duedate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_assignment_due_date"

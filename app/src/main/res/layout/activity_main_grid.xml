@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/light_blue_background"
     tools:context=".Classes.gridMainActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar2"
+        android:id="@+id/toolbar_class_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/circular_toolbar"
@@ -19,19 +20,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Manage Class"
+            android:text="@string/class_activity_title"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="116dp"
             tools:layout_editor_absoluteY="47dp" />
     </android.support.v7.widget.Toolbar>
+
     <GridView
         android:id="@+id/grid"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_margin="@dimen/default_view_margin"
         android:layout_centerInParent="true"
         android:numColumns="2"
-        android:verticalSpacing="36dp">
+        android:verticalSpacing="@dimen/gv_vertical_spacing"
+        android:layout_below="@+id/toolbar_class_activity">
     </GridView>
 
 

@@ -42,8 +42,8 @@
     <string name="hint_student_email">Enter Student\'s Email</string>
     <string name="hint_student_phone">Enter Student\'s Phone Number</string>
     <string name="hint_student_address">Enter Student\'s Address</string>
-
-
+    <string name="error_incomplete_operation">Error ! All Fields must be complete.Please check your input and try again.</string>
+    <string name="class_activity_title">Class Management</string>
 
 
     <string name="bt_add_class_text">Add Class</string>

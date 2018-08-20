@@ -28,7 +28,7 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
     GridView gridView;
     final Context context = this;
     DataBaseHelper dataBaseHelper;
-
+    ClassDialogInterface classDialogInterface;
     String studentName, studentEmail, studentPhone, studentAddress,
             assignmentName, assignmentDate, assignmentDescription,
             examName, examDate;
@@ -62,7 +62,6 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Class Managemenet");
         setContentView(R.layout.activity_main_grid);
         dataBaseHelper = new DataBaseHelper(context);
         layoutInflaterAndroid = LayoutInflater.from(context);
@@ -75,9 +74,43 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
         //Set the grid view to the created Adapter instance.
         gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(this);
+        classDialogInterface = new ClassDialogInterface(this,classID);
     }
 
-    public void ShowStudents() {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
+        AlertDialog alertDialogAndroid;
+        switch (position) {
+            //to add student
+            case 0:
+                classDialogInterface.buildDialog(R.layout.dialog_add_student_class);
+                break;
+            //students list
+            case 1:
+                showStudents();
+                break;
+            //to add assignment
+            case 2:
+                classDialogInterface.buildDialog(R.layout.dialog_add_assignment);
+                break;
+            //for assign list
+            case 3:
+                showAssignments();
+                break;
+            //To add Exam
+            case 4:
+                classDialogInterface.buildDialog(R.layout.dialog_add_exam);
+                break;
+            case 5:
+                ShowExams();
+                break;
+        }
+
+    }
+
+
+    public void showStudents() {
         //Set-up Dialog with custom layout.
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -85,6 +118,7 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
         alertDialog.setView(convertView);
         //Set-up Dialog's title.
         alertDialog.setTitle(R.string.student_list_title);
+        alertDialog.setCancelable(false);
         //Set-up List View to show elements of class.
         lv = convertView.findViewById(R.id.lv_class_elements);
         //Define data to populate in List View
@@ -121,6 +155,7 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
         alertDialog.setView(convertView);
         //Set-up Dialog's title.
         alertDialog.setTitle(R.string.exam_list_title);
+        alertDialog.setCancelable(false);
         //Set-up List View to show elements of class.
         lv = convertView.findViewById(R.id.lv_class_elements);
         //Define data to populate in List View.
@@ -145,7 +180,7 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
         alertDialog.show();
     }
 
-    public void ShowAssign() {
+    public void showAssignments() {
         //Set-up Dialog with custom layout.
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(gridMainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -153,6 +188,7 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
         alertDialog.setView(convertView);
         //Set-up Dialog's title.
         alertDialog.setTitle(R.string.assignment_list_title);
+        alertDialog.setCancelable(false);
         //Set-up List View to show elements of class.
         lv = convertView.findViewById(R.id.lv_class_elements);
         //Define data to populate in List View.
@@ -169,7 +205,7 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
                 startActivity(intent);
             }
         });
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton("Close",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
                         dialogBox.cancel();
@@ -249,161 +285,4 @@ public class gridMainActivity extends AppCompatActivity implements AdapterView.O
         alertDialog.show();
     }*/
 
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
-        AlertDialog alertDialogAndroid;
-        switch (position) {
-            //to add student
-            case 0:
-                mView = layoutInflaterAndroid.inflate(R.layout.dialog_add_student, null);
-                alertDialogBuilderUserInput.setView(mView);
-                alertDialogBuilderUserInput.setCancelable(false);
-                alertDialogBuilderUserInput.setPositiveButton("submit", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogBox, int id) {
-                        studentEmail = ((EditText) mView.findViewById(R.id.userEmailDialog)).getText().toString();
-                        studentName = ((EditText) mView.findViewById(R.id.userInputDialog)).getText().toString();
-                        studentName = studentName + " " + ((EditText) mView.findViewById(R.id.userInputLastDialog)).getText().toString();
-                        studentPhone = ((EditText) mView.findViewById(R.id.userPhoneDialog)).getText().toString();
-                        studentAddress = ((EditText) mView.findViewById(R.id.userAddressDialog)).getText().toString();
-                        if (studentName.length() == 0 || studentEmail.length() == 0 || studentPhone.length() == 0 || studentAddress.length() == 0) {
-                            android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(context);
-                            errorDialog.setTitle("Error");
-                            errorDialog.setMessage("All field are required");
-                            errorDialog.setNeutralButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    android.app.AlertDialog errorAlert = errorDialog.create();
-                                    errorAlert.show();
-                                } else {
-                                    idS = dataBaseHelper.addStudent(studentName, studentEmail, studentPhone, studentAddress);
-                                    Boolean a = dataBaseHelper.addStudentToClass(idS, classID);
-                                    if (!a) {
-                                        android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(context);
-                                        errorDialog.setTitle("Error");
-                                        errorDialog.setMessage("Couldn't add student");
-                                        errorDialog.setNeutralButton("OK",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        dialog.dismiss();
-                                                    }
-                                                });
-                                        android.app.AlertDialog errorAlert = errorDialog.create();
-                                        errorAlert.show();
-                                    }
-                                    //Students.add(new students(studentName, studentEmail, idS));
-                                }
-                            }
-                        })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogBox, int id) {
-                                        dialogBox.cancel();
-                                    }
-                                });
-                alertDialogAndroid = alertDialogBuilderUserInput.create();
-                alertDialogAndroid.show();
-                break;
-
-            //students list
-            case 1:
-                ShowStudents();
-                break;
-
-            //to add assignment
-            case 2:
-                mView = layoutInflaterAndroid.inflate(R.layout.dialog_add_assignment, null);
-                alertDialogBuilderUserInput.setView(mView);
-                alertDialogBuilderUserInput
-                        .setCancelable(false)
-                        .setPositiveButton("submit", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogBox, int id) {
-                                assignmentName = ((EditText) mView.findViewById(R.id.assignNameDialog)).getText().toString();
-                                assignmentDescription = ((EditText) mView.findViewById(R.id.descriptionDialog)).getText().toString();
-                                assignmentDate = ((EditText) mView.findViewById(R.id.assignDueDateDialog)).getText().toString();
-                                if (assignmentDate.length() == 0 || assignmentDescription.length() == 0 || assignmentName.length() == 0) {
-                                    android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(context);
-                                    errorDialog.setTitle("Error");
-                                    errorDialog.setMessage("All field are required");
-                                    errorDialog.setNeutralButton("OK",
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    dialog.dismiss();
-                                                }
-                                            });
-                                    android.app.AlertDialog errorAlert = errorDialog.create();
-                                    errorAlert.show();
-                                } else {
-                                    idA = dataBaseHelper.addAssignment(assignmentName, assignmentDate, assignmentDescription, classID);
-                                    //Assignments.add(new assignments(assignmentName, idA, assignmentDate));
-                                }
-                            }
-                        })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogBox, int id) {
-                                        dialogBox.cancel();
-                                    }
-                                });
-                alertDialogAndroid = alertDialogBuilderUserInput.create();
-                alertDialogAndroid.show();
-                break;
-
-            //for assign list
-            case 3:
-                ShowAssign();
-                break;
-
-            //To add Exam
-            case 4:
-                mView = layoutInflaterAndroid.inflate(R.layout.dialog_add_exam, null);
-                alertDialogBuilderUserInput.setView(mView);
-                alertDialogBuilderUserInput
-                        .setCancelable(false)
-                        .setPositiveButton("submit", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogBox, int id) {
-                                examName = ((EditText) mView.findViewById(R.id.examNameDialog)).getText().toString();
-                                examDate = ((EditText) mView.findViewById(R.id.examDateDialog)).getText().toString();
-                                if (examName.length() == 0 || examDate.length() == 0) {
-                                    android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(context);
-                                    errorDialog.setTitle("Error");
-                                    errorDialog.setMessage("All field are required");
-                                    errorDialog.setNeutralButton("OK",
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    dialog.dismiss();
-                                                }
-                                            });
-                                    android.app.AlertDialog errorAlert = errorDialog.create();
-                                    errorAlert.show();
-                                } else {
-                                    idE = dataBaseHelper.addExam(examName, examDate, classID);
-                                    //Exams.add(new exams(examName, idE));
-                                }
-                            }
-                        })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogBox, int id) {
-                                        dialogBox.cancel();
-                                    }
-                                });
-                alertDialogAndroid = alertDialogBuilderUserInput.create();
-                alertDialogAndroid.show();
-                break;
-
-            case 5:
-                ShowExams();
-                break;
-        }
-
-    }
 }

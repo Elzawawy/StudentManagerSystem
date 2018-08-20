@@ -14,11 +14,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:scrollHorizontally="false"
-        android:id="@+id/examNameDialog"
+        android:id="@+id/et1_add_exam_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_exam_name"
+        android:scrollHorizontally="false"
         android:inputType="text" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/examDateDialog"
+        android:id="@+id/et2_add_exam_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_exam_date"
