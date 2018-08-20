@@ -3,6 +3,7 @@ package com.xcodesystemsinterns.studentmanager.Assignments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +27,7 @@ public class AssignmentsList extends AppCompatActivity {
         setContentView(R.layout.activity_assignments_list);
         list=(ListView) findViewById(R.id.AssignmentsList);
         dt=new DataBaseHelper(this);
-        Button checkOffButton=(Button) findViewById(R.id.CheckOffButton);
+        FloatingActionButton checkOffButton= findViewById(R.id.fab_assignment_list);
         checkOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

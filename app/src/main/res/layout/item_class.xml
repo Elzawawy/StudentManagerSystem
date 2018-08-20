@@ -28,7 +28,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_item_class_name"
+            android:id="@+id/tv1_item_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_view_margin"
@@ -37,7 +37,7 @@
 
 
         <TextView
-            android:id="@+id/tv_item_class_description"
+            android:id="@+id/tv2_item_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_view_margin"

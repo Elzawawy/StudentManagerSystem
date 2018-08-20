@@ -2,6 +2,7 @@ package com.xcodesystemsinterns.studentmanager.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,73 +15,52 @@ import com.xcodesystemsinterns.studentmanager.R;
 
 
 public class ClassCursorAdapter extends CursorAdapter {
-
-    //View variable can be "R.layout.item_class" or "R.layout.item_class_element"
-   // private int view;
-    //String variable can be "Assignment", "Student" , "Exam"
-    private String elementType;
+    private String viewType;
     DataBaseHelper data;
 
-    public ClassCursorAdapter(Context context, Cursor c, /*int view,*/ String elementType) {
+    public ClassCursorAdapter(Context context, Cursor c, String viewType) {
         super(context, c,0);
         /*this.view = view;*/
         data = new DataBaseHelper(context);
-        this.elementType = elementType;
+        this.viewType = viewType;
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.item_class_element, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_class, parent, false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        TextView tv_1= view.findViewById(R.id.tv_item_1);
-        TextView tv_2= view.findViewById(R.id.tv_item_2);
-        /*switch (this.view)
+        TextView textView_1= view.findViewById(R.id.tv1_item_class);
+        TextView textView_2= view.findViewById(R.id.tv2_item_class);
+        String tv1_text="", tv2_text="";
+        switch(viewType)
         {
-            case R.layout.item_class :
-                TextView tv_Name = view.findViewById(R.id.tv_item_class_name);
-                TextView tv_description = view.findViewById(R.id.tv_item_class_description);
-
-                String name = cursor.getString(cursor.getColumnIndex("Name"));
-                String description = cursor.getString(cursor.getColumnIndex("Description"));
-
-                tv_Name.setText(name);
-                tv_description.setText(description);
-
+            case "student" :
+                Cursor intermediateCursor = data.getStudentInfo(cursor.getInt(cursor.getColumnIndex("_id")));
+                intermediateCursor.moveToFirst();
+                tv1_text = cursor.getString(cursor.getColumnIndex("Name"));
+                tv2_text = intermediateCursor.getString(intermediateCursor.getColumnIndexOrThrow("Email"));
                 break;
 
-            case  R.layout.item_class_element :*/
-                if(elementType.equalsIgnoreCase("assignment"))
-                {
-                    String nameA = cursor.getString(cursor.getColumnIndex("Name"));
-                    String dueA = cursor.getString(cursor.getColumnIndex("DueDate"));
+            case "class" :
+                tv1_text = cursor.getString(cursor.getColumnIndex("Name"));
+                tv2_text = cursor.getString(cursor.getColumnIndex("Description"));
+                break;
 
-                    tv_1.setText(nameA);
-                    tv_2.setText(dueA);
-                }
-                else if (elementType.equalsIgnoreCase("exam"))
-                {
-                    String nameE = cursor.getString(cursor.getColumnIndex("Name"));
+            case "assignment" :
+                tv1_text = cursor.getString(cursor.getColumnIndex("Name"));
+                tv2_text = cursor.getString(cursor.getColumnIndex("DueDate"));
+                break;
 
-                    String dateE = cursor.getString(cursor.getColumnIndex("Date"));
-                    tv_1.setText(nameE);
-                    tv_2.setText(dateE);
-                }
-                else if (elementType.equalsIgnoreCase("student"))
-                {
-                    Cursor cs = data.getStudentInfo(cursor.getInt(cursor.getColumnIndex("_id")));
-
-                    String nameS = cursor.getString(cursor.getColumnIndex("Name"));
-                    //msh aryha
-                    //String emailS = cs.getString(cs.getColumnIndex("E"));
-
-                    tv_1.setText(nameS);
-                    //tv_2.setText(emailS);
-                }
-                //break;
-        //}
+            case "exam" :
+                tv1_text = cursor.getString(cursor.getColumnIndex("Name"));
+                tv2_text = cursor.getString(cursor.getColumnIndex("Date"));
+                break;
+        }
+        textView_1.setText(tv1_text);
+        textView_2.setText(tv2_text);
     }
 }

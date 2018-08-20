@@ -56,8 +56,8 @@ class myAdapter extends BaseAdapter{
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             view = (View) inflater.inflate(R.layout.item_class,null);
         }
-        TextView name = view.findViewById(R.id.tv_item_class_name);
-        TextView description = view.findViewById(R.id.tv_item_class_description);
+        TextView name = view.findViewById(R.id.tv1_item_class);
+        TextView description = view.findViewById(R.id.tv2_item_class);
         name.setText(Classes.get(i).name);
         description.setText(Classes.get(i).description);
 
@@ -133,7 +133,7 @@ public class classListActivity extends AppCompatActivity {
         data = new DataBaseHelper(this);
         setTitle("Classes");
         setContentView(R.layout.list_class);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_class_list);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

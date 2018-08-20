@@ -104,7 +104,7 @@ public class CheckOffExam extends DialogFragment {
 
                         }
                         catch (ArrayIndexOutOfBoundsException e){
-                            Toast.makeText(getActivity(),"Submit Unsuccessful",Toast.LENGTH_LONG);
+                            Toast.makeText(getActivity(),"Submit Unsuccessful",Toast.LENGTH_LONG).show();
                         }
                     }
                 })

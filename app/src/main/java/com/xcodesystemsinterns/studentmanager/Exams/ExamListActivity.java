@@ -21,7 +21,7 @@ public class ExamListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_list);
         lvExams = findViewById(R.id.lv_exams);
-        floatingActionButton = findViewById(R.id.fab_exams);
+        floatingActionButton = findViewById(R.id.fab_exam_list);
         dataBaseHelper = new DataBaseHelper(this);
         //addDummyExams();
         Cursor examCursor = dataBaseHelper.getAllExams();
