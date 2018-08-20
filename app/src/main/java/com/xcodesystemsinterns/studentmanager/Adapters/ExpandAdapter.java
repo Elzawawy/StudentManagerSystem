@@ -2,6 +2,7 @@ package com.xcodesystemsinterns.studentmanager.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,17 +91,18 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int i, int i1, boolean b, View v, ViewGroup viewGroup) {
         Cursor c=(Cursor) getChild(i,i1);
+        Log.i("Trace",c.getColumnCount()+"");
         // v.setTransitionName();
         if(v==null){
             LayoutInflater li=(LayoutInflater) this.mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v=li.inflate(R.layout.single_student_details,null);
         }
         TextView name = (TextView) v.findViewById(R.id.StudentName);
-        TextView id = (TextView) v.findViewById(R.id.StudentID);
         TextView grade = (TextView) v.findViewById(R.id.StudentGrade);
 
         name.setText(c.getString(1));
-        id.setText(""+c.getInt(0));
+        grade.setText("" + c.getInt(2)+"/5");
+
         return v;
     }
 
