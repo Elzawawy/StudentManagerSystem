@@ -101,8 +101,10 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
         TextView grade = (TextView) v.findViewById(R.id.StudentGrade);
 
         name.setText(c.getString(1));
-        grade.setText("" + c.getInt(2)+"/5");
-
+        //If it is a done assignment show grade , other wise don't show but only the name.
+        if(c.getColumnCount()==3) {
+            grade.setText("" + c.getInt(2)+"/5");
+        }
         return v;
     }
 
