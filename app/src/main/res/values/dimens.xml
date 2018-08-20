@@ -8,6 +8,7 @@
     <dimen name="default_subtitle_text_size">18sp</dimen>
     <dimen name="default_body_text_size">15sp</dimen>
     <dimen name="default_view_margin">10dp</dimen>
+    <dimen name="small_view_margin">5dp</dimen>
     <dimen name="default_view_padding">5dp</dimen>
     <dimen name="gv_column_width">100dp</dimen>
     <dimen name="gv_vertical_spacing">36sp</dimen>

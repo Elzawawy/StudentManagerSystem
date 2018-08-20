@@ -11,7 +11,7 @@ import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.Adapters.ExamCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.R;
 
-public class ExamListActivity extends AppCompatActivity {
+public class ExamListActivity extends AppCompatActivity implements View.OnClickListener {
     // Find ListView to populate
     ListView lvExams;
     DataBaseHelper dataBaseHelper;
@@ -29,16 +29,11 @@ public class ExamListActivity extends AppCompatActivity {
         ExamCursorAdapter examCursorAdapter = new ExamCursorAdapter(this,examCursor);
         // Attach cursor adapter to the ListView
         lvExams.setAdapter(examCursorAdapter);
-
+        //set OnClickListener for the floating action button
+        floatingActionButton.setOnClickListener(this);
     }
-
-    void addDummyExams(){
-        int classID = dataBaseHelper.addClass("Class1","This is a test");
-        dataBaseHelper.addExam("Exam1","20-2",classID);
-    }
-
-
-    public void checkExam(View view) {
+    @Override
+    public void onClick(View v) {
         CheckOffExam newFragment = CheckOffExam.newInstance(dataBaseHelper.getClassList(),this);
         newFragment.show(getSupportFragmentManager(),null);
     }

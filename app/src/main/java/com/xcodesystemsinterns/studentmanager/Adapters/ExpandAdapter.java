@@ -99,8 +99,8 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
         TextView id = (TextView) v.findViewById(R.id.StudentID);
         TextView grade = (TextView) v.findViewById(R.id.StudentGrade);
 
-        name.setText(c.getString(0));
-        id.setText(""+c.getInt(1));
+        name.setText(c.getString(1));
+        id.setText(""+c.getInt(0));
         return v;
     }
 

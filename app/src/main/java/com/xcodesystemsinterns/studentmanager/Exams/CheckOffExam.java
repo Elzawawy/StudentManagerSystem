@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -62,13 +63,13 @@ public class CheckOffExam extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
        final View v=getActivity().getLayoutInflater().inflate(R.layout.check_off_exam_dialog, null, false);
        classesSpinner=v.findViewById(R.id.sp_classes);
-        studentsSpinner=v.findViewById(R.id.sp_students_exam);
-        examsSpinner=v.findViewById(R.id.sp_exams);
-        setCancelable(false);
-       final RatingBar ratingBar=v.findViewById(R.id.rating_exam);
-        ratingBar.setIsIndicator(false);
-        addClassesOnSpinner();
-        classesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+       studentsSpinner=v.findViewById(R.id.sp_students_exam);
+       examsSpinner=v.findViewById(R.id.sp_exams);
+       setCancelable(false);
+       final EditText et_studentGrade = v.findViewById(R.id.et_grade_check_off_exam);
+
+       addClassesOnSpinner();
+       classesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if(!classesIDList.isEmpty())
@@ -99,7 +100,7 @@ public class CheckOffExam extends DialogFragment {
                             dt.putExamGrade(
                                     studentsIDList.get(studentsSpinner.getSelectedItemPosition()),
                                     examsIDList.get(examsSpinner.getSelectedItemPosition()),
-                                    ratingBar.getNumStars()
+                                    Integer.parseInt(et_studentGrade.getText().toString())
                             );
 
                         }
@@ -156,8 +157,8 @@ public class CheckOffExam extends DialogFragment {
             studentsIDList.clear();
             for(int i=0;i<cursor.getCount();i++)
             {
-                studentsNamesList.add(cursor.getString(0));
-                studentsIDList.add(cursor.getInt(1));
+                studentsNamesList.add(cursor.getString(1));
+                studentsIDList.add(cursor.getInt(0));
                 cursor.moveToNext();
             }
         }

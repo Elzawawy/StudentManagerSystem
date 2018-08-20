@@ -9,6 +9,7 @@ import android.view.View;
 import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentsList;
 import com.xcodesystemsinterns.studentmanager.Classes.classListActivity;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.Exams.ExamListActivity;
 
 public class HomeActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
@@ -25,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showExamList(View view) {
-
+        startActivity(new Intent(this, ExamListActivity.class));
     }
 
     public void showAssignmentList(View view) {
@@ -33,7 +34,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showClassList(View view) {
-        Intent i = new Intent(this,classListActivity.class);
-        startActivity(i);
+        startActivity(new Intent(this,classListActivity.class));
     }
 }
