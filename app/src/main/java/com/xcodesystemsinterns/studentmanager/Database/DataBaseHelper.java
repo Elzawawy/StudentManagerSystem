@@ -165,7 +165,14 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         onCreate(db);
 
     }
-
+    public Cursor getDoneStudentListByExam(int examID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+
+                " from "+TABLE1_NAME+" join "+TABLE9_NAME+" join "+TABLE4_NAME+
+                " where "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" = "+TABLE9_NAME+"."+TABLE9_COLUMN1_NAME+
+                " and "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" = "+TABLE9_NAME+"."+TABLE9_COLUMN2_NAME+
+                " and "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" = "+examID,null);
+    }
     //To add an assignment to a specific classImage.
     //Returns Assignment ID that has been created and -1 if the creation has failed.
     public int addAssignment(String name,String duedate, String description, int classID){
