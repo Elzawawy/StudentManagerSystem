@@ -31,9 +31,8 @@
         android:layout_width="match_parent"
         android:layout_margin="@dimen/default_view_margin"
         android:layout_centerInParent="true"
-        android:numColumns="@dimen/gv_num_columns"
-        android:verticalSpacing="@dimen/gv_vertical_spacing"
-        android:layout_below="@+id/toolbar_class_activity">
+        android:numColumns="2"
+        android:verticalSpacing="@dimen/gv_vertical_spacing">
     </GridView>
 
 

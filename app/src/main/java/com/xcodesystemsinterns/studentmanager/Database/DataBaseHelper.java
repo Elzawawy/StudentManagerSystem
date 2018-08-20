@@ -507,7 +507,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 " where "+TABLE5_COLUMN1_NAME+"= "+TABLE1_COLUMN1_NAME+" and "+TABLE2_COLUMN1_NAME+" = "+TABLE5_COLUMN2_NAME+" and "+TABLE1_COLUMN1_NAME+"= '"+StudentID+"'", null);
     }
     //This function gets the assignment ID as input and returns a Cursor with 5 columns.
-    //First Column --> Name , Second ---> DueDate , Third ---> Description , Fourth ---> Class Name, Fifth ---> Class ID
+    //First Column --> Name , Second ---> DueDate , Third ---> Description , Fourth ---> Class Name
     public Cursor getAssignmentInfo(int AssignmentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         return sqLiteDatabase.rawQuery("select "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+","+TABLE3_COLUMN3_NAME+","+TABLE3_NAME+"."+TABLE3_COLUMN4_NAME+","+
