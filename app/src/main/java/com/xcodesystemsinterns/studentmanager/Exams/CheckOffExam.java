@@ -134,8 +134,8 @@ public class CheckOffExam extends DialogFragment {
             studentsSpinner.setAdapter(null);
             for(int i=0;i<cursor.getCount();i++)
             {
-                examsNamesList.add(cursor.getString(cursor.getColumnIndexOrThrow("Name")));
-                examsIDList.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
+                examsNamesList.add(cursor.getString(1));
+                examsIDList.add(cursor.getInt(0));
                 cursor.moveToNext();
             }
         }

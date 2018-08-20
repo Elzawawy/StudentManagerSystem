@@ -20,27 +20,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/StudentID"
+        android:id="@+id/StudentGrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="44dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="16dp"
-        android:text="1234"
         android:textColor="?android:attr/colorButtonNormal"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/StudentName"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/StudentGrade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:textColor="?android:attr/colorButtonNormal"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/StudentID"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
