@@ -12,7 +12,7 @@
     card_view:cardUseCompatPadding="true">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/iv_item_class"
         android:layout_width="41dp"
         android:layout_height="56dp"
         android:layout_gravity="end|center_vertical"

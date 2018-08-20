@@ -113,8 +113,8 @@ public class CheckOffAssignment extends DialogFragment {
             studentsIDList.clear();
             for(int i=0;i<cursor.getCount();i++)
             {
-                studentsNamesList.add(cursor.getString(0));
-                studentsIDList.add(cursor.getInt(1));
+                studentsNamesList.add(cursor.getString(cursor.getColumnIndexOrThrow("Name")));
+                studentsIDList.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
                 cursor.moveToNext();
             }
         }

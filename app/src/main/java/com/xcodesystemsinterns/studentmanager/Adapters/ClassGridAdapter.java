@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.xcodesystemsinterns.studentmanager.R;
 
-public class gridAdapter extends BaseAdapter {
+public class ClassGridAdapter extends BaseAdapter {
 
     Context context;
     private final String [] namesPhotos;
@@ -18,7 +18,7 @@ public class gridAdapter extends BaseAdapter {
     View view;
     LayoutInflater inflater;
 
-    public gridAdapter(Context context, String[] namesPhotos, int[] photos) {
+    public ClassGridAdapter(Context context, String[] namesPhotos, int[] photos) {
         this.context = context;
         this.namesPhotos = namesPhotos;
         this.photos = photos;

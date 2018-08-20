@@ -174,7 +174,7 @@ public class classListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // put you activity's name instead of NewActivity
-                Intent intent = new Intent(getBaseContext(),gridMainActivity.class);
+                Intent intent = new Intent(getBaseContext(),ClassActivity.class);
                 intent.putExtra("ClassID",Classes.get(i).id);
                 startActivity(intent);
             }
