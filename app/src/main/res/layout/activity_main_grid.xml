@@ -21,10 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/class_activity_title"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="116dp"
-            tools:layout_editor_absoluteY="47dp" />
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
     <GridView
@@ -33,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_margin="@dimen/default_view_margin"
         android:layout_centerInParent="true"
-        android:numColumns="2"
+        android:numColumns="@dimen/gv_num_columns"
         android:verticalSpacing="@dimen/gv_vertical_spacing"
         android:layout_below="@+id/toolbar_class_activity">
     </GridView>

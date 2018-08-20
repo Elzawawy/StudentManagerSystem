@@ -78,7 +78,7 @@ public class ClassCursorAdapter extends CursorAdapter implements View.OnClickLis
             case "assignment" :
                 assignmentIDs.add(cursor.getInt(cursor.getColumnIndex("_id")));
                 tv1_text = cursor.getString(cursor.getColumnIndex("Name"));
-                tv2_text = cursor.getString(cursor.getColumnIndex("_id"));
+                tv2_text = cursor.getString(cursor.getColumnIndex("DueDate"));
                 break;
 
             case "exam" :
