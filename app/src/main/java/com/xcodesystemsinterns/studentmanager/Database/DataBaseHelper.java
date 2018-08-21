@@ -27,6 +27,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     private static final String TABLE1_COLUMN3_NAME = "Email";
     private static final String TABLE1_COLUMN4_NAME = "PhoneNumber";
     private static final String TABLE1_COLUMN5_NAME = "Address";
+    private static final String TABLE1_COLUMN6_NAME = "Note";
     //================== Table 2 ======================
     private static final String TABLE2_NAME = "Classes";
     private static final String TABLE2_COLUMN1_NAME = "ClassID";
@@ -83,7 +84,8 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 TABLE1_COLUMN2_NAME+" TEXT NOT NULL, "+
                 TABLE1_COLUMN3_NAME+" TEXT NOT NULL, "+
                 TABLE1_COLUMN4_NAME+" TEXT NOT NULL, " +
-                TABLE1_COLUMN5_NAME+" TEXT NOT NULL);";
+                TABLE1_COLUMN5_NAME+" TEXT NOT NULL," +
+                TABLE1_COLUMN6_NAME+" TEXT );";
         String query_Table2 = "CREATE TABLE "+ TABLE2_NAME + " ( "+
                 TABLE2_COLUMN1_NAME+" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
                 TABLE2_COLUMN2_NAME+" TEXT NOT NULL, "+
@@ -473,6 +475,15 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getDoneStudentListByExam(int examID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+","+TABLE9_COLUMN3_NAME+
+                " from "+TABLE1_NAME+" join "+TABLE9_NAME+" join "+TABLE4_NAME+
+                " where "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" = "+TABLE9_NAME+"."+TABLE9_COLUMN1_NAME+
+                " and "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" = "+TABLE9_NAME+"."+TABLE9_COLUMN2_NAME+
+                " and "+TABLE4_NAME+"."+TABLE4_COLUMN1_NAME+" = "+examID,null);
+    }
+
     public Cursor getUndoneAssignmentList(int AssignmentID ){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         return sqLiteDatabase.rawQuery("select Distinct "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+
@@ -591,6 +602,19 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         sqLiteDatabase.delete(TABLE5_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null);
         return sqLiteDatabase.delete(TABLE2_NAME, TABLE5_COLUMN2_NAME + " = " + ClassID + " ", null)>0;
 
+    }
+
+    public boolean setStudentNote(int studentID,String note){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE1_COLUMN6_NAME,note);
+        //If result is bigger than 0 ( i.e not -1 ) ----> return success.
+        return sqLiteDatabase.update(TABLE1_NAME,contentValues,TABLE1_COLUMN1_NAME+" = "+studentID+" ",null) > 0;
+    }
+
+    public Cursor getStudentNote(int studentID){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.rawQuery("select "+TABLE1_COLUMN6_NAME+" from "+TABLE1_NAME+" where "+TABLE1_COLUMN1_NAME+" = "+studentID,null);
     }
 
 
