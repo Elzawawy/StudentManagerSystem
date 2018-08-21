@@ -167,7 +167,6 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         onCreate(db);
 
     }
-
     //To add an assignment to a specific classImage.
     //Returns Assignment ID that has been created and -1 if the creation has failed.
     public int addAssignment(String name,String duedate, String description, int classID){

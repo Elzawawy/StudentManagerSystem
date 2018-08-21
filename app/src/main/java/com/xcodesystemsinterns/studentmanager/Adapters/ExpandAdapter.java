@@ -18,11 +18,13 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     Context mcontext;
     Cursor doneCursor;
     Cursor undoneCursor;
+    String viewType;
 
-    public ExpandAdapter(Context mcontext, Cursor doneCursor, Cursor undoneCursor) {
+    public ExpandAdapter(Context mcontext, Cursor doneCursor, Cursor undoneCursor,String viewType) {
         this.mcontext = mcontext;
         this.doneCursor = doneCursor;
         this.undoneCursor = undoneCursor;
+        this.viewType=viewType;
     }
     //List<StudentDescription> done;
     // List<StudentDescription> undone;
@@ -91,7 +93,6 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int i, int i1, boolean b, View v, ViewGroup viewGroup) {
         Cursor c=(Cursor) getChild(i,i1);
-        Log.i("Trace",c.getColumnCount()+"");
         // v.setTransitionName();
         if(v==null){
             LayoutInflater li=(LayoutInflater) this.mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -103,8 +104,13 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
         name.setText(c.getString(1));
         //If it is a done assignment show grade , other wise don't show but only the name.
         if(c.getColumnCount()==3) {
+            if(viewType.equals("assignment"))
             grade.setText("" + c.getInt(2)+"/5");
+            else
+                grade.setText("" + c.getString(2));
         }
+        else
+            grade.setText("");
         return v;
     }
 

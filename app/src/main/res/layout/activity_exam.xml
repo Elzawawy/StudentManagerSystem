@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Assignments.AssignmentActivity"
+    android:background="@color/colorWhite"
+    style="@style/Base.Animation.AppCompat.Dialog"
+    android:padding="@dimen/default_view_padding"
+    >
+
+    <TextView
+        android:id="@+id/tv_exam_title"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_view_margin"
+        android:gravity="center_horizontal"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/default_title_text_size" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_view_margin"
+        android:text="Date:"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/default_subtitle_text_size" />
+
+    <TextView
+        android:id="@+id/tv_exam_duedate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_view_margin"
+        android:textColor="@android:color/black" />
+
+    <ExpandableListView
+        android:id="@+id/lv_expandable_students_exam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_view_margin" />
+</LinearLayout>
