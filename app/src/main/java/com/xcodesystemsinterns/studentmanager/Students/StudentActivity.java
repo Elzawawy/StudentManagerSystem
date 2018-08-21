@@ -49,7 +49,11 @@ public class StudentActivity extends AppCompatActivity {
     private Cursor cursor;
     private ArrayList<Integer> classesID;
     private View dialog_classes_view, dialog_about_view, dialog_removeClasses_view, drop_down_view, dialog_addNoteVeiw;
-    private Dialog dialog_classes, dialog_about, dialog_removeClasses, dialog_dropDownMenu, dialog_addNote;
+    private AlertDialog dialog_classes;
+    private AlertDialog dialog_about;
+    private AlertDialog dialog_removeClasses;
+    private Dialog dialog_dropDownMenu;
+    private AlertDialog dialog_addNote;
     private String firstName, Email, studentAddress, phoneNumber, id;
     Spinner spinner_Classes;
     ArrayList<String> classes_names;
@@ -74,11 +78,11 @@ public class StudentActivity extends AppCompatActivity {
 
         //For Holding Id's of the Classes to get The assignments of each class.
 
-
         final Context c = this;
         getStudentInfo();
         getStudentClasses();
-        getStudentAssignments();
+        getStudentDoneAssignments();
+        getStudentUnDoneAssignments();
         getStudentExams();
         getStudentNote();
 
@@ -89,76 +93,51 @@ public class StudentActivity extends AppCompatActivity {
         dialog_removeClasses_view = LayoutInflater.from(c).inflate(R.layout.dialog_remove_class, null);
         dialog_addNoteVeiw = LayoutInflater.from(c).inflate(R.layout.dialog_add_note, null);
 
-        dialog_classes = new Dialog(this);
-        dialog_classes.setContentView(dialog_classes_view);
-        dialog_classes.setCanceledOnTouchOutside(false);
-
-        dialog_removeClasses = new Dialog(this);
-        dialog_removeClasses.setContentView(dialog_removeClasses_view);
-        dialog_removeClasses.setCanceledOnTouchOutside(false);
-
-        dialog_about = new Dialog(this);
-        dialog_about.setContentView(dialog_about_view);
-        dialog_about.setCanceledOnTouchOutside(false);
-
-        dialog_dropDownMenu = new Dialog(this);
-        dialog_dropDownMenu.setContentView(drop_down_view);
-
-        dialog_addNote = new Dialog(this);
-        dialog_addNote.setContentView(dialog_addNoteVeiw);
-        dialog_addNote.setCanceledOnTouchOutside(false);
 
         spinner_Classes = dialog_classes_view.findViewById(R.id.spinner);
-        final Spinner spinnerRemoveClass = dialog_removeClasses.findViewById(R.id.spinner2);
 
-        ///For the Add Class Dialog Buttons and Listeners
-        button = (Button) dialog_classes_view.findViewById(R.id.buttonAddClass);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        //Add Class Dialog
+        dialog_classes =  new AlertDialog.Builder(this)
+                .setTitle("Add Class")
+                .setView(dialog_classes_view)
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // ok button
+                        int id = (int) classes_id.get(classes_names.indexOf((String) spinner_Classes.getSelectedItem()));
 
-                int id = (int) classes_id.get(classes_names.indexOf((String) spinner_Classes.getSelectedItem()));
+                        if (classesID.contains(id)) {
+                            Toast.makeText(getApplicationContext(), "Student Already in this Class", Toast.LENGTH_LONG).show();
+                        } else {
+                            if (dbHelper.addStudentToClass(studentID, id)) {
+                                Toast.makeText(getApplicationContext(), "Student Added to the Class", Toast.LENGTH_LONG).show();
+                                getStudentClasses();
+                                getStudentDoneAssignments();
+                                getStudentUnDoneAssignments();
+                                dialog_classes.cancel();
 
-                if (classesID.contains(id)) {
-                    Toast.makeText(getApplicationContext(), "Student Already in this Class", Toast.LENGTH_LONG).show();
-                } else {
-                    if (dbHelper.addStudentToClass(studentID, id)) {
-                        Toast.makeText(getApplicationContext(), "Student Added to the Class", Toast.LENGTH_LONG).show();
-                        getStudentClasses();
-                        getStudentAssignments();
+                            } else
+                                Toast.makeText(getApplicationContext(), "Adding Faild: No such Class", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog_classes.cancel();
-
-                    } else
-                        Toast.makeText(getApplicationContext(), "Adding Faild: No such Class", Toast.LENGTH_LONG).show();
-
-                }
+                    }
+                }).create();
 
 
-            }
-        });
 
+        dialog_classes.setCanceledOnTouchOutside(false);
 
-//For the Add Class Dialog Cancel Button
-        button = (Button) dialog_classes_view.findViewById(R.id.buttonCancel);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                dialog_classes.cancel();
-
-
-            }
-        });
-
-
-        //Remove Class Dialog
-        button = (Button) dialog_removeClasses_view.findViewById(R.id.buttonRemoveClass);
-        button.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+        final Spinner spinnerRemoveClass = dialog_removeClasses_view.findViewById(R.id.spinner2);
+        dialog_removeClasses = new  AlertDialog.Builder(this)
+                .setTitle("Bereken")
+                .setView(dialog_removeClasses_view)
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
                         int id = classesID.get(studentClasses.indexOf(spinnerRemoveClass.getSelectedItem()));
                         if (classesID.contains(id)) {
@@ -169,7 +148,8 @@ public class StudentActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Student Removed from Class", Toast.LENGTH_LONG).show();
                                 getStudentClasses();
 
-                                getStudentAssignments();
+                                getStudentDoneAssignments();
+                                getStudentUnDoneAssignments();
                                 dialog_removeClasses.cancel();
                             } else
                                 Toast.makeText(getApplicationContext(), "Faild Removing Student", Toast.LENGTH_LONG).show();
@@ -180,27 +160,191 @@ public class StudentActivity extends AppCompatActivity {
 
                         }
 
+
                     }
-                }
-
-        );
-
-
-        //remove Class Cancel Button
-        button = dialog_removeClasses_view.findViewById(R.id.buttonCancel);
-        button.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog_removeClasses.cancel();
+                    }
+                }).create();
+
+
+
+
+        dialog_removeClasses.setContentView(dialog_removeClasses_view);
+        dialog_removeClasses.setCanceledOnTouchOutside(false);
+
+
+        //Dialog Edit Basic Information
+        dialog_about = new AlertDialog.Builder(this)
+                .setTitle("Edit Basic info")
+                .setView(dialog_about_view)
+                .setPositiveButton("Submit",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Submit button
+                        final EditText t1 = dialog_about_view.findViewById(R.id.nametext);
+                        final EditText t2 = dialog_about_view.findViewById(R.id.emailtext);
+                        final EditText t3 = dialog_about_view.findViewById(R.id.phonetext);
+                        final EditText t4 = dialog_about_view.findViewById(R.id.addresstext);
+
+
+
+                        t1.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+
+                                firstName = t1.getText().toString();
+                            }
+                        });
+
+
+                        t2.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+
+                                Email = t2.getText().toString();
+                            }
+                        });
+
+
+                        t3.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+
+                                phoneNumber = t3.getText().toString();
+                            }
+                        });
+
+
+                        t4.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+
+                                studentAddress = t4.getText().toString();
+                            }
+                        });
+
+
+
+                        dbHelper.editStudent(studentID, firstName, Email, phoneNumber, studentAddress);
+                        getStudentInfo();
+
+                        dialog_about.cancel();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // cancel button
+                        dialog_about.cancel();
+                    }
+                }).create();
+
+
+        dialog_about.setCanceledOnTouchOutside(false);
+
+        dialog_dropDownMenu = new Dialog(this);
+        dialog_dropDownMenu.setContentView(drop_down_view);
+
+
+
+        //Add Note Dialog
+        dialog_addNote = new AlertDialog.Builder(this)
+                .setTitle("Add Note")
+                .setView(dialog_addNoteVeiw)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                    final EditText editText = dialog_addNoteVeiw.findViewById(R.id.et_add_note);
+
+
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dbHelper.setStudentNote(studentID,editText.getText().
+
+                                toString());
+
+                        getStudentNote();
+                        editText.setText("");
+                        dialog_addNote.cancel();
 
                     }
-                }
-
-        );
 
 
-        //Basic Info Dialog
+
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // cancel button
+                    }
+                }).create();
+
+
+
+        dialog_addNote.setCanceledOnTouchOutside(false);
+
+
+
+        ///For the Add Class Dialog Buttons and Listeners
+
+
+
+
+//For the Add Class Dialog Cancel Button
+
+
+        //Remove Class Dialog
+
+
+
 
 
         //For the Drop-Down edit menu
@@ -233,114 +377,7 @@ public class StudentActivity extends AppCompatActivity {
 
         //For the dialog_About
 
-        final EditText t1 = dialog_about_view.findViewById(R.id.nametext);
-        final EditText t2 = dialog_about_view.findViewById(R.id.emailtext);
-        final EditText t3 = dialog_about_view.findViewById(R.id.phonetext);
-        final EditText t4 = dialog_about_view.findViewById(R.id.addresstext);
-        final Button dialog_buttonSave = dialog_about_view.findViewById(R.id.button2);
-        final Button dialog_buttonCancel = dialog_about_view.findViewById(R.id.button);
-        dialog_buttonSave.setEnabled(false);
 
-        t1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                dialog_buttonSave.setEnabled(true);
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                dialog_buttonSave.setEnabled(true);
-                firstName = t1.getText().toString();
-            }
-        });
-
-
-        t2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                dialog_buttonSave.setEnabled(true);
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                dialog_buttonSave.setEnabled(true);
-                Email = t2.getText().toString();
-            }
-        });
-
-
-        t3.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                dialog_buttonSave.setEnabled(true);
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                dialog_buttonSave.setEnabled(true);
-                phoneNumber = t3.getText().toString();
-            }
-        });
-
-
-        t4.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                dialog_buttonSave.setEnabled(true);
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                dialog_buttonSave.setEnabled(true);
-                studentAddress = t4.getText().toString();
-            }
-        });
-
-
-        dialog_buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dbHelper.editStudent(studentID, firstName, Email, phoneNumber, studentAddress);
-                getStudentInfo();
-
-                dialog_about.cancel();
-            }
-        });
-
-
-        dialog_buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog_about.cancel();
-            }
-        });
 
 
         //DropDown list onClick Listener
@@ -442,31 +479,8 @@ public class StudentActivity extends AppCompatActivity {
         });
 
 
-        Button button_addNote = dialog_addNote.findViewById(R.id.addNote);
-        final EditText editText = dialog_addNoteVeiw.findViewById(R.id.et_add_note);
 
-        button_addNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbHelper.setStudentNote(studentID, editText.getText().toString());
-                getStudentNote();
-                dialog_addNote.cancel();
-
-
-            }
-        });
-
-        Button button_cancel = dialog_addNote.findViewById(R.id.cancelNote);
-
-        button_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog_addNote.cancel();
-
-            }
-        });
     }
-
 
     private void getStudentInfo() {
         cursor = dbHelper.getStudentInfo(studentID);
@@ -531,26 +545,26 @@ public class StudentActivity extends AppCompatActivity {
 
     }
 
-    private void getStudentAssignments() {
+    private void getStudentDoneAssignments() {
         CustomAdapter adabter_studentAss;
         ArrayList<DataModel> model_studentAss = new ArrayList();
         int index;
         String id, name, dueDate, rate;
-        for (int i = 0; i < classesID.size(); i++) {
-            cursor = dbHelper.getAssignmentsByClass(classesID.get(i));
-            while (cursor.moveToNext()) { //StudnetRate
-                index = cursor.getColumnIndexOrThrow("_id");
-                id = cursor.getString(index);
-                index = cursor.getColumnIndexOrThrow("Name");
-                name = cursor.getString(index);
-//                index = cursor.getColumnIndexOrThrow("StudnetRate");
-                //              rate = cursor.getString(index);
-                index = cursor.getColumnIndexOrThrow("DueDate");
-                dueDate = "Due Date: " + cursor.getString(index);
-                model_studentAss.add(new DataModel(name, "ID: " + id, "Rate: "));
 
-            }
+        cursor = dbHelper.getAssignmentsByStudent(studentID);
+        while (cursor.moveToNext()) { //StudnetRate
+            index = cursor.getColumnIndexOrThrow("_id");
+            id = cursor.getString(index);
+            index = cursor.getColumnIndexOrThrow("Name");
+            name = cursor.getString(index);
+            index = cursor.getColumnIndexOrThrow("StudnetRate");
+            rate = cursor.getString(index);
+            index = cursor.getColumnIndexOrThrow("DueDate");
+            dueDate = "Due Date: " + cursor.getString(index);
+            model_studentAss.add(new DataModel(name, dueDate, "Rate: " + rate));
+
         }
+
         adabter_studentAss = new CustomAdapter(model_studentAss, getApplicationContext());
         ListView lv_studentAssignment = findViewById(R.id.listview3);
         lv_studentAssignment.setAdapter(adabter_studentAss);
@@ -559,17 +573,43 @@ public class StudentActivity extends AppCompatActivity {
 
     }
 
+    private void getStudentUnDoneAssignments() {
+        CustomAdapter adabter_studentAss;
+        ArrayList<DataModel> model_studentAss = new ArrayList();
+        int index;
+        String id, name, dueDate, rate;
+        cursor = dbHelper.getUndoneAssignmentsByStudent(studentID);
+        while (cursor.moveToNext()) { //StudnetRate
+            index = cursor.getColumnIndexOrThrow("Name");
+            name = cursor.getString(index);
+            index = cursor.getColumnIndexOrThrow("DueDate");
+            dueDate = "Due Date: " + cursor.getString(index);
+            model_studentAss.add(new DataModel(name, dueDate, ""));
+
+        }
+
+
+        adabter_studentAss =new  CustomAdapter(model_studentAss, getApplicationContext());
+        ListView lv_studentAssignment = findViewById(R.id.listview33);
+        lv_studentAssignment.setAdapter(adabter_studentAss);
+
+        setListViewHeightBasedOnChildren(lv_studentAssignment);
+
+
+    }
+
+
+
+
     private void getStudentExams() {
         //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is the student grade.
         cursor = dbHelper.getExamsByStudent(studentID);
-
         ArrayList<DataModel> model_exams = new ArrayList();
         int index;
         String name, grade, id;
 
         while (cursor.moveToNext()) {
-            index = cursor.getColumnIndexOrThrow("_id");
-            id = cursor.getString(index);
+
 
             index = cursor.getColumnIndexOrThrow("Name");
             name = cursor.getString(index);
@@ -577,8 +617,14 @@ public class StudentActivity extends AppCompatActivity {
             index = cursor.getColumnIndexOrThrow("StudentGrade");
             grade = cursor.getString(index);
 
-            model_exams.add(new DataModel(name, "Exam ID: " + id, "Grade: " + grade));
+            model_exams.add(new DataModel(name, "", "Grade: " + grade));
+
         }
+
+        CustomAdapter adabter_studentExams =new  CustomAdapter(model_exams, getApplicationContext());
+        ListView lv_studentAssignment = findViewById(R.id.listview4);
+        lv_studentAssignment.setAdapter(adabter_studentExams);
+        setListViewHeightBasedOnChildren(lv_studentAssignment);
 
 
     }
@@ -587,11 +633,14 @@ public class StudentActivity extends AppCompatActivity {
     void getStudentNote() {
         TextView tv_student_note = findViewById(R.id.tv_student_profile_note);
         Cursor cursor = dbHelper.getStudentNote(studentID);
+        ArrayList notes = new ArrayList();
         String note = "";
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
-            note = cursor.getString(cursor.getColumnIndexOrThrow("Note"));
+            note =(cursor.getString(cursor.getColumnIndexOrThrow("Note")));
+
         }
+
         tv_student_note.setText(note);
     }
 
