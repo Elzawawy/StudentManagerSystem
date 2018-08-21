@@ -91,9 +91,14 @@ public class StudentListActivity extends AppCompatActivity implements AdapterVie
         alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int i = dbHelper.addStudent(studentName.getText().toString() + " " + studentLastName.getText().toString(), studentEmail.getText().toString(), studentPhone.getText().toString(), studentAddress.getText().toString());
-                studentCursorAdapter.refresh();
-                Toast.makeText(getApplicationContext(), "Student Added", Toast.LENGTH_LONG).show();
+                boolean isEmptyFields = (studentName.getText().toString().isEmpty() || studentLastName.getText().toString().isEmpty() || studentEmail.getText().toString().isEmpty() || studentPhone.getText().toString().isEmpty() || studentAddress.getText().toString().isEmpty());
+                if(!isEmptyFields) {
+                    dbHelper.addStudent(studentName.getText().toString() + " " + studentLastName.getText().toString(), studentEmail.getText().toString(), studentPhone.getText().toString(), studentAddress.getText().toString());
+                    studentCursorAdapter.refresh();
+                    Toast.makeText(getApplicationContext(), "Student Added", Toast.LENGTH_LONG).show();
+                }
+                else
+                    showErrorDialog();
             }
         });
         alertDialogBuilder.setNegativeButton("Cancel",
@@ -107,5 +112,22 @@ public class StudentListActivity extends AppCompatActivity implements AdapterVie
         alertDialog.show();
 
     }
+
+    private void showErrorDialog(){
+        android.app.AlertDialog.Builder errorDialog = new android.app.AlertDialog.Builder(context);
+        errorDialog.setTitle("Error");
+        errorDialog.setMessage(R.string.error_incomplete_operation);
+        errorDialog.setNeutralButton("OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        android.app.AlertDialog errorAlert = errorDialog.create();
+        errorAlert.show();
+
+    }
+
 
 }

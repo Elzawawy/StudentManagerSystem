@@ -53,7 +53,8 @@
     <string name="default_student_email">StudenEmail@gmail.com</string>
     <string name="student_profile_remove_button">Remove Student</string>
     <string name="student_profile_add_note_button">Add Note</string>
-
+    <string name="text_cancel">Cancel</string>
+    <string name="text_add">Add</string>
     <string name="bt_add_class_text">Add Class</string>
-
+    <string name="add_student_text">Add Class to Student</string>
 </resources>

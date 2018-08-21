@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="8dp">
+    android:padding="@dimen/default_view_padding">
 
     <ImageView
         android:id="@+id/imageview"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_width="@dimen/small_image_view_height"
+        android:layout_height="@dimen/small_image_view_height" />
 
     <TextView
         android:id="@+id/textview"

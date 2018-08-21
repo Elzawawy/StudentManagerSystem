@@ -41,42 +41,36 @@ import java.util.HashMap;
 public class StudentActivity extends AppCompatActivity {
 
 
-
     private ImageButton imageButton;
     private Button button;
     private DataBaseHelper dbHelper;
-    private ArrayList<DataModel> dataModels;
-    private ListView listView;
     private int index;
     private int studentID;
-    private CustomAdapter adapter;
     private Cursor cursor;
     private ArrayList<Integer> classesID;
-    private boolean nameEdit,phoneEdit,emailEdit;
-    private View dialog_classes_view,dialog_about_view,dialog_removeClasses_view,drop_down_view,dialog_addNoteVeiw;
-    private Dialog dialog_classes,dialog_about,dialog_removeClasses,dialog_dropDownMenu,dialog_addNote;
-    private String firstName,Email,studentAddress,phoneNumber,id;
-    Spinner spinner_Classes ;
+    private View dialog_classes_view, dialog_about_view, dialog_removeClasses_view, drop_down_view, dialog_addNoteVeiw;
+    private Dialog dialog_classes, dialog_about, dialog_removeClasses, dialog_dropDownMenu, dialog_addNote;
+    private String firstName, Email, studentAddress, phoneNumber, id;
+    Spinner spinner_Classes;
     ArrayList<String> classes_names;
     ArrayList classes_id;
     ArrayList studentClasses;
-    private EditText textID1,textID2,textId3;
-    private final Context context= this;
+    private final Context context = this;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_profile);
-        final  HashMap<Integer,String> Classes = new HashMap<>();
+        final HashMap<Integer, String> Classes = new HashMap<>();
         classes_names = new ArrayList<String>();
-        classes_id= new ArrayList<Integer>();
+        classes_id = new ArrayList<Integer>();
         //Receiving Student ID from the Prev. Activity.
         Bundle b = getIntent().getExtras();
-        if( b != null)
+        if (b != null)
             studentID = b.getInt("id");
         //Instance of the DBHelper
-        dbHelper=new DataBaseHelper(getApplicationContext());
+        dbHelper = new DataBaseHelper(getApplicationContext());
 
         //For Holding Id's of the Classes to get The assignments of each class.
 
@@ -89,28 +83,28 @@ public class StudentActivity extends AppCompatActivity {
         getStudentNote();
 
 
-        drop_down_view = LayoutInflater.from(c).inflate(R.layout.drop_down_menu,null);
-        dialog_about_view= LayoutInflater.from(c).inflate(R.layout.dialoug_about,null);
-        dialog_classes_view= LayoutInflater.from(c).inflate(R.layout.dialog_classes,null);
-        dialog_removeClasses_view= LayoutInflater.from(c).inflate(R.layout.dialog_remove_class,null);
-        dialog_addNoteVeiw = LayoutInflater.from(c).inflate(R.layout.dialog_add_note,null);
+        drop_down_view = LayoutInflater.from(c).inflate(R.layout.drop_down_menu, null);
+        dialog_about_view = LayoutInflater.from(c).inflate(R.layout.dialoug_about, null);
+        dialog_classes_view = LayoutInflater.from(c).inflate(R.layout.dialog_classes, null);
+        dialog_removeClasses_view = LayoutInflater.from(c).inflate(R.layout.dialog_remove_class, null);
+        dialog_addNoteVeiw = LayoutInflater.from(c).inflate(R.layout.dialog_add_note, null);
 
-        dialog_classes=new Dialog(this);
+        dialog_classes = new Dialog(this);
         dialog_classes.setContentView(dialog_classes_view);
         dialog_classes.setCanceledOnTouchOutside(false);
 
-        dialog_removeClasses=new Dialog(this);
+        dialog_removeClasses = new Dialog(this);
         dialog_removeClasses.setContentView(dialog_removeClasses_view);
         dialog_removeClasses.setCanceledOnTouchOutside(false);
 
-        dialog_about= new Dialog(this);
+        dialog_about = new Dialog(this);
         dialog_about.setContentView(dialog_about_view);
         dialog_about.setCanceledOnTouchOutside(false);
 
-        dialog_dropDownMenu=new Dialog(this);
+        dialog_dropDownMenu = new Dialog(this);
         dialog_dropDownMenu.setContentView(drop_down_view);
 
-        dialog_addNote=new Dialog(this);
+        dialog_addNote = new Dialog(this);
         dialog_addNote.setContentView(dialog_addNoteVeiw);
         dialog_addNote.setCanceledOnTouchOutside(false);
 
@@ -124,37 +118,29 @@ public class StudentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                int id = (int)classes_id.get(classes_names.indexOf((String)spinner_Classes.getSelectedItem()));
+                int id = (int) classes_id.get(classes_names.indexOf((String) spinner_Classes.getSelectedItem()));
 
-                if(classesID.contains(id))
-                {
+                if (classesID.contains(id)) {
                     Toast.makeText(getApplicationContext(), "Student Already in this Class", Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    if(dbHelper.addStudentToClass(studentID, id))
-                    {
+                } else {
+                    if (dbHelper.addStudentToClass(studentID, id)) {
                         Toast.makeText(getApplicationContext(), "Student Added to the Class", Toast.LENGTH_LONG).show();
                         getStudentClasses();
                         getStudentAssignments();
                         dialog_classes.cancel();
 
-                    }
-
-                    else       Toast.makeText(getApplicationContext(), "Adding Faild: No such Class", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(getApplicationContext(), "Adding Faild: No such Class", Toast.LENGTH_LONG).show();
 
                 }
-
-
 
 
             }
         });
 
 
-
 //For the Add Class Dialog Cancel Button
-        button = (Button)dialog_classes_view.findViewById(R.id.buttonCancel);
+        button = (Button) dialog_classes_view.findViewById(R.id.buttonCancel);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,80 +149,70 @@ public class StudentActivity extends AppCompatActivity {
                 dialog_classes.cancel();
 
 
-
-
             }
         });
 
 
         //Remove Class Dialog
-        button=(Button)dialog_removeClasses_view.findViewById(R.id.buttonRemoveClass);
-        button.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View view) {
+        button = (Button) dialog_removeClasses_view.findViewById(R.id.buttonRemoveClass);
+        button.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                                          int id  = classesID.get(studentClasses.indexOf(spinnerRemoveClass.getSelectedItem()));
-                                          if(classesID.contains(id))
-                                          {
+                        int id = classesID.get(studentClasses.indexOf(spinnerRemoveClass.getSelectedItem()));
+                        if (classesID.contains(id)) {
 
-                                              Toast.makeText(getApplicationContext(), "Removed from Arraylist", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Removed from Arraylist", Toast.LENGTH_LONG).show();
 
-                                              if(dbHelper.removeStudentFromClass(studentID,id))
-                                              {
-                                                  Toast.makeText(getApplicationContext(), "Student Removed from Class", Toast.LENGTH_LONG).show();
-                                                  getStudentClasses();
+                            if (dbHelper.removeStudentFromClass(studentID, id)) {
+                                Toast.makeText(getApplicationContext(), "Student Removed from Class", Toast.LENGTH_LONG).show();
+                                getStudentClasses();
 
-                                                  getStudentAssignments();
-                                                  dialog_removeClasses.cancel();
-                                              }else
-                                                  Toast.makeText(getApplicationContext(), "Faild Removing Student", Toast.LENGTH_LONG).show();
-
+                                getStudentAssignments();
+                                dialog_removeClasses.cancel();
+                            } else
+                                Toast.makeText(getApplicationContext(), "Faild Removing Student", Toast.LENGTH_LONG).show();
 
 
-                                          }else
-                                          {
-                                              Toast.makeText(getApplicationContext(), "Student is not Registered in this Class", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Student is not Registered in this Class", Toast.LENGTH_LONG).show();
 
-                                          }
+                        }
 
-                                      }
-                                  }
+                    }
+                }
 
         );
 
 
         //remove Class Cancel Button
-        button = (Button)dialog_removeClasses_view.findViewById(R.id.buttonCancel);
-        button.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View view) {
-                                          dialog_removeClasses.cancel();
+        button = dialog_removeClasses_view.findViewById(R.id.buttonCancel);
+        button.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog_removeClasses.cancel();
 
-                                      }
-                                  }
+                    }
+                }
 
         );
 
 
-
         //Basic Info Dialog
-
-
-
-
-
 
 
         //For the Drop-Down edit menu
         ArrayList<String> items = new ArrayList<String>();
         items.add("Add CLass");
         items.add("Remove Class");
-        items.add("Edit baseic Info");
+        items.add("Edit Basic Info");
 
-        ArrayAdapter dropdownMenuAdabter = new ArrayAdapter(this,R.layout.activity_listview,R.id.text1,items.toArray());
+        ArrayAdapter dropdownMenuAdabter = new ArrayAdapter(this, R.layout.activity_listview, R.id.text1, items.toArray());
 
 
-        ListView listview = (ListView) drop_down_view.findViewById(R.id.listview);
+        ListView listview = drop_down_view.findViewById(R.id.listview);
         listview.setAdapter(dropdownMenuAdabter);
         setListViewHeightBasedOnChildren(listview);
         Window window = dialog_dropDownMenu.getWindow();
@@ -245,26 +221,24 @@ public class StudentActivity extends AppCompatActivity {
         window.setAttributes(wlp);
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
-        imageButton=(ImageButton)findViewById(R.id.imageButton);
-        imageButton.setOnClickListener(new View.OnClickListener(){
+        imageButton = findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 dialog_dropDownMenu.show();
 
             }
         });
 
 
-
         //For the dialog_About
 
-        final EditText t1 = (EditText) dialog_about_view.findViewById(R.id.nametext);
-        final EditText t2 = (EditText) dialog_about_view.findViewById(R.id.emailtext);
-        final EditText t3 = (EditText) dialog_about_view.findViewById(R.id.phonetext);
-        final EditText t4 = (EditText) dialog_about_view.findViewById(R.id.addresstext);
-        final Button dialog_buttonSave =  (Button)dialog_about_view.findViewById(R.id.button2);
-        final Button dialog_buttonCancel =  (Button)dialog_about_view.findViewById(R.id.button);
+        final EditText t1 = dialog_about_view.findViewById(R.id.nametext);
+        final EditText t2 = dialog_about_view.findViewById(R.id.emailtext);
+        final EditText t3 = dialog_about_view.findViewById(R.id.phonetext);
+        final EditText t4 = dialog_about_view.findViewById(R.id.addresstext);
+        final Button dialog_buttonSave = dialog_about_view.findViewById(R.id.button2);
+        final Button dialog_buttonCancel = dialog_about_view.findViewById(R.id.button);
         dialog_buttonSave.setEnabled(false);
 
         t1.addTextChangedListener(new TextWatcher() {
@@ -272,7 +246,6 @@ public class StudentActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 dialog_buttonSave.setEnabled(true);
@@ -295,7 +268,8 @@ public class StudentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { dialog_buttonSave.setEnabled(true);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                dialog_buttonSave.setEnabled(true);
 
             }
 
@@ -308,7 +282,6 @@ public class StudentActivity extends AppCompatActivity {
         });
 
 
-
         t3.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -316,7 +289,8 @@ public class StudentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { dialog_buttonSave.setEnabled(true);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                dialog_buttonSave.setEnabled(true);
 
             }
 
@@ -329,7 +303,6 @@ public class StudentActivity extends AppCompatActivity {
         });
 
 
-
         t4.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -337,7 +310,8 @@ public class StudentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { dialog_buttonSave.setEnabled(true);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                dialog_buttonSave.setEnabled(true);
 
             }
 
@@ -353,7 +327,7 @@ public class StudentActivity extends AppCompatActivity {
         dialog_buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.editStudent(studentID,firstName,Email,phoneNumber,studentAddress);
+                dbHelper.editStudent(studentID, firstName, Email, phoneNumber, studentAddress);
                 getStudentInfo();
 
                 dialog_about.cancel();
@@ -369,49 +343,36 @@ public class StudentActivity extends AppCompatActivity {
         });
 
 
-
-
-
-        //DropDown list onClicklistnet:-
+        //DropDown list onClick Listener
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                switch(i)
-                {
+                switch (i) {
                     case 0: //Add Class Choice
                     {
-                        Toast.makeText(getApplicationContext(),"Class Adding", Toast.LENGTH_LONG).show();
-                        classes_names=new ArrayList<>();
+                        classes_names = new ArrayList<>();
                         classes_id = new ArrayList();
-                        cursor=dbHelper.getClassList();
-                        while(cursor.moveToNext())
-                        {
+                        cursor = dbHelper.getClassList();
+                        while (cursor.moveToNext()) {
                             classes_names.add(cursor.getString(cursor.getColumnIndexOrThrow("Name")));
                             classes_id.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
-                            //   Classes.put(cursor.getInt(cursor.getColumnIndexOrThrow("_id")),cursor.getString(cursor.getColumnIndexOrThrow("Name")));
-
-
                         }
 
 
-                        ArrayAdapter spinnerAdabter = new ArrayAdapter(getApplicationContext() ,R.layout.spinner_item,classes_names.toArray());
-                        spinnerAdabter.setDropDownViewResource(R.layout.spinner_dropdown);
-                        spinner_Classes.setAdapter(spinnerAdabter);
-
+                        ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, classes_names.toArray());
+                        spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+                        spinner_Classes.setAdapter(spinnerAdapter);
                         dialog_classes.show();
                         break;
 
 
-
-
                     } //End of Case 0
 
-                    case 1:
-                    {
-                        ArrayAdapter spinnerRemoveClassAdabter = new ArrayAdapter(getApplicationContext(),R.layout.spinner_item,studentClasses.toArray());
-                        spinnerRemoveClassAdabter.setDropDownViewResource(R.layout.spinner_dropdown);
-                        spinnerRemoveClass.setAdapter(spinnerRemoveClassAdabter);
+                    case 1: {
+                        ArrayAdapter spinnerRemoveClassAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_item, studentClasses.toArray());
+                        spinnerRemoveClassAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+                        spinnerRemoveClass.setAdapter(spinnerRemoveClassAdapter);
 
                         Toast.makeText(getApplicationContext(), (String) "Class Removed", Toast.LENGTH_LONG).show();
                         dialog_removeClasses.show();
@@ -419,9 +380,7 @@ public class StudentActivity extends AppCompatActivity {
 
 
                     }
-                    case 2:
-                    {
-                        Toast.makeText(getApplicationContext(),"Basic info Editing", Toast.LENGTH_LONG).show();
+                    case 2: {
                         dialog_about.show();
                         break;
 
@@ -429,10 +388,10 @@ public class StudentActivity extends AppCompatActivity {
                     }
 
 
-
                 }
             }
         });
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Confirm");
@@ -444,7 +403,7 @@ public class StudentActivity extends AppCompatActivity {
                 // Do nothing but close the dialog
                 dbHelper.DropStudentFromSystem(studentID);
                 dialog.dismiss();
-                startActivity(new Intent(context,StudentListActivity.class));
+                startActivity(new Intent(context, StudentListActivity.class));
             }
         });
 
@@ -459,7 +418,6 @@ public class StudentActivity extends AppCompatActivity {
         });
 
 
-
         Button addNoteButton = findViewById(R.id.button_addNote);
 
         addNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -468,7 +426,6 @@ public class StudentActivity extends AppCompatActivity {
                 dialog_addNote.show();
             }
         });
-
 
 
         Button button_removeStudent = findViewById(R.id.button_RemoveStudent);
@@ -481,8 +438,6 @@ public class StudentActivity extends AppCompatActivity {
                 alert.show();
 
 
-
-
             }
         });
 
@@ -493,7 +448,7 @@ public class StudentActivity extends AppCompatActivity {
         button_addNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHelper.setStudentNote(studentID,editText.getText().toString());
+                dbHelper.setStudentNote(studentID, editText.getText().toString());
                 getStudentNote();
                 dialog_addNote.cancel();
 
@@ -510,65 +465,14 @@ public class StudentActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-/*
-     String about[] = {"Full Name: ","Gender: ","Admission Date: ","Data Of Birth: ","Phone No,: ","Email: "};
-
-        ArrayAdapter arrayAdabter = new ArrayAdapter(this,R.layout.activity_listview,about);
-        ListView listView = (ListView)findViewById(R.id.listview);
-        listView.setAdapter(arrayAdabter);
-        String classes[] = {"English: ","Math: ","Programming1: ","Data Structure: ","Algorithms : ","Economics : "};
-        ArrayAdapter arrayAdabter2 = new ArrayAdapter(this,R.layout.activity_listview,classes);
-        ListView listView2 = (ListView)findViewById(R.id.listview2);
-       listView2.setAdapter(arrayAdabter2);
-
-
-        String exams[] = {"Exam1 : ","Exam 2:  ","Exam 3 :"};
-        ArrayAdapter arrayAdabter4 = new ArrayAdapter(this,R.layout.activity_listview,exams);
-        ListView listView4 = (ListView)findViewById(R.id.listview4);
-        listView4.setAdapter(arrayAdabter4);
-
-
-        setListViewHeightBasedOnChildren(listView);
-        setListViewHeightBasedOnChildren(listView2);
-
-        setListViewHeightBasedOnChildren(listView4);
-
-
-
-
-      //  button=(ImageButton)findViewById(R.id.imageButton12);
-        //button.setOnClickListener(new View.OnClickListener(){
-         //   @Override
-          //  public void onClick(View view)
-        //    {
-          //      Intent i = new Intent(StudentActivity.this,Classes_ExpandableList.class);
-            //    startActivity(i);
-
-       //     }
-       // });
- */
-
-
-
-
     }
 
 
-
-
-
-    private void getStudentInfo()
-    {
+    private void getStudentInfo() {
         cursor = dbHelper.getStudentInfo(studentID);
 
-        if(cursor.getCount()!=0)
-            while(!cursor.isLast()&& cursor.moveToNext()) {
+        if (cursor.getCount() != 0)
+            while (!cursor.isLast() && cursor.moveToNext()) {
                 int index;
 
                 index = cursor.getColumnIndexOrThrow("Name");
@@ -586,17 +490,16 @@ public class StudentActivity extends AppCompatActivity {
                 index = cursor.getColumnIndexOrThrow("Address");
                 studentAddress = cursor.getString(index);
 
-                TextView tv = (TextView)findViewById(R.id.textView2);
+                TextView tv = (TextView) findViewById(R.id.textView2);
                 tv.setText(firstName);
 
-                TextView tv2 = (TextView)findViewById(R.id.textView6);
+                TextView tv2 = (TextView) findViewById(R.id.textView6);
                 tv2.setText(Email);
 
 
-
-                TextView tv4 = (TextView)findViewById(R.id.textView7);
+                TextView tv4 = (TextView) findViewById(R.id.textView7);
                 tv4.setText(phoneNumber);
-                TextView tv5 = (TextView)findViewById(R.id.textView5);
+                TextView tv5 = (TextView) findViewById(R.id.textView5);
                 tv5.setText(studentAddress);
 
             }
@@ -605,14 +508,13 @@ public class StudentActivity extends AppCompatActivity {
     }
 
 
-    private void getStudentClasses()
-    {
+    private void getStudentClasses() {
         cursor = dbHelper.getClassesByStudent(studentID);
         studentClasses = new ArrayList<String>();
-        classesID= new ArrayList<>();
-        if(cursor.getCount()!=0)
+        classesID = new ArrayList<>();
+        if (cursor.getCount() != 0)
 
-            while( !cursor.isLast() && cursor.moveToNext()) {
+            while (!cursor.isLast() && cursor.moveToNext()) {
 
                 index = cursor.getColumnIndexOrThrow("Name");
                 studentClasses.add(cursor.getString(index));
@@ -621,22 +523,20 @@ public class StudentActivity extends AppCompatActivity {
 
             }
 
-        ArrayAdapter arrayAdabter2 = new ArrayAdapter(this,R.layout.activity_listview,studentClasses.toArray());
-        ListView listView2 = (ListView)findViewById(R.id.listview2);
+        ArrayAdapter arrayAdabter2 = new ArrayAdapter(this, R.layout.activity_listview, studentClasses.toArray());
+        ListView listView2 = (ListView) findViewById(R.id.listview2);
         listView2.setAdapter(arrayAdabter2);
         setListViewHeightBasedOnChildren(listView2);
 
 
     }
 
-    private void getStudentAssignments()
-    {
+    private void getStudentAssignments() {
         CustomAdapter adabter_studentAss;
         ArrayList<DataModel> model_studentAss = new ArrayList();
         int index;
-        String id,name,dueDate,rate;
-        for(int i=0;i<classesID.size();i++)
-        {
+        String id, name, dueDate, rate;
+        for (int i = 0; i < classesID.size(); i++) {
             cursor = dbHelper.getAssignmentsByClass(classesID.get(i));
             while (cursor.moveToNext()) { //StudnetRate
                 index = cursor.getColumnIndexOrThrow("_id");
@@ -647,33 +547,27 @@ public class StudentActivity extends AppCompatActivity {
                 //              rate = cursor.getString(index);
                 index = cursor.getColumnIndexOrThrow("DueDate");
                 dueDate = "Due Date: " + cursor.getString(index);
-                model_studentAss.add(new DataModel( name, "ID: "+id, "Rate: "));
+                model_studentAss.add(new DataModel(name, "ID: " + id, "Rate: "));
 
             }
         }
-        adabter_studentAss=new CustomAdapter(model_studentAss,getApplicationContext());
+        adabter_studentAss = new CustomAdapter(model_studentAss, getApplicationContext());
         ListView lv_studentAssignment = findViewById(R.id.listview3);
         lv_studentAssignment.setAdapter(adabter_studentAss);
         setListViewHeightBasedOnChildren(lv_studentAssignment);
 
 
-
-
-
-
     }
 
-    private void getStudentExams()
-    {
+    private void getStudentExams() {
         //It return a Cursor Object of 3 columns ---> First Column is ID and Second Column is Name and the third column is the student grade.
         cursor = dbHelper.getExamsByStudent(studentID);
 
         ArrayList<DataModel> model_exams = new ArrayList();
         int index;
-        String name,grade,id;
+        String name, grade, id;
 
-        while(cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             index = cursor.getColumnIndexOrThrow("_id");
             id = cursor.getString(index);
 
@@ -683,35 +577,25 @@ public class StudentActivity extends AppCompatActivity {
             index = cursor.getColumnIndexOrThrow("grade");
             grade = cursor.getString(index);
 
-            model_exams.add(new DataModel(name,"Exam ID: "+id,"Grade: "+grade));
+            model_exams.add(new DataModel(name, "Exam ID: " + id, "Grade: " + grade));
 
 
         }
 
 
-
     }
 
 
-    void getStudentNote()
-    {
+    void getStudentNote() {
         TextView tv_student_note = findViewById(R.id.tv_student_profile_note);
-        Cursor cursor=dbHelper.getStudentNote(studentID);
-        String note="";
-        if(cursor.getCount() == 1)
-        {
+        Cursor cursor = dbHelper.getStudentNote(studentID);
+        String note = "";
+        if (cursor.getCount() == 1) {
             cursor.moveToFirst();
             note = cursor.getString(cursor.getColumnIndexOrThrow("Note"));
         }
         tv_student_note.setText(note);
     }
-
-
-
-
-
-
-
 
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

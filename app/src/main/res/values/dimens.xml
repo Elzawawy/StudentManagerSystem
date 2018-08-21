@@ -28,4 +28,8 @@
     <dimen name="large_image_view_height">110dp</dimen>
     <dimen name="large_image_view_width">110dp</dimen>
     <dimen name="student_profile_button_width">150dp</dimen>
+    <dimen name="spinner_item_width">200dp</dimen>
+    <dimen name="spinner_dropdown_width">400dp</dimen>
+    <dimen name="spinner_dropdown_height">40dp</dimen>
+    <dimen name="dialog_note_margin_bottom">20dp</dimen>
 </resources>
