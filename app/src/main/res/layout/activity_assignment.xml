@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Assignments.AssignmentActivity"
-    android:background="@color/colorWhite"
-    style="@style/Base.Animation.AppCompat.Dialog"
-    android:padding="@dimen/default_view_padding"
+    android:background="@color/colorGray"
+    android:padding="@dimen/default_parent_view_padding"
+    android:layout_centerInParent="true"
     >
 
     <TextView

@@ -7,9 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Assignments.AssignmentActivity"
-    android:background="@color/colorWhite"
-    style="@style/Base.Animation.AppCompat.Dialog"
-    android:padding="@dimen/default_view_padding"
+    android:background="@color/colorGray"
+    android:padding="@dimen/default_parent_view_padding"
     >
 
     <TextView
@@ -28,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_view_margin"
-        android:text="Date:"
+        android:text="@string/text_date"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="@dimen/default_subtitle_text_size" />
 
@@ -43,5 +42,5 @@
         android:id="@+id/lv_expandable_students_exam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_view_margin" />
+        android:layout_margin="@dimen/default_view_margin"/>
 </LinearLayout>

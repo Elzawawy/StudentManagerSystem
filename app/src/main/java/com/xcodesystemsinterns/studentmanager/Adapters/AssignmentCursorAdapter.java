@@ -13,9 +13,9 @@ import com.xcodesystemsinterns.studentmanager.R;
 
 import java.util.List;
 
-public class MyAdapter extends CursorAdapter {
+public class AssignmentCursorAdapter extends CursorAdapter {
 
-    public MyAdapter(Context context, Cursor c)
+    public AssignmentCursorAdapter(Context context, Cursor c)
     {
         super(context, c,0);
     }
@@ -26,7 +26,6 @@ public class MyAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-         // first layout:    return LayoutInflater.from(context).inflate(R.layout.activity_list, parent, false);
         return LayoutInflater.from(context).inflate(R.layout.item_assignment, parent, false);
     }
 
@@ -37,11 +36,6 @@ public class MyAdapter extends CursorAdapter {
         String name = cursor.getString(1);
         String dueDate=cursor.getString(2);
         String className = cursor.getString(3);
-        /* The first layout
-        TextView AssignmentName = (TextView) v.findViewById(R.id.AssignmentName);
-        TextView ClassName = (TextView) v.findViewById(R.id.ClassName);
-        TextView DueDate = (TextView) v.findViewById(R.id.DueDate);
-        */
         TextView AssignmentName = (TextView) v.findViewById(R.id.tv1_item_assignment);
         TextView ClassName = (TextView) v.findViewById(R.id.tv3_item_assignment);
         TextView DueDate = (TextView) v.findViewById(R.id.tv2_item_assignment);

@@ -9,11 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
-import com.xcodesystemsinterns.studentmanager.Adapters.MyAdapter;
+import com.xcodesystemsinterns.studentmanager.Adapters.AssignmentCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.R;
 
 public class AssignmentsList extends AppCompatActivity {
@@ -35,7 +34,7 @@ public class AssignmentsList extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(),null);
             }
         });
-        final MyAdapter adapter = new MyAdapter(this,dt.getAllAssignments());
+        final AssignmentCursorAdapter adapter = new AssignmentCursorAdapter(this,dt.getAllAssignments());
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

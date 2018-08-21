@@ -2,20 +2,14 @@ package com.xcodesystemsinterns.studentmanager.Exams;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.xcodesystemsinterns.studentmanager.Adapters.MyAdapter;
-import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentActivity;
-import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentsList;
-import com.xcodesystemsinterns.studentmanager.Assignments.CheckOffAssignment;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.Adapters.ExamCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.R;
