@@ -443,7 +443,7 @@ public class StudentActivity extends AppCompatActivity {
 
 
         Button button_addNote = dialog_addNote.findViewById(R.id.addNote);
-        final EditText editText = dialog_addNoteVeiw.findViewById(R.id.editText);
+        final EditText editText = dialog_addNoteVeiw.findViewById(R.id.et_add_note);
 
         button_addNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -456,7 +456,7 @@ public class StudentActivity extends AppCompatActivity {
             }
         });
 
-        Button button_cancel = dialog_addNote.findViewById(R.id.cancel);
+        Button button_cancel = dialog_addNote.findViewById(R.id.cancelNote);
 
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
