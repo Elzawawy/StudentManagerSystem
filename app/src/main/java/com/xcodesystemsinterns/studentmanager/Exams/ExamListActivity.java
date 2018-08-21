@@ -23,13 +23,13 @@ public class ExamListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_exam_list);
-        list=(ListView) findViewById(R.id.lv_exams);
+        list = findViewById(R.id.lv_exams);
         dt=new DataBaseHelper(this);
         FloatingActionButton checkOffButton= findViewById(R.id.fab_exam_list);
         checkOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckOffExam newFragment = CheckOffExam.newInstance(dt.getAllExams(),c);
+                CheckOffExam newFragment = CheckOffExam.newInstance(dt.getClassList(),c);
                 newFragment.show(getSupportFragmentManager(),null);
             }
         });

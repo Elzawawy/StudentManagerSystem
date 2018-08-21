@@ -130,12 +130,9 @@ public class CheckOffExam extends DialogFragment {
     private void addExamsOnSpinner(int classID){
         Cursor cursor=dt.getExamsByClass(classID);
         try {
-            cursor.moveToFirst();
             examsNamesList.clear();
             examsIDList.clear();
-            studentsNamesList.clear();
-            studentsIDList.clear();
-            studentsSpinner.setAdapter(null);
+            cursor.moveToFirst();
             for(int i=0;i<cursor.getCount();i++)
             {
                 examsNamesList.add(cursor.getString(1));
@@ -153,11 +150,9 @@ public class CheckOffExam extends DialogFragment {
     private void addStudentsOnSpinner(int examID){
         Cursor cursor=dt.getStudentListByExam(examID);
         try {
-            cursor.moveToFirst();
-            examsNamesList.clear();
-            examsIDList.clear();
             studentsNamesList.clear();
             studentsIDList.clear();
+            cursor.moveToFirst();
             for(int i=0;i<cursor.getCount();i++)
             {
                 studentsNamesList.add(cursor.getString(1));

@@ -574,12 +574,10 @@ public class StudentActivity extends AppCompatActivity {
             index = cursor.getColumnIndexOrThrow("Name");
             name = cursor.getString(index);
 
-            index = cursor.getColumnIndexOrThrow("grade");
+            index = cursor.getColumnIndexOrThrow("StudentGrade");
             grade = cursor.getString(index);
 
             model_exams.add(new DataModel(name, "Exam ID: " + id, "Grade: " + grade));
-
-
         }
 
 

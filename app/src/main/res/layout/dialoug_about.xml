@@ -12,37 +12,13 @@
     >
 
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@+id/addresstext"
-        android:layout_margin="20dp"
-        android:text="Cancel"
-        android:textAllCaps="false"
-        android:textSize="12sp" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-
-        android:layout_below="@+id/addresstext"
-        android:layout_margin="20dp"
-        android:layout_alignParentEnd="true"
-
-        android:enabled="false"
-        android:text="Save"
-        android:textAllCaps="false"
-        android:textSize="12sp" />
-
     <EditText
         android:id="@+id/phonetext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_below="@+id/nametext"
-       android:layout_margin="20dp"
+        android:layout_margin="20dp"
         android:ems="10"
         android:hint="Phone Number"
         android:inputType="number"
@@ -52,7 +28,7 @@
         android:id="@+id/emailtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:layout_below="@+id/phonetext"
+        android:layout_below="@+id/phonetext"
         android:layout_margin="20dp"
         android:ems="10"
         android:hint="Email"
@@ -69,13 +45,14 @@
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignLeft="@+id/phonetext" />
 
     <EditText
         android:id="@+id/addresstext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:layout_below="@+id/emailtext"
+        android:layout_below="@+id/emailtext"
         android:layout_margin="20dp"
         android:ems="10"
         android:hint="Address"
