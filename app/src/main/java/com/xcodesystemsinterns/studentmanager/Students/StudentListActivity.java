@@ -1,17 +1,29 @@
 package com.xcodesystemsinterns.studentmanager.Students;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.xcodesystemsinterns.studentmanager.Adapters.CustomAdapter;
+import com.xcodesystemsinterns.studentmanager.Adapters.StudentCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.DataModel;
 import com.xcodesystemsinterns.studentmanager.R;
@@ -22,126 +34,78 @@ import java.util.ArrayList;
  * Created by Omar on 8/4/2018.
  */
 
-public class StudentListActivity extends AppCompatActivity {
+public class StudentListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,View.OnClickListener {
 
-    DataBaseHelper dbHelper;
-    ArrayAdapter adabter ;
-    ArrayList<DataModel> myList = new ArrayList<DataModel>();
-    Cursor cursor;
-    DataModel entry;
-    ListView studentsListView;
-
-
-
+    private DataBaseHelper dbHelper;
+    private ListView studentsListView;
+    private View addStudentView;
+    private ArrayList<Integer> studentIDs;
+    private StudentCursorAdapter studentCursorAdapter;
+    private Context context = this;
+    private EditText studentName;
+    private EditText studentLastName;
+    private EditText studentPhone;
+    private EditText studentEmail;
+    private EditText studentAddress;
+    LayoutInflater layoutInflater;
+    private AlertDialog.Builder alertDialogBuilder;
+    private AlertDialog alertDialog;
 
     @Override
-    public  void onCreate(Bundle savedInstanceState)
-    {
-
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_list);
-
-        dbHelper = new DataBaseHelper(getApplicationContext());
-
-        SQLiteDatabase db=openOrCreateDatabase("StudentManager.db",MODE_PRIVATE,null);
-
-        dbHelper.onUpgrade(db,0,0);//For testing, Delete previous Database before testing if exist
-
-
-        addData();
-        getStudents(this);
-
-
-
-
-
-
-
-//Dummy Data for testing
-
-
-
-
-
-
-
+        layoutInflater = LayoutInflater.from(this);
+        alertDialogBuilder = new AlertDialog.Builder(context);
+        dbHelper = new DataBaseHelper(this);
+        studentIDs = new ArrayList<>();
+        studentsListView = findViewById(R.id.listview_student);
+        FloatingActionButton fab_addStudent = findViewById(R.id.fab_student_list);
+        studentCursorAdapter = new StudentCursorAdapter(this, dbHelper.getAllStudents(), studentsListView);
+        studentsListView.setAdapter(studentCursorAdapter);
+        studentsListView.setOnItemClickListener(this);
+        fab_addStudent.setOnClickListener(this);
     }
 
-    void getStudents(Context context){
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(StudentListActivity.this, StudentActivity.class);
+        Cursor cursor = dbHelper.getAllStudents();
+        while (cursor.moveToNext())
+            studentIDs.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
+        intent.putExtra("id", studentIDs.get(position));
+        startActivity(intent);
+    }
 
-        DataBaseHelper  dbHelper = new DataBaseHelper(context);
-        cursor = dbHelper.getAllStudents();
-        String name,email,id;
-        while(!cursor.isLast()&& cursor.moveToNext())
-        {
-            int index;
-            index = cursor.getColumnIndexOrThrow("Name");
-            name =cursor.getString(index);
+    @Override
+    public void onClick(View v) {
 
-            index = cursor.getColumnIndexOrThrow("Email");
-            email = cursor.getString(index);
-
-            index = cursor.getColumnIndexOrThrow("_id");
-            id = cursor.getString(index);
-
-            myList.add(new DataModel(name,email,id));
-        }
-
-        CustomAdapter adabter = new CustomAdapter(myList,context);
-
-        studentsListView = (ListView)findViewById(R.id.listview);
-        studentsListView.setAdapter(adabter);
-
-        studentsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        addStudentView = layoutInflater.inflate(R.layout.dialog_add_student, null, false);
+        studentName = addStudentView.findViewById(R.id.userInputDialog);
+        studentLastName = addStudentView.findViewById(R.id.userInputLastDialog);
+        studentPhone = addStudentView.findViewById(R.id.userPhoneDialog);
+        studentEmail = addStudentView.findViewById(R.id.userEmailDialog);
+        studentAddress = addStudentView.findViewById(R.id.userAddressDialog);
+        alertDialogBuilder.setView(addStudentView);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                entry= (DataModel) parent.getAdapter().getItem(position);
-                Intent intent = new Intent(StudentListActivity.this, StudentActivity.class);
-                intent.putExtra("id", entry.getVersion_number());
-                startActivity(intent);
+            public void onClick(DialogInterface dialog, int which) {
+                int i = dbHelper.addStudent(studentName.getText().toString() + " " + studentLastName.getText().toString(), studentEmail.getText().toString(), studentPhone.getText().toString(), studentAddress.getText().toString());
+                studentCursorAdapter.refresh();
+                Toast.makeText(getApplicationContext(), "Student Added", Toast.LENGTH_LONG).show();
             }
         });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        dialogBox.cancel();
+                    }
+                });
+        alertDialog = alertDialogBuilder.create();
+        //Show the configured dialog.
+        alertDialog.show();
 
     }
-
-    void addData()
-    {
-
-
-
-        dbHelper.addClass("English","NONONONO");
-        dbHelper.addClass("Arabic","NONONONO");
-        dbHelper.addClass("Math","NONONONO");
-        dbHelper.addClass("Physics","NONONONO");
-        dbHelper.addClass("Deutsch","NONONONO");
-
-        dbHelper.addStudent("OMAR","Omar.Email@hotmail.com","01010101","sdf3df34");
-        dbHelper.addStudent("OMAR2","Omar.Email@hotmail.com","01010101","sdf3df34");
-        dbHelper.addStudent("3mr","Amr.ZZEW@HHHH.com","01010101","sdf3df34");
-        dbHelper.addStudent("OMAR3","Omar.Email@hotmail.com","01010101","sdf3df34");
-        dbHelper.addStudent("3mr2","Amr.ZZEW@HHHH.com","01010101","sdf3df34");
-        dbHelper.addStudent("OMAR4","Omar.Email@hotmail.com","01010101","sdf3df34");
-        dbHelper.addStudent("3mr3","Amr.ZZEW@HHHH.com","01010101","sdf3df34");
-        dbHelper.addStudent("Omar Hussein Elshrief","Omar.Email@hotmail.com","01010101","sdf3df34");
-        dbHelper.addStudent("Amr Ashraf ELZewa","Amr.ElZew@hotmail.com","01010101","sdf3df34");
-        dbHelper.addStudent("Rami 3bdAllah Khfagi","Rami.Khfagi@HHHH.com","01010101","sdf3df34");
-
-
-
-        dbHelper.addStudentToClass(1,1);
-        dbHelper.addStudentToClass(1,2);
-
-        dbHelper.addAssignment("Ass1","1/1/2001","Ass1",1);
-        dbHelper.addAssignment("Ass2","1/1/2001","Ass2",1);
-        dbHelper.addAssignment("Ass3","1/1/2001","Ass3",1);
-        dbHelper.addAssignment("Ass1","1/1/2001","Ass1",2);
-        dbHelper.addAssignment("Ass1","1/1/2001","Ass1",3);
-        dbHelper.addAssignment("Ass1","1/1/2001","Ass2",3);
-
-    }
-
-
-
 
 }

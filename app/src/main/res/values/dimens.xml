@@ -6,9 +6,11 @@
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="default_title_text_size">25sp</dimen>
     <dimen name="default_subtitle_text_size">18sp</dimen>
+    <dimen name="small_text_size">12sp</dimen>
     <dimen name="default_body_text_size">15sp</dimen>
     <dimen name="default_view_margin">10dp</dimen>
     <dimen name="small_view_margin">5dp</dimen>
+    <dimen name="large_view_margin">20dp</dimen>
     <dimen name="default_view_padding">5dp</dimen>
     <dimen name="gv_column_width">100dp</dimen>
     <dimen name="gv_vertical_spacing">36sp</dimen>
@@ -19,8 +21,11 @@
     <dimen name="default_image_view_width">90dp</dimen>
     <dimen name="list_button_width">150dp</dimen>
     <dimen name="default_list_height">380dp</dimen>
+    <dimen name="icon_image_view_height">18dp</dimen>
+    <dimen name="icon_image_view_width">18dp</dimen>
     <dimen name="small_image_view_height">60dp</dimen>
     <dimen name="small_image_view_width">40dp</dimen>
     <dimen name="large_image_view_height">110dp</dimen>
     <dimen name="large_image_view_width">110dp</dimen>
+    <dimen name="student_profile_button_width">150dp</dimen>
 </resources>

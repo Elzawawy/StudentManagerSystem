@@ -22,30 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/buttonCancel"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="10dp"
         android:text="Remove Class" />
-
-    <EditText
-        android:id="@+id/textClassID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="145dp"
-        android:ems="10"
-        android:hint="Class ID"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/textClassName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -68,5 +46,13 @@
         android:text="Remove Student from a Class"
         android:textSize="18dp"
         android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="118dp" />
 
 </RelativeLayout>

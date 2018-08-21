@@ -27,8 +27,7 @@
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name=".Students.StudentActivity" />
         <activity
-            android:name=".Students.StudentListActivity"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:name=".Students.StudentListActivity" />
         <activity
             android:name=".Exams.ExamActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />

@@ -30,6 +30,10 @@
     <string name="text_phone">Phone Number : </string>
     <string name="text_address">Home Address : </string>
     <string name="text_date">Date : </string>
+    <string name="student_assignment_list_title">Assignments</string>
+    <string name="student_exam_list_title">Exams</string>
+    <string name="student_class_list_title">Classes</string>
+    <string name="student_note_title">Note</string>
     <string name="hint_class_name">Enter Class\'s Name</string>
     <string name="hint_class_description">Enter Class\'s Description</string>
     <string name="hint_assignment_name">Enter Assignment\'s Name</string>
@@ -44,7 +48,11 @@
     <string name="hint_student_address">Enter Student\'s Address</string>
     <string name="error_incomplete_operation">Error ! All Fields must be complete.Please check your input and try again.</string>
     <string name="class_activity_title">Class Management</string>
-
+    <string name="default_student_location">Student/location/street</string>
+    <string name="default_student_phone">+201000000000</string>
+    <string name="default_student_email">StudenEmail@gmail.com</string>
+    <string name="student_profile_remove_button">Remove Student</string>
+    <string name="student_profile_add_note_button">Add Note</string>
 
     <string name="bt_add_class_text">Add Class</string>
 

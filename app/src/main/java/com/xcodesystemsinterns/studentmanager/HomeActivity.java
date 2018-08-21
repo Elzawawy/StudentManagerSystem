@@ -9,6 +9,7 @@ import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentsList;
 import com.xcodesystemsinterns.studentmanager.Classes.ClassListActivity;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.Exams.ExamListActivity;
+import com.xcodesystemsinterns.studentmanager.Students.StudentListActivity;
 
 public class HomeActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
@@ -20,7 +21,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showStudentlist(View view) {
-
+        startActivity(new Intent(this, StudentListActivity.class));
 
     }
 
