@@ -34,17 +34,24 @@ public class ClassCursorAdapter extends CursorAdapter implements View.OnClickLis
     //classID for usage in removal of objects.
     //ListView to get position of object to be removed.
     //viewType for usage as a flag to know type of list in hand.
-    public ClassCursorAdapter(Context context, Cursor c,int classID,ListView listView, String viewType) {
+    public ClassCursorAdapter(Context context, Cursor c,ListView listView, String viewType) {
         super(context, c,0);
         dataBaseHelper = new DataBaseHelper(context);
         this.listView = listView;
         this.viewType = viewType;
         this.context = context;
-        this.classID = classID;
         assignmentIDs = new ArrayList<>();
         examIDs = new ArrayList<>();
         studentIDs = new ArrayList<>();
         classIDs = new ArrayList<>();
+    }
+
+    public void setClassID(int classID) {
+        this.classID = classID;
+    }
+
+    public ArrayList<Integer> getClassIDs(){
+        return this.classIDs;
     }
 
     @Override
@@ -154,33 +161,39 @@ public class ClassCursorAdapter extends CursorAdapter implements View.OnClickLis
     @Override
     public void onClick(DialogInterface dialog, int which) {
         int listViewPosition = listView.getPositionForView(view);
+        ClassCursorAdapter newAdapter;
         switch(viewType)
         {
             case "student" :
-                dataBaseHelper.removeExam(studentIDs.get(listViewPosition));
+                dataBaseHelper.removeStudentFromClass(studentIDs.get(listViewPosition),classID);
                 Cursor newStudents = dataBaseHelper.getStudentsByClass(classID);
-                listView.setAdapter(new ClassCursorAdapter(context,newStudents,classID,listView,"assignment"));
+                newAdapter = new ClassCursorAdapter(context,newStudents,listView,"student");
+                newAdapter.setClassID(classID);
+                listView.setAdapter(newAdapter);
                 notifyDataSetChanged();
                 break;
 
             case "class" :
-                dataBaseHelper.removeExam(classIDs.get(listViewPosition));
+                dataBaseHelper.removeClass(classIDs.get(listViewPosition));
                 Cursor newClasses = dataBaseHelper.getClassList();
-                listView.setAdapter(new ClassCursorAdapter(context,newClasses,classID,listView,"assignment"));
+                newAdapter = new ClassCursorAdapter(context,newClasses,listView,"class");
+                listView.setAdapter(newAdapter);
                 notifyDataSetChanged();
                 break;
 
             case "assignment" :
                 dataBaseHelper.removeAssignment(assignmentIDs.get(listViewPosition));
                 Cursor newAssignments = dataBaseHelper.getAssignmentsByClass(classID);
-                listView.setAdapter(new ClassCursorAdapter(context,newAssignments,classID,listView,"assignment"));
+                newAdapter = new ClassCursorAdapter(context,newAssignments,listView,"assignment");
+                listView.setAdapter(newAdapter);
                 notifyDataSetChanged();
                 break;
 
             case "exam" :
                 dataBaseHelper.removeExam(examIDs.get(listViewPosition));
                 Cursor newExams = dataBaseHelper.getExamsByClass(classID);
-                listView.setAdapter(new ClassCursorAdapter(context,newExams,classID,listView,"assignment"));
+                newAdapter = new ClassCursorAdapter(context,newExams,listView,"exam");
+                listView.setAdapter(newAdapter);
                 notifyDataSetChanged();
                 break;
         }

@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Exams.ExamListActivity"></activity>
-        <activity android:name=".Classes.classListActivity" />
+        <activity android:name=".Classes.ClassListActivity" />
         <activity android:name=".Classes.ClassActivity" />
         <activity android:name=".Assignments.AssignmentsList" />
         <activity

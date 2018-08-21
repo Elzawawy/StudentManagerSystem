@@ -28,6 +28,7 @@ public class CheckOffExam extends DialogFragment {
     private Spinner studentsSpinner;
     private Spinner examsSpinner;
     private Spinner classesSpinner;
+    private Spinner gradesSpinner;
     private static List<String> classesNamesList;
     private static List<Integer> classesIDList;
     private static List<String> examsNamesList;
@@ -65,10 +66,12 @@ public class CheckOffExam extends DialogFragment {
        classesSpinner=v.findViewById(R.id.sp_classes);
        studentsSpinner=v.findViewById(R.id.sp_students_exam);
        examsSpinner=v.findViewById(R.id.sp_exams);
+       gradesSpinner=v.findViewById(R.id.sp_grades);
        setCancelable(false);
-       final EditText et_studentGrade = v.findViewById(R.id.et_grade_check_off_exam);
+       //final EditText et_studentGrade = v.findViewById(R.id.et_grade_check_off_exam);
 
        addClassesOnSpinner();
+       addGradesOnSpinner();
        classesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -100,7 +103,7 @@ public class CheckOffExam extends DialogFragment {
                             dt.putExamGrade(
                                     studentsIDList.get(studentsSpinner.getSelectedItemPosition()),
                                     examsIDList.get(examsSpinner.getSelectedItemPosition()),
-                                    Integer.parseInt(et_studentGrade.getText().toString())
+                                    gradesSpinner.getSelectedItem().toString()
                             );
 
                         }
@@ -168,6 +171,24 @@ public class CheckOffExam extends DialogFragment {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, studentsNamesList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         studentsSpinner.setAdapter(dataAdapter);
+    }
+    private void addGradesOnSpinner(){
+        ArrayList<String> gradesList = new ArrayList<>();
+        gradesList.add("A+");
+        gradesList.add("A");
+        gradesList.add("A-");
+        gradesList.add("B+");
+        gradesList.add("B");
+        gradesList.add("B-");
+        gradesList.add("C+");
+        gradesList.add("C");
+        gradesList.add("C-");
+        gradesList.add("D+");
+        gradesList.add("D");
+        gradesList.add("F");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, gradesList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gradesSpinner.setAdapter(dataAdapter);
     }
 
 

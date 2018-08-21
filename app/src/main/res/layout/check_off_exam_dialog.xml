@@ -52,13 +52,12 @@
         android:textSize="@dimen/default_subtitle_text_size"
         android:layout_margin="@dimen/small_view_margin"/>
 
-    <EditText
-        android:id="@+id/et_grade_check_off_exam"
+    <Spinner
+        android:id="@+id/sp_grades"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
+        android:layout_height="@dimen/default_spinner_height"
         android:layout_margin="@dimen/small_view_margin"
-        android:ems="10"/>
+        />
 
 
 

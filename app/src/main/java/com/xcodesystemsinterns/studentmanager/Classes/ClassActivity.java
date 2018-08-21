@@ -117,7 +117,8 @@ public class ClassActivity extends AppCompatActivity implements AdapterView.OnIt
         //Define data to populate in List View
         final Cursor cursor = dataBaseHelper.getStudentsByClass(classID);
         //Define an Adapter to control the data population flow.
-        ClassCursorAdapter adapter = new ClassCursorAdapter(this, cursor, classID , lv, "student");
+        ClassCursorAdapter adapter = new ClassCursorAdapter(this, cursor , lv, "student");
+        adapter.setClassID(classID);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -154,7 +155,8 @@ public class ClassActivity extends AppCompatActivity implements AdapterView.OnIt
         //Define data to populate in List View.
         final Cursor cursor = dataBaseHelper.getExamsByClass(classID);
         //Define an Adapter to control the data population flow.
-        ClassCursorAdapter adapter = new ClassCursorAdapter(this, cursor, classID , lv , "exam");
+        ClassCursorAdapter adapter = new ClassCursorAdapter(this, cursor , lv , "exam");
+        adapter.setClassID(classID);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -187,7 +189,8 @@ public class ClassActivity extends AppCompatActivity implements AdapterView.OnIt
         //Define data to populate in List View.
         final Cursor cursor = dataBaseHelper.getAssignmentsByClass(classID);
         //Define an Adapter to control the data population flow.
-        ClassCursorAdapter adapter = new ClassCursorAdapter(this, cursor, classID ,  lv ,"assignment");
+        ClassCursorAdapter adapter = new ClassCursorAdapter(this, cursor ,  lv ,"assignment");
+        adapter.setClassID(classID);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

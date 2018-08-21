@@ -3,11 +3,10 @@ package com.xcodesystemsinterns.studentmanager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentsList;
-import com.xcodesystemsinterns.studentmanager.Classes.classListActivity;
+import com.xcodesystemsinterns.studentmanager.Classes.ClassListActivity;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.Exams.ExamListActivity;
 
@@ -34,6 +33,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showClassList(View view) {
-        startActivity(new Intent(this,classListActivity.class));
+        startActivity(new Intent(this,ClassListActivity.class));
     }
 }

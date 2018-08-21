@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBaseHelper  extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "StudentManager.db";
-    private static int DATABASE_VERSION = 5;
+    private static int DATABASE_VERSION = 6;
     //================== Table 1 ======================
     private static final String TABLE1_NAME = "Students";
     private static final String TABLE1_COLUMN1_NAME = "StudentID";
@@ -123,7 +123,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         String query_Table9 = "CREATE TABLE "+ TABLE9_NAME + " ( "+
                 TABLE9_COLUMN1_NAME+" INTEGER NOT NULL, "+
                 TABLE9_COLUMN2_NAME+" INTEGER NOT NULL, "+
-                TABLE9_COLUMN3_NAME+" INTEGER NOT NULL, "+
+                TABLE9_COLUMN3_NAME+" TEXT NOT NULL, "+
                 "FOREIGN KEY("+TABLE9_COLUMN1_NAME+") REFERENCES "+TABLE1_NAME+"("+TABLE1_COLUMN1_NAME+"),"+
                 "FOREIGN KEY("+TABLE9_COLUMN2_NAME+") REFERENCES "+TABLE4_NAME+"("+TABLE4_COLUMN1_NAME+") );";
 
@@ -423,12 +423,12 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         //if result is not -1 ( > 0 ) , returns true in case of successful insertion.
         return sqLiteDatabase.insert(TABLE8_NAME,null,contentValues) > 0 ;
     }
-    public boolean putExamGrade(int studentID, int examID, int studentgrade){
+    public boolean putExamGrade(int studentID, int examID, String studentGrade){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TABLE9_COLUMN1_NAME,studentID);
         contentValues.put(TABLE9_COLUMN2_NAME,examID);
-        contentValues.put(TABLE9_COLUMN3_NAME,studentgrade);
+        contentValues.put(TABLE9_COLUMN3_NAME,studentGrade);
         //if result is not -1 ( > 0 ) , returns true in case of successful insertion.
         return sqLiteDatabase.insert(TABLE9_NAME,null,contentValues) > 0 ;
     }
