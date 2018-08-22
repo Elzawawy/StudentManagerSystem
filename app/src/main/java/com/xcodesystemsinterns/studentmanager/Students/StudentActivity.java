@@ -176,6 +176,97 @@ public class StudentActivity extends AppCompatActivity {
         dialog_removeClasses.setCanceledOnTouchOutside(false);
 
 
+        final EditText t1 = dialog_about_view.findViewById(R.id.nametext);
+        final EditText t2 = dialog_about_view.findViewById(R.id.emailtext);
+        final EditText t3 = dialog_about_view.findViewById(R.id.phonetext);
+        final EditText t4 = dialog_about_view.findViewById(R.id.addresstext);
+
+
+
+        t1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+                firstName = t1.getText().toString();
+            }
+        });
+
+
+        t2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+                Email = t2.getText().toString();
+            }
+        });
+
+
+        t3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+                phoneNumber = t3.getText().toString();
+            }
+        });
+
+
+        t4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+                studentAddress = t4.getText().toString();
+            }
+        });
+
+
         //Dialog Edit Basic Information
         dialog_about = new AlertDialog.Builder(this)
                 .setTitle("Edit Basic info")
@@ -183,100 +274,16 @@ public class StudentActivity extends AppCompatActivity {
                 .setPositiveButton("Submit",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Submit button
-                        final EditText t1 = dialog_about_view.findViewById(R.id.nametext);
-                        final EditText t2 = dialog_about_view.findViewById(R.id.emailtext);
-                        final EditText t3 = dialog_about_view.findViewById(R.id.phonetext);
-                        final EditText t4 = dialog_about_view.findViewById(R.id.addresstext);
-
-
-
-                        t1.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-
-
-                                firstName = t1.getText().toString();
-                            }
-                        });
-
-
-                        t2.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-
-
-                                Email = t2.getText().toString();
-                            }
-                        });
-
-
-                        t3.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-
-
-                                phoneNumber = t3.getText().toString();
-                            }
-                        });
-
-
-                        t4.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-
-
-                                studentAddress = t4.getText().toString();
-                            }
-                        });
 
 
 
                         dbHelper.editStudent(studentID, firstName, Email, phoneNumber, studentAddress);
                         getStudentInfo();
+                        t1.setText("");
+                        t2.setText("");
+                        t3.setText("");
+                        t4.setText("");
+
 
                         dialog_about.cancel();
                     }
