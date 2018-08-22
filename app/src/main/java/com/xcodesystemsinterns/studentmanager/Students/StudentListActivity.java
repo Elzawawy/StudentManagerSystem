@@ -50,6 +50,7 @@ public class StudentListActivity extends AppCompatActivity implements AdapterVie
     LayoutInflater layoutInflater;
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog alertDialog;
+    private static StudentListActivity studentListActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class StudentListActivity extends AppCompatActivity implements AdapterVie
         studentsListView.setAdapter(studentCursorAdapter);
         studentsListView.setOnItemClickListener(this);
         fab_addStudent.setOnClickListener(this);
+        studentListActivity=this;
     }
 
     @Override
@@ -127,6 +129,10 @@ public class StudentListActivity extends AppCompatActivity implements AdapterVie
         android.app.AlertDialog errorAlert = errorDialog.create();
         errorAlert.show();
 
+    }
+    public  static StudentListActivity getInstance()
+    {
+        return studentListActivity;
     }
 
 

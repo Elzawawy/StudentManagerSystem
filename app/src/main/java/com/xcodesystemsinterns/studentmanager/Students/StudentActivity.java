@@ -440,7 +440,9 @@ public class StudentActivity extends AppCompatActivity {
                 // Do nothing but close the dialog
                 dbHelper.DropStudentFromSystem(studentID);
                 dialog.dismiss();
+                StudentListActivity.getInstance().finish();
                 startActivity(new Intent(context, StudentListActivity.class));
+                finish();
             }
         });
 
