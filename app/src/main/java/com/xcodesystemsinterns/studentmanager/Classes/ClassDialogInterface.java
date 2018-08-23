@@ -103,7 +103,7 @@ public class ClassDialogInterface implements DialogInterface.OnClickListener {
     private ArrayList<Integer> addStudentsOnSpinner(Spinner spinner){
         ArrayList<String> studentsNames = new ArrayList<>();
         ArrayList<Integer> studentsIDs = new ArrayList<>();
-        Cursor cursor = dataBaseHelper.getNonregisteredStudents(classID);
+        Cursor cursor = dataBaseHelper.getUnregisteredStudentsByClass(classID);
         Log.e("Cursor", "HEEY: " + String.valueOf(cursor.getCount()));
 
 

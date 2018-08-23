@@ -397,7 +397,7 @@ public class StudentActivity extends AppCompatActivity {
                     {
                         classes_names = new ArrayList<>();
                         classes_id = new ArrayList();
-                        cursor = dbHelper.getClassList();
+                        cursor = dbHelper.getUnregisteredClassesByStudent(studentID);
                         while (cursor.moveToNext()) {
                             classes_names.add(cursor.getString(cursor.getColumnIndexOrThrow("Name")));
                             classes_id.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
