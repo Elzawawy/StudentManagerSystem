@@ -593,7 +593,13 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("select "+TABLE1_COLUMN6_NAME+" from "+TABLE1_NAME+" where "+TABLE1_COLUMN1_NAME+" = "+studentID,null);
     }
 
+    public Cursor getNonregisteredStudents(int classID)
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
+        return sqLiteDatabase.rawQuery("select "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+","+TABLE1_NAME+"."+TABLE1_COLUMN2_NAME+" from "+TABLE1_NAME+" join "+
+                TABLE5_NAME+" where "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+" = "+classID+" and "+TABLE5_NAME+" ."+TABLE5_COLUMN1_NAME+" != "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME,null);
+    }
 
 
 

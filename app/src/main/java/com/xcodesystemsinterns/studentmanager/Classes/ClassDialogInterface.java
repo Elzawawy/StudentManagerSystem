@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.R;
 
@@ -102,7 +103,11 @@ public class ClassDialogInterface implements DialogInterface.OnClickListener {
     private ArrayList<Integer> addStudentsOnSpinner(Spinner spinner){
         ArrayList<String> studentsNames = new ArrayList<>();
         ArrayList<Integer> studentsIDs = new ArrayList<>();
-        Cursor cursor = dataBaseHelper.getAllStudents();
+        Cursor cursor = dataBaseHelper.getNonregisteredStudents(classID);
+        Log.e("Cursor", "HEEY: " + String.valueOf(cursor.getCount()));
+
+
+
         while(cursor.moveToNext())
         {
             studentsIDs.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
