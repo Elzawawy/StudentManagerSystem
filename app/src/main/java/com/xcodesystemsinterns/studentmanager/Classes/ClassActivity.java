@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.xcodesystemsinterns.studentmanager.Adapters.ClassCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.Adapters.ClassGridAdapter;
@@ -60,6 +61,12 @@ public class ClassActivity extends AppCompatActivity implements AdapterView.OnIt
         layoutInflaterAndroid = LayoutInflater.from(context);
         //To know which class.
         classID = getIntent().getIntExtra("ClassID", 0);
+        Cursor  cursorClassName =   dataBaseHelper.getClassInfo(classID);
+        cursorClassName.moveToNext();
+        String className =cursorClassName.getString(cursorClassName.getColumnIndexOrThrow("Name"));
+        TextView toolbarName = findViewById(R.id.toolbar_title);
+
+        toolbarName.setText(className);
         //Set the display as gridView.
         gridView = findViewById(R.id.grid);
         //Define a new GridView Adapter.

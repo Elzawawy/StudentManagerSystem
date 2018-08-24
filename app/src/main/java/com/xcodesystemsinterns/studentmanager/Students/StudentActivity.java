@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -616,6 +617,7 @@ public class StudentActivity extends AppCompatActivity {
         ArrayList<DataModel> model_exams = new ArrayList();
         int index;
         String name, grade, id;
+
 
         while (cursor.moveToNext()) {
 

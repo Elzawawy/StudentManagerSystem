@@ -76,6 +76,10 @@ public class ClassListActivity extends AppCompatActivity {
                 // put you activity's name instead of NewActivity
                 Intent intent = new Intent(getBaseContext(),ClassActivity.class);
                 intent.putExtra("ClassID", classIDs.get(i));
+
+
+
+
                 startActivity(intent);
             }
         });

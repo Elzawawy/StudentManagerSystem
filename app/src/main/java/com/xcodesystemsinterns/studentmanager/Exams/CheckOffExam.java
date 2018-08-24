@@ -124,7 +124,7 @@ public class CheckOffExam extends DialogFragment {
 
     private void addClassesOnSpinner(){
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, classesNamesList);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, classesNamesList);
         classesSpinner.setAdapter(dataAdapter);
     }
     private void addExamsOnSpinner(int classID){
@@ -143,7 +143,7 @@ public class CheckOffExam extends DialogFragment {
         catch (Exception e){
             e.printStackTrace();
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, examsNamesList);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, examsNamesList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         examsSpinner.setAdapter(dataAdapter);
     }
@@ -163,8 +163,8 @@ public class CheckOffExam extends DialogFragment {
         catch (Exception e){
             e.printStackTrace();
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, studentsNamesList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, studentsNamesList);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         studentsSpinner.setAdapter(dataAdapter);
     }
     private void addGradesOnSpinner(){
@@ -181,7 +181,7 @@ public class CheckOffExam extends DialogFragment {
         gradesList.add("D+");
         gradesList.add("D");
         gradesList.add("F");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, gradesList);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, gradesList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gradesSpinner.setAdapter(dataAdapter);
     }
