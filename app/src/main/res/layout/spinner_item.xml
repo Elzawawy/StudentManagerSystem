@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/spinner_item_width"
-    android:layout_height="wrap_content"
-
-    android:textSize="@dimen/default_title_text_size"
-    android:textStyle="bold" />
+    android:layout_width="400dp"
+    android:layout_height="50dp"
+    android:padding="10dp"
+    android:textSize="16dp"
+    android:textStyle="normal" />

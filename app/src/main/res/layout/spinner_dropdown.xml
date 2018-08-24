@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/spinner_dropdown_width"
-    android:layout_height="@dimen/spinner_dropdown_height"
-
-    android:textSize="@dimen/default_subtitle_text_size"
-    android:textStyle="bold" />
+    android:layout_height="50dp"
+    android:padding="2dp"
+    android:textSize="16dp"
+    android:textStyle="normal" />

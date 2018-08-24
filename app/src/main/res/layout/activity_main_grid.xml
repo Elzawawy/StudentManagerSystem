@@ -23,7 +23,22 @@
             android:text="@string/class_activity_title"
             android:textColor="@color/colorWhite"
             android:textStyle="bold" />
+
+
     </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toolbar_class_activity"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@android:color/background_light"
+        android:textAlignment="center"
+        android:textSize="12dp"
+
+        android:text="TextView" />
 
     <GridView
         android:id="@+id/grid"

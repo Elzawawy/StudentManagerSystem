@@ -103,7 +103,7 @@ public class CheckOffAssignment extends DialogFragment {
 
     private void addAssignmentsOnSpinner(){
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, assignmentsNamesList);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, assignmentsNamesList);
         assignmentsSpinner.setAdapter(dataAdapter);
     }
     private void addStudentsOnSpinner(int assignmentID){
@@ -122,8 +122,8 @@ public class CheckOffAssignment extends DialogFragment {
         catch (Exception e){
             e.printStackTrace();
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, studentsNamesList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, studentsNamesList);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         studentsSpinner.setAdapter(dataAdapter);
     }
 

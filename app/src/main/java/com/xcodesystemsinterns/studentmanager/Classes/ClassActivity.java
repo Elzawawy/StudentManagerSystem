@@ -64,9 +64,12 @@ public class ClassActivity extends AppCompatActivity implements AdapterView.OnIt
         Cursor  cursorClassName =   dataBaseHelper.getClassInfo(classID);
         cursorClassName.moveToNext();
         String className =cursorClassName.getString(cursorClassName.getColumnIndexOrThrow("Name"));
+        String classDescription = cursorClassName.getString(cursorClassName.getColumnIndexOrThrow("Description"));
         TextView toolbarName = findViewById(R.id.toolbar_title);
 
         toolbarName.setText(className);
+        TextView descriptionText = findViewById(R.id.textView3);
+        descriptionText.setText(classDescription);
         //Set the display as gridView.
         gridView = findViewById(R.id.grid);
         //Define a new GridView Adapter.
