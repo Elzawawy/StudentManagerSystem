@@ -25,7 +25,8 @@ import java.util.ArrayList;
 public class ClassListActivity extends AppCompatActivity {
     ListView listView;
     DataBaseHelper data;
-    protected void onCreate(Bundle savedInstanceState) {
+    ArrayList<Integer> classIDs;
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         data = new DataBaseHelper(this);
         setTitle("Classes");
@@ -40,7 +41,7 @@ public class ClassListActivity extends AppCompatActivity {
 
                 dialog.setContentView(R.layout.add_class_menu);
 
-                Button restart=dialog.findViewById(R.id.addClassButton);
+                final Button restart=dialog.findViewById(R.id.addClassButton);
                 dialog.setTitle("Add Class");
                 dialog.show();
                 restart.setOnClickListener(new Button.OnClickListener() {
@@ -53,8 +54,14 @@ public class ClassListActivity extends AppCompatActivity {
                             Cursor cursor = data.getClassList();
                             ClassCursorAdapter classCursorAdapter = new ClassCursorAdapter(context,cursor,listView,"class");
                             listView.setAdapter(classCursorAdapter);
+
                             classCursorAdapter.notifyDataSetChanged();
+                            classIDs = classCursorAdapter.getClassIDs();
                             dialog.dismiss();
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+
                         }
                         else {
 
@@ -69,7 +76,7 @@ public class ClassListActivity extends AppCompatActivity {
         Cursor cursor = data.getClassList();
         ClassCursorAdapter classCursorAdapter = new ClassCursorAdapter(this, cursor ,listView,"class");
         listView.setAdapter(classCursorAdapter);
-        final ArrayList<Integer> classIDs = classCursorAdapter.getClassIDs();
+        classIDs = classCursorAdapter.getClassIDs();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
