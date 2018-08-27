@@ -445,7 +445,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     public Cursor getUndoneAssignmentsByStudent(int studentID){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.rawQuery("select Distinct "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+","+TABLE3_NAME+"."+TABLE3_COLUMN3_NAME+" from "+TABLE3_NAME+
+        return sqLiteDatabase.rawQuery("select Distinct "+TABLE3_NAME+"."+TABLE3_COLUMN2_NAME+" as Name ,"+TABLE3_NAME+"."+TABLE3_COLUMN3_NAME+" as DueDate from "+TABLE3_NAME+
                 " join "+TABLE5_NAME+" join "+TABLE7_NAME+" join "+TABLE1_NAME+
                 " where "+TABLE1_NAME+"."+TABLE1_COLUMN1_NAME+" ="+studentID+
                 " and "+TABLE5_NAME+"."+TABLE5_COLUMN2_NAME+"="+TABLE7_NAME+"."+TABLE7_COLUMN1_NAME +
