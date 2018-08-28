@@ -37,7 +37,7 @@ public class AssignmentActivity extends AppCompatActivity {
         String Description=cursor.getString(2);
         TextView description=(TextView) findViewById(R.id.tv_assignment_description);
         description.setText(Description);
-        expandableList.setAdapter(new ExpandAdapter(this,dt.getDoneAssignmentList(selectedAssignmentID),dt.getUndoneAssignmentList(selectedAssignmentID),"assignment"));
+        expandableList.setAdapter(new ExpandAdapter(this,dt.getDoneStudentsByAssignment(selectedAssignmentID),dt.getUndoneStudentsByAssignment(selectedAssignmentID),"assignment"));
 
     }
 }

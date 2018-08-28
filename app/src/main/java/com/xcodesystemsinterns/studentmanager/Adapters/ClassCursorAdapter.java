@@ -175,7 +175,7 @@ public class ClassCursorAdapter extends CursorAdapter implements View.OnClickLis
 
             case "class" :
                 dataBaseHelper.removeClass(classIDs.get(listViewPosition));
-                Cursor newClasses = dataBaseHelper.getClassList();
+                Cursor newClasses = dataBaseHelper.getAllClasses();
                 newAdapter = new ClassCursorAdapter(context,newClasses,listView,"class");
                 listView.setAdapter(newAdapter);
                 notifyDataSetChanged();

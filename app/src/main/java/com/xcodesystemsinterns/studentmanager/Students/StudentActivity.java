@@ -10,10 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xcodesystemsinterns.studentmanager.Adapters.CustomAdapter;
-import com.xcodesystemsinterns.studentmanager.Adapters.StudentCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.DataModel;
 import com.xcodesystemsinterns.studentmanager.R;
@@ -315,7 +312,7 @@ public class StudentActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
 
-                        dbHelper.setStudentNote(studentID,editText.getText().
+                        dbHelper.addStudentNote(studentID,editText.getText().
 
                                 toString());
 
@@ -446,7 +443,7 @@ public class StudentActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
-                dbHelper.DropStudentFromSystem(studentID);
+                dbHelper.removeStudent(studentID);
                 dialog.dismiss();
                 StudentListActivity.getInstance().finish();
                 startActivity(new Intent(context, StudentListActivity.class));

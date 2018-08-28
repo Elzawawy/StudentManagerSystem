@@ -10,8 +10,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -148,7 +146,7 @@ public class CheckOffExam extends DialogFragment {
         examsSpinner.setAdapter(dataAdapter);
     }
     private void addStudentsOnSpinner(int examID){
-        Cursor cursor=dt.getStudentListByExam(examID);
+        Cursor cursor=dt.getUndoneStudentsByExam(examID);
         try {
             studentsNamesList.clear();
             studentsIDList.clear();

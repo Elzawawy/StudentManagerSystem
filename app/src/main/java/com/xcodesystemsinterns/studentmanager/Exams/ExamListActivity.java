@@ -29,7 +29,7 @@ public class ExamListActivity extends AppCompatActivity {
         checkOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckOffExam newFragment = CheckOffExam.newInstance(dt.getClassList(),c);
+                CheckOffExam newFragment = CheckOffExam.newInstance(dt.getAllClasses(),c);
                 newFragment.show(getSupportFragmentManager(),null);
             }
         });

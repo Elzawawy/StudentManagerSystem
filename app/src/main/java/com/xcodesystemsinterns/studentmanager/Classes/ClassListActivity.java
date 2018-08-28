@@ -51,7 +51,7 @@ public class ClassListActivity extends AppCompatActivity {
                         String description = ((TextView)dialog.findViewById(R.id.description)).getText().toString();
                         if(name.length() != 0 &&description.length() != 0){
                             int id = data.addClass(name,description);
-                            Cursor cursor = data.getClassList();
+                            Cursor cursor = data.getAllClasses();
                             ClassCursorAdapter classCursorAdapter = new ClassCursorAdapter(context,cursor,listView,"class");
                             listView.setAdapter(classCursorAdapter);
 
@@ -72,8 +72,8 @@ public class ClassListActivity extends AppCompatActivity {
             }
         });
         listView = findViewById(R.id.listView);
-        //createClassObject(data.getClassList());
-        Cursor cursor = data.getClassList();
+        //createClassObject(data.getAllClasses());
+        Cursor cursor = data.getAllClasses();
         ClassCursorAdapter classCursorAdapter = new ClassCursorAdapter(this, cursor ,listView,"class");
         listView.setAdapter(classCursorAdapter);
         classIDs = classCursorAdapter.getClassIDs();

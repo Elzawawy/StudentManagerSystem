@@ -35,7 +35,7 @@ public class ExamActivity extends AppCompatActivity {
         TextView dueDate=(TextView) findViewById(R.id.tv_exam_duedate);
         dueDate.setText(DueDate);
 
-        expandableList.setAdapter(new ExpandAdapter(this,dt.getDoneStudentListByExam(selectedExamID),dt.getStudentListByExam(selectedExamID),"exam"));
+        expandableList.setAdapter(new ExpandAdapter(this,dt.getDoneStudentsByExam(selectedExamID),dt.getUndoneStudentsByExam(selectedExamID),"exam"));
 
     }
 }

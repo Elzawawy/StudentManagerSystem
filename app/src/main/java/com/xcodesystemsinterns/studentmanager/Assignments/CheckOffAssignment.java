@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -107,7 +106,7 @@ public class CheckOffAssignment extends DialogFragment {
         assignmentsSpinner.setAdapter(dataAdapter);
     }
     private void addStudentsOnSpinner(int assignmentID){
-        Cursor cursor=dt.getUndoneAssignmentList(assignmentID);
+        Cursor cursor=dt.getUndoneStudentsByAssignment(assignmentID);
         try {
             cursor.moveToFirst();
             studentsNamesList.clear();

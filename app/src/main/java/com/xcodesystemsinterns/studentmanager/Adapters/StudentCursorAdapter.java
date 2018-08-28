@@ -2,23 +2,18 @@ package com.xcodesystemsinterns.studentmanager.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
 import com.xcodesystemsinterns.studentmanager.R;
-import com.xcodesystemsinterns.studentmanager.Students.StudentListActivity;
 
 import java.util.ArrayList;
 
@@ -69,7 +64,7 @@ public class StudentCursorAdapter extends CursorAdapter implements View.OnClickL
 
                 public void onClick(DialogInterface dialog, int which) {
                     DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
-                    dataBaseHelper.DropStudentFromSystem(studentIDs.get(position));
+                    dataBaseHelper.removeStudent(studentIDs.get(position));
                     Cursor cursor = dataBaseHelper.getAllStudents();
                     listView.setAdapter(new StudentCursorAdapter(context,cursor,listView));
                     notifyDataSetChanged();
