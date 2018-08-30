@@ -113,7 +113,8 @@ public class ClassDialogInterface implements DialogInterface.OnClickListener {
             studentsIDs.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
             studentsNames.add(cursor.getString(cursor.getColumnIndexOrThrow("Name")));
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_item,studentsNames);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,R.layout.spinner_item,studentsNames);
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner.setAdapter(arrayAdapter);
         return studentsIDs;
     }

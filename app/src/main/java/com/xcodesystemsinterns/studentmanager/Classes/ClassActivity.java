@@ -18,6 +18,7 @@ import com.xcodesystemsinterns.studentmanager.Adapters.ClassCursorAdapter;
 import com.xcodesystemsinterns.studentmanager.Adapters.ClassGridAdapter;
 import com.xcodesystemsinterns.studentmanager.Assignments.AssignmentActivity;
 import com.xcodesystemsinterns.studentmanager.Database.DataBaseHelper;
+import com.xcodesystemsinterns.studentmanager.Exams.ExamActivity;
 import com.xcodesystemsinterns.studentmanager.Exams.ExamListActivity;
 import com.xcodesystemsinterns.studentmanager.R;
 import com.xcodesystemsinterns.studentmanager.Students.StudentActivity;
@@ -171,7 +172,9 @@ public class ClassActivity extends AppCompatActivity implements AdapterView.OnIt
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getBaseContext(), ExamListActivity.class);
+                cursor.moveToPosition(i);
+                Intent intent = new Intent(getBaseContext(), ExamActivity.class);
+                intent.putExtra("ID", cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
                 startActivity(intent);
             }
         });
