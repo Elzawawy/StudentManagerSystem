@@ -65,9 +65,8 @@ public class StudentCursorAdapter extends CursorAdapter implements View.OnClickL
                 public void onClick(DialogInterface dialog, int which) {
                     DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
                     dataBaseHelper.removeStudent(studentIDs.get(position));
-                    Cursor cursor = dataBaseHelper.getAllStudents();
-                    listView.setAdapter(new StudentCursorAdapter(context,cursor,listView));
-                    notifyDataSetChanged();
+                    studentIDs.remove(position);
+                    refresh();
                     dialog.dismiss();
                 }
             });

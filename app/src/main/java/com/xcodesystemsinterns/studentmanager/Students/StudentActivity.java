@@ -564,7 +564,7 @@ public class StudentActivity extends AppCompatActivity {
             id = cursor.getString(index);
             index = cursor.getColumnIndexOrThrow("Name");
             name = cursor.getString(index);
-            index = cursor.getColumnIndexOrThrow("StudnetRate");
+            index = cursor.getColumnIndexOrThrow("Grade");
             rate = cursor.getString(index);
             index = cursor.getColumnIndexOrThrow("DueDate");
             dueDate = "Due Date: " + cursor.getString(index);
@@ -622,7 +622,7 @@ public class StudentActivity extends AppCompatActivity {
             index = cursor.getColumnIndexOrThrow("Name");
             name = cursor.getString(index);
 
-            index = cursor.getColumnIndexOrThrow("StudentGrade");
+            index = cursor.getColumnIndexOrThrow("Grade");
             grade = cursor.getString(index);
 
             model_exams.add(new DataModel(name, "", "Grade: " + grade));

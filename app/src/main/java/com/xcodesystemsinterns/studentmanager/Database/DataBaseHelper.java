@@ -82,11 +82,10 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
 
 
-    //Creating the database takes place here.
-    //For sake of Simplicity of calling the Constructor, parameters are reduced by local variables usage.
+    //================= Database Creation ==============
     public DataBaseHelper(Context context) {
+        //For sake of Simplicity of calling the Constructor, parameters are reduced by local variables usage.
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
     }
 
     //================= Tables Creation on start and on each time upgraded ==============

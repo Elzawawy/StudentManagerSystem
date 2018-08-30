@@ -73,6 +73,7 @@ public class StudentListActivity extends AppCompatActivity implements AdapterVie
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(StudentListActivity.this, StudentActivity.class);
         Cursor cursor = dbHelper.getAllStudents();
+        studentIDs.clear();
         while (cursor.moveToNext())
             studentIDs.add(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
         intent.putExtra("id", studentIDs.get(position));
