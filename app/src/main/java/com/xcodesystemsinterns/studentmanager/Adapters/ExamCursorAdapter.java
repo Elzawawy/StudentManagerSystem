@@ -37,7 +37,7 @@ public class ExamCursorAdapter extends CursorAdapter {
         // Extract properties from cursor
         String name = cursor.getString(cursor.getColumnIndexOrThrow("Name"));
         String date = cursor.getString(cursor.getColumnIndexOrThrow("Date"));
-        String className = cursor.getString(cursor.getColumnIndexOrThrow("className"));
+        String className = cursor.getString(cursor.getColumnIndexOrThrow("Class"));
         // Populate fields with extracted properties
         tv_Name.setText(name);
         tv_Date.setText(date);
